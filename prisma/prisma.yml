@@ -1,6 +1,6 @@
 # The HTTP endpoint for your Prisma API
 #endpoint: ''
-endpoint: https://eu1.prisma.sh/denis790504790/hackernews-node/dev
+endpoint: https://diplom-78da81bb01.herokuapp.com/diplom-api/dev
 
 # Points to the file that contains your datamodel
 datamodel: datamodel.prisma

@@ -16,6 +16,6 @@ var models = [
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `https://eu1.prisma.sh/denis790504790/hackernews-node/dev`
+  endpoint: `https://diplom-78da81bb01.herokuapp.com/diplom-api/dev`
 });
 exports.prisma = new exports.Prisma();

@@ -1,5 +1,7 @@
-import { ApolloServer } from 'apollo-server-express';
+import _ from 'lodash';
 import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
+import GraphQLJSON from 'graphql-type-json';
 
 import './startup';
 
@@ -7,19 +9,22 @@ import typeDefs from './schema.graphql';
 
 import { getUser } from './utils';
 
-const { prisma } = require('./generated/prisma-client');
+import { prisma } from './generated/prisma-client';
 
-const Query = require('./resolvers/Query');
-const Mutation = require('./resolvers/Mutation');
-const User = require('./resolvers/User');
-const Link = require('./resolvers/Link');
+import users from './api/users/resolvers';
+import auth from './api/auth/resolvers';
+import posts from './api/posts/resolvers';
 
-const resolvers = {
-  Query,
-  Mutation,
-  User,
-  Link,
-};
+const resolvers = _.merge({
+  JSON: GraphQLJSON,
+  Query: {
+    test: () => 'Welcome to GraphQq',
+  },
+}, users, auth, posts);
+
+console.log(resolvers, typeDefs)
+
+const port = 3000;
 
 const server = new ApolloServer({
   typeDefs,
@@ -46,6 +51,6 @@ app.get('/schema', (req, res) => {
   res.end();
 });
 
-app.listen({ port: 3000 }, () => {
-  console.log(`🚀 Server ready at http://localhost:${3000}${server.graphqlPath}`);
+app.listen({ port }, () => {
+  console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`);
 });

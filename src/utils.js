@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 
-const APP_SECRET = 'GraphQL-is-aw3some';
+export const APP_SECRET = 'GraphQL-is-aw3some';
 
-function getUser(headers, context) {
+export const getUser = (headers, context) => {
   const Authorization = headers;
 
   if (Authorization) {
@@ -13,9 +13,4 @@ function getUser(headers, context) {
   }
 
   return null;
-}
-
-module.exports = {
-  APP_SECRET,
-  getUser,
 };
