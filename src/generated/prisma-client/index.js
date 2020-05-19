@@ -5,11 +5,15 @@ var typeDefs = require("./prisma-schema").typeDefs;
 
 var models = [
   {
-    name: "Link",
+    name: "User",
     embedded: false
   },
   {
-    name: "User",
+    name: "UserProfile",
+    embedded: false
+  },
+  {
+    name: "GqlSchema",
     embedded: false
   }
 ];

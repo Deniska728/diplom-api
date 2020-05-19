@@ -1,5 +1,5 @@
 export default {
   User: {
-    profile: ({ id }, args, { db }) => db.user({ id }).profile(),
+    profile: ({ id }, args, { prisma }) => prisma.user({ id }).profile(),
   },
 };

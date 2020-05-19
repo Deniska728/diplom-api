@@ -16,8 +16,9 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
-  link: (where?: LinkWhereInput) => Promise<boolean>;
+  gqlSchema: (where?: GqlSchemaWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
+  userProfile: (where?: UserProfileWhereInput) => Promise<boolean>;
 }
 
 export interface Node {}
@@ -39,25 +40,25 @@ export interface Prisma {
    * Queries
    */
 
-  link: (where: LinkWhereUniqueInput) => LinkNullablePromise;
-  links: (args?: {
-    where?: LinkWhereInput;
-    orderBy?: LinkOrderByInput;
+  gqlSchema: (where: GqlSchemaWhereUniqueInput) => GqlSchemaNullablePromise;
+  gqlSchemas: (args?: {
+    where?: GqlSchemaWhereInput;
+    orderBy?: GqlSchemaOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<Link>;
-  linksConnection: (args?: {
-    where?: LinkWhereInput;
-    orderBy?: LinkOrderByInput;
+  }) => FragmentableArray<GqlSchema>;
+  gqlSchemasConnection: (args?: {
+    where?: GqlSchemaWhereInput;
+    orderBy?: GqlSchemaOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => LinkConnectionPromise;
+  }) => GqlSchemaConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserNullablePromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -77,28 +78,49 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => UserConnectionPromise;
+  userProfile: (
+    where: UserProfileWhereUniqueInput
+  ) => UserProfileNullablePromise;
+  userProfiles: (args?: {
+    where?: UserProfileWhereInput;
+    orderBy?: UserProfileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<UserProfile>;
+  userProfilesConnection: (args?: {
+    where?: UserProfileWhereInput;
+    orderBy?: UserProfileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => UserProfileConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
   /**
    * Mutations
    */
 
-  createLink: (data: LinkCreateInput) => LinkPromise;
-  updateLink: (args: {
-    data: LinkUpdateInput;
-    where: LinkWhereUniqueInput;
-  }) => LinkPromise;
-  updateManyLinks: (args: {
-    data: LinkUpdateManyMutationInput;
-    where?: LinkWhereInput;
+  createGqlSchema: (data: GqlSchemaCreateInput) => GqlSchemaPromise;
+  updateGqlSchema: (args: {
+    data: GqlSchemaUpdateInput;
+    where: GqlSchemaWhereUniqueInput;
+  }) => GqlSchemaPromise;
+  updateManyGqlSchemas: (args: {
+    data: GqlSchemaUpdateManyMutationInput;
+    where?: GqlSchemaWhereInput;
   }) => BatchPayloadPromise;
-  upsertLink: (args: {
-    where: LinkWhereUniqueInput;
-    create: LinkCreateInput;
-    update: LinkUpdateInput;
-  }) => LinkPromise;
-  deleteLink: (where: LinkWhereUniqueInput) => LinkPromise;
-  deleteManyLinks: (where?: LinkWhereInput) => BatchPayloadPromise;
+  upsertGqlSchema: (args: {
+    where: GqlSchemaWhereUniqueInput;
+    create: GqlSchemaCreateInput;
+    update: GqlSchemaUpdateInput;
+  }) => GqlSchemaPromise;
+  deleteGqlSchema: (where: GqlSchemaWhereUniqueInput) => GqlSchemaPromise;
+  deleteManyGqlSchemas: (where?: GqlSchemaWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -115,6 +137,24 @@ export interface Prisma {
   }) => UserPromise;
   deleteUser: (where: UserWhereUniqueInput) => UserPromise;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
+  createUserProfile: (data: UserProfileCreateInput) => UserProfilePromise;
+  updateUserProfile: (args: {
+    data: UserProfileUpdateInput;
+    where: UserProfileWhereUniqueInput;
+  }) => UserProfilePromise;
+  updateManyUserProfiles: (args: {
+    data: UserProfileUpdateManyMutationInput;
+    where?: UserProfileWhereInput;
+  }) => BatchPayloadPromise;
+  upsertUserProfile: (args: {
+    where: UserProfileWhereUniqueInput;
+    create: UserProfileCreateInput;
+    update: UserProfileUpdateInput;
+  }) => UserProfilePromise;
+  deleteUserProfile: (where: UserProfileWhereUniqueInput) => UserProfilePromise;
+  deleteManyUserProfiles: (
+    where?: UserProfileWhereInput
+  ) => BatchPayloadPromise;
 
   /**
    * Subscriptions
@@ -124,12 +164,15 @@ export interface Prisma {
 }
 
 export interface Subscription {
-  link: (
-    where?: LinkSubscriptionWhereInput
-  ) => LinkSubscriptionPayloadSubscription;
+  gqlSchema: (
+    where?: GqlSchemaSubscriptionWhereInput
+  ) => GqlSchemaSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
+  userProfile: (
+    where?: UserProfileSubscriptionWhereInput
+  ) => UserProfileSubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -140,90 +183,51 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type LinkOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "description_ASC"
-  | "description_DESC"
-  | "url_ASC"
-  | "url_DESC";
-
-export type UserOrderByInput =
+export type GqlSchemaOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "name_ASC"
   | "name_DESC"
+  | "apiKey_ASC"
+  | "apiKey_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type UserOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "sub_ASC"
+  | "sub_DESC"
   | "email_ASC"
   | "email_DESC"
-  | "password_ASC"
-  | "password_DESC";
+  | "username_ASC"
+  | "username_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type UserProfileOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "firstName_ASC"
+  | "firstName_DESC"
+  | "lastName_ASC"
+  | "lastName_DESC"
+  | "fullName_ASC"
+  | "fullName_DESC"
+  | "picture_ASC"
+  | "picture_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type LinkWhereUniqueInput = AtLeastOne<{
+export type GqlSchemaWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface LinkWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  description?: Maybe<String>;
-  description_not?: Maybe<String>;
-  description_in?: Maybe<String[] | String>;
-  description_not_in?: Maybe<String[] | String>;
-  description_lt?: Maybe<String>;
-  description_lte?: Maybe<String>;
-  description_gt?: Maybe<String>;
-  description_gte?: Maybe<String>;
-  description_contains?: Maybe<String>;
-  description_not_contains?: Maybe<String>;
-  description_starts_with?: Maybe<String>;
-  description_not_starts_with?: Maybe<String>;
-  description_ends_with?: Maybe<String>;
-  description_not_ends_with?: Maybe<String>;
-  url?: Maybe<String>;
-  url_not?: Maybe<String>;
-  url_in?: Maybe<String[] | String>;
-  url_not_in?: Maybe<String[] | String>;
-  url_lt?: Maybe<String>;
-  url_lte?: Maybe<String>;
-  url_gt?: Maybe<String>;
-  url_gte?: Maybe<String>;
-  url_contains?: Maybe<String>;
-  url_not_contains?: Maybe<String>;
-  url_starts_with?: Maybe<String>;
-  url_not_starts_with?: Maybe<String>;
-  url_ends_with?: Maybe<String>;
-  url_not_ends_with?: Maybe<String>;
-  postedBy?: Maybe<UserWhereInput>;
-  AND?: Maybe<LinkWhereInput[] | LinkWhereInput>;
-  OR?: Maybe<LinkWhereInput[] | LinkWhereInput>;
-  NOT?: Maybe<LinkWhereInput[] | LinkWhereInput>;
-}
-
-export interface UserWhereInput {
+export interface GqlSchemaWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -252,164 +256,46 @@ export interface UserWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
-  email?: Maybe<String>;
-  email_not?: Maybe<String>;
-  email_in?: Maybe<String[] | String>;
-  email_not_in?: Maybe<String[] | String>;
-  email_lt?: Maybe<String>;
-  email_lte?: Maybe<String>;
-  email_gt?: Maybe<String>;
-  email_gte?: Maybe<String>;
-  email_contains?: Maybe<String>;
-  email_not_contains?: Maybe<String>;
-  email_starts_with?: Maybe<String>;
-  email_not_starts_with?: Maybe<String>;
-  email_ends_with?: Maybe<String>;
-  email_not_ends_with?: Maybe<String>;
-  password?: Maybe<String>;
-  password_not?: Maybe<String>;
-  password_in?: Maybe<String[] | String>;
-  password_not_in?: Maybe<String[] | String>;
-  password_lt?: Maybe<String>;
-  password_lte?: Maybe<String>;
-  password_gt?: Maybe<String>;
-  password_gte?: Maybe<String>;
-  password_contains?: Maybe<String>;
-  password_not_contains?: Maybe<String>;
-  password_starts_with?: Maybe<String>;
-  password_not_starts_with?: Maybe<String>;
-  password_ends_with?: Maybe<String>;
-  password_not_ends_with?: Maybe<String>;
-  links_every?: Maybe<LinkWhereInput>;
-  links_some?: Maybe<LinkWhereInput>;
-  links_none?: Maybe<LinkWhereInput>;
-  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
-  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
-  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+  owner?: Maybe<UserWhereInput>;
+  members_every?: Maybe<UserWhereInput>;
+  members_some?: Maybe<UserWhereInput>;
+  members_none?: Maybe<UserWhereInput>;
+  apiKey?: Maybe<String>;
+  apiKey_not?: Maybe<String>;
+  apiKey_in?: Maybe<String[] | String>;
+  apiKey_not_in?: Maybe<String[] | String>;
+  apiKey_lt?: Maybe<String>;
+  apiKey_lte?: Maybe<String>;
+  apiKey_gt?: Maybe<String>;
+  apiKey_gte?: Maybe<String>;
+  apiKey_contains?: Maybe<String>;
+  apiKey_not_contains?: Maybe<String>;
+  apiKey_starts_with?: Maybe<String>;
+  apiKey_not_starts_with?: Maybe<String>;
+  apiKey_ends_with?: Maybe<String>;
+  apiKey_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<GqlSchemaWhereInput[] | GqlSchemaWhereInput>;
+  OR?: Maybe<GqlSchemaWhereInput[] | GqlSchemaWhereInput>;
+  NOT?: Maybe<GqlSchemaWhereInput[] | GqlSchemaWhereInput>;
 }
 
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  email?: Maybe<String>;
-}>;
-
-export interface LinkCreateInput {
-  id?: Maybe<ID_Input>;
-  description: String;
-  url: String;
-  postedBy?: Maybe<UserCreateOneWithoutLinksInput>;
-}
-
-export interface UserCreateOneWithoutLinksInput {
-  create?: Maybe<UserCreateWithoutLinksInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserCreateWithoutLinksInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  email: String;
-  password: String;
-}
-
-export interface LinkUpdateInput {
-  description?: Maybe<String>;
-  url?: Maybe<String>;
-  postedBy?: Maybe<UserUpdateOneWithoutLinksInput>;
-}
-
-export interface UserUpdateOneWithoutLinksInput {
-  create?: Maybe<UserCreateWithoutLinksInput>;
-  update?: Maybe<UserUpdateWithoutLinksDataInput>;
-  upsert?: Maybe<UserUpsertWithoutLinksInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserUpdateWithoutLinksDataInput {
-  name?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-}
-
-export interface UserUpsertWithoutLinksInput {
-  update: UserUpdateWithoutLinksDataInput;
-  create: UserCreateWithoutLinksInput;
-}
-
-export interface LinkUpdateManyMutationInput {
-  description?: Maybe<String>;
-  url?: Maybe<String>;
-}
-
-export interface UserCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  email: String;
-  password: String;
-  links?: Maybe<LinkCreateManyWithoutPostedByInput>;
-}
-
-export interface LinkCreateManyWithoutPostedByInput {
-  create?: Maybe<
-    LinkCreateWithoutPostedByInput[] | LinkCreateWithoutPostedByInput
-  >;
-  connect?: Maybe<LinkWhereUniqueInput[] | LinkWhereUniqueInput>;
-}
-
-export interface LinkCreateWithoutPostedByInput {
-  id?: Maybe<ID_Input>;
-  description: String;
-  url: String;
-}
-
-export interface UserUpdateInput {
-  name?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  links?: Maybe<LinkUpdateManyWithoutPostedByInput>;
-}
-
-export interface LinkUpdateManyWithoutPostedByInput {
-  create?: Maybe<
-    LinkCreateWithoutPostedByInput[] | LinkCreateWithoutPostedByInput
-  >;
-  delete?: Maybe<LinkWhereUniqueInput[] | LinkWhereUniqueInput>;
-  connect?: Maybe<LinkWhereUniqueInput[] | LinkWhereUniqueInput>;
-  set?: Maybe<LinkWhereUniqueInput[] | LinkWhereUniqueInput>;
-  disconnect?: Maybe<LinkWhereUniqueInput[] | LinkWhereUniqueInput>;
-  update?: Maybe<
-    | LinkUpdateWithWhereUniqueWithoutPostedByInput[]
-    | LinkUpdateWithWhereUniqueWithoutPostedByInput
-  >;
-  upsert?: Maybe<
-    | LinkUpsertWithWhereUniqueWithoutPostedByInput[]
-    | LinkUpsertWithWhereUniqueWithoutPostedByInput
-  >;
-  deleteMany?: Maybe<LinkScalarWhereInput[] | LinkScalarWhereInput>;
-  updateMany?: Maybe<
-    LinkUpdateManyWithWhereNestedInput[] | LinkUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface LinkUpdateWithWhereUniqueWithoutPostedByInput {
-  where: LinkWhereUniqueInput;
-  data: LinkUpdateWithoutPostedByDataInput;
-}
-
-export interface LinkUpdateWithoutPostedByDataInput {
-  description?: Maybe<String>;
-  url?: Maybe<String>;
-}
-
-export interface LinkUpsertWithWhereUniqueWithoutPostedByInput {
-  where: LinkWhereUniqueInput;
-  update: LinkUpdateWithoutPostedByDataInput;
-  create: LinkCreateWithoutPostedByInput;
-}
-
-export interface LinkScalarWhereInput {
+export interface UserWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -424,6 +310,52 @@ export interface LinkScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  sub?: Maybe<String>;
+  sub_not?: Maybe<String>;
+  sub_in?: Maybe<String[] | String>;
+  sub_not_in?: Maybe<String[] | String>;
+  sub_lt?: Maybe<String>;
+  sub_lte?: Maybe<String>;
+  sub_gt?: Maybe<String>;
+  sub_gte?: Maybe<String>;
+  sub_contains?: Maybe<String>;
+  sub_not_contains?: Maybe<String>;
+  sub_starts_with?: Maybe<String>;
+  sub_not_starts_with?: Maybe<String>;
+  sub_ends_with?: Maybe<String>;
+  sub_not_ends_with?: Maybe<String>;
+  email?: Maybe<String>;
+  email_not?: Maybe<String>;
+  email_in?: Maybe<String[] | String>;
+  email_not_in?: Maybe<String[] | String>;
+  email_lt?: Maybe<String>;
+  email_lte?: Maybe<String>;
+  email_gt?: Maybe<String>;
+  email_gte?: Maybe<String>;
+  email_contains?: Maybe<String>;
+  email_not_contains?: Maybe<String>;
+  email_starts_with?: Maybe<String>;
+  email_not_starts_with?: Maybe<String>;
+  email_ends_with?: Maybe<String>;
+  email_not_ends_with?: Maybe<String>;
+  username?: Maybe<String>;
+  username_not?: Maybe<String>;
+  username_in?: Maybe<String[] | String>;
+  username_not_in?: Maybe<String[] | String>;
+  username_lt?: Maybe<String>;
+  username_lte?: Maybe<String>;
+  username_gt?: Maybe<String>;
+  username_gte?: Maybe<String>;
+  username_contains?: Maybe<String>;
+  username_not_contains?: Maybe<String>;
+  username_starts_with?: Maybe<String>;
+  username_not_starts_with?: Maybe<String>;
+  username_ends_with?: Maybe<String>;
+  username_not_ends_with?: Maybe<String>;
+  profile?: Maybe<UserProfileWhereInput>;
+  schemas_every?: Maybe<GqlSchemaWhereInput>;
+  schemas_some?: Maybe<GqlSchemaWhereInput>;
+  schemas_none?: Maybe<GqlSchemaWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -432,64 +364,509 @@ export interface LinkScalarWhereInput {
   createdAt_lte?: Maybe<DateTimeInput>;
   createdAt_gt?: Maybe<DateTimeInput>;
   createdAt_gte?: Maybe<DateTimeInput>;
-  description?: Maybe<String>;
-  description_not?: Maybe<String>;
-  description_in?: Maybe<String[] | String>;
-  description_not_in?: Maybe<String[] | String>;
-  description_lt?: Maybe<String>;
-  description_lte?: Maybe<String>;
-  description_gt?: Maybe<String>;
-  description_gte?: Maybe<String>;
-  description_contains?: Maybe<String>;
-  description_not_contains?: Maybe<String>;
-  description_starts_with?: Maybe<String>;
-  description_not_starts_with?: Maybe<String>;
-  description_ends_with?: Maybe<String>;
-  description_not_ends_with?: Maybe<String>;
-  url?: Maybe<String>;
-  url_not?: Maybe<String>;
-  url_in?: Maybe<String[] | String>;
-  url_not_in?: Maybe<String[] | String>;
-  url_lt?: Maybe<String>;
-  url_lte?: Maybe<String>;
-  url_gt?: Maybe<String>;
-  url_gte?: Maybe<String>;
-  url_contains?: Maybe<String>;
-  url_not_contains?: Maybe<String>;
-  url_starts_with?: Maybe<String>;
-  url_not_starts_with?: Maybe<String>;
-  url_ends_with?: Maybe<String>;
-  url_not_ends_with?: Maybe<String>;
-  AND?: Maybe<LinkScalarWhereInput[] | LinkScalarWhereInput>;
-  OR?: Maybe<LinkScalarWhereInput[] | LinkScalarWhereInput>;
-  NOT?: Maybe<LinkScalarWhereInput[] | LinkScalarWhereInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
+  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
+  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
-export interface LinkUpdateManyWithWhereNestedInput {
-  where: LinkScalarWhereInput;
-  data: LinkUpdateManyDataInput;
+export interface UserProfileWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  firstName?: Maybe<String>;
+  firstName_not?: Maybe<String>;
+  firstName_in?: Maybe<String[] | String>;
+  firstName_not_in?: Maybe<String[] | String>;
+  firstName_lt?: Maybe<String>;
+  firstName_lte?: Maybe<String>;
+  firstName_gt?: Maybe<String>;
+  firstName_gte?: Maybe<String>;
+  firstName_contains?: Maybe<String>;
+  firstName_not_contains?: Maybe<String>;
+  firstName_starts_with?: Maybe<String>;
+  firstName_not_starts_with?: Maybe<String>;
+  firstName_ends_with?: Maybe<String>;
+  firstName_not_ends_with?: Maybe<String>;
+  lastName?: Maybe<String>;
+  lastName_not?: Maybe<String>;
+  lastName_in?: Maybe<String[] | String>;
+  lastName_not_in?: Maybe<String[] | String>;
+  lastName_lt?: Maybe<String>;
+  lastName_lte?: Maybe<String>;
+  lastName_gt?: Maybe<String>;
+  lastName_gte?: Maybe<String>;
+  lastName_contains?: Maybe<String>;
+  lastName_not_contains?: Maybe<String>;
+  lastName_starts_with?: Maybe<String>;
+  lastName_not_starts_with?: Maybe<String>;
+  lastName_ends_with?: Maybe<String>;
+  lastName_not_ends_with?: Maybe<String>;
+  fullName?: Maybe<String>;
+  fullName_not?: Maybe<String>;
+  fullName_in?: Maybe<String[] | String>;
+  fullName_not_in?: Maybe<String[] | String>;
+  fullName_lt?: Maybe<String>;
+  fullName_lte?: Maybe<String>;
+  fullName_gt?: Maybe<String>;
+  fullName_gte?: Maybe<String>;
+  fullName_contains?: Maybe<String>;
+  fullName_not_contains?: Maybe<String>;
+  fullName_starts_with?: Maybe<String>;
+  fullName_not_starts_with?: Maybe<String>;
+  fullName_ends_with?: Maybe<String>;
+  fullName_not_ends_with?: Maybe<String>;
+  picture?: Maybe<String>;
+  picture_not?: Maybe<String>;
+  picture_in?: Maybe<String[] | String>;
+  picture_not_in?: Maybe<String[] | String>;
+  picture_lt?: Maybe<String>;
+  picture_lte?: Maybe<String>;
+  picture_gt?: Maybe<String>;
+  picture_gte?: Maybe<String>;
+  picture_contains?: Maybe<String>;
+  picture_not_contains?: Maybe<String>;
+  picture_starts_with?: Maybe<String>;
+  picture_not_starts_with?: Maybe<String>;
+  picture_ends_with?: Maybe<String>;
+  picture_not_ends_with?: Maybe<String>;
+  AND?: Maybe<UserProfileWhereInput[] | UserProfileWhereInput>;
+  OR?: Maybe<UserProfileWhereInput[] | UserProfileWhereInput>;
+  NOT?: Maybe<UserProfileWhereInput[] | UserProfileWhereInput>;
 }
 
-export interface LinkUpdateManyDataInput {
-  description?: Maybe<String>;
-  url?: Maybe<String>;
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  sub?: Maybe<String>;
+}>;
+
+export type UserProfileWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface GqlSchemaCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  owner?: Maybe<UserCreateOneInput>;
+  members?: Maybe<UserCreateManyWithoutSchemasInput>;
+  apiKey: String;
+}
+
+export interface UserCreateOneInput {
+  create?: Maybe<UserCreateInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  sub: String;
+  email: String;
+  username: String;
+  profile?: Maybe<UserProfileCreateOneInput>;
+  schemas?: Maybe<GqlSchemaCreateManyWithoutMembersInput>;
+}
+
+export interface UserProfileCreateOneInput {
+  create?: Maybe<UserProfileCreateInput>;
+  connect?: Maybe<UserProfileWhereUniqueInput>;
+}
+
+export interface UserProfileCreateInput {
+  id?: Maybe<ID_Input>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  fullName?: Maybe<String>;
+  picture?: Maybe<String>;
+}
+
+export interface GqlSchemaCreateManyWithoutMembersInput {
+  create?: Maybe<
+    GqlSchemaCreateWithoutMembersInput[] | GqlSchemaCreateWithoutMembersInput
+  >;
+  connect?: Maybe<GqlSchemaWhereUniqueInput[] | GqlSchemaWhereUniqueInput>;
+}
+
+export interface GqlSchemaCreateWithoutMembersInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  owner?: Maybe<UserCreateOneInput>;
+  apiKey: String;
+}
+
+export interface UserCreateManyWithoutSchemasInput {
+  create?: Maybe<
+    UserCreateWithoutSchemasInput[] | UserCreateWithoutSchemasInput
+  >;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutSchemasInput {
+  id?: Maybe<ID_Input>;
+  sub: String;
+  email: String;
+  username: String;
+  profile?: Maybe<UserProfileCreateOneInput>;
+}
+
+export interface GqlSchemaUpdateInput {
+  name?: Maybe<String>;
+  owner?: Maybe<UserUpdateOneInput>;
+  members?: Maybe<UserUpdateManyWithoutSchemasInput>;
+  apiKey?: Maybe<String>;
+}
+
+export interface UserUpdateOneInput {
+  create?: Maybe<UserCreateInput>;
+  update?: Maybe<UserUpdateDataInput>;
+  upsert?: Maybe<UserUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateDataInput {
+  sub?: Maybe<String>;
+  email?: Maybe<String>;
+  username?: Maybe<String>;
+  profile?: Maybe<UserProfileUpdateOneInput>;
+  schemas?: Maybe<GqlSchemaUpdateManyWithoutMembersInput>;
+}
+
+export interface UserProfileUpdateOneInput {
+  create?: Maybe<UserProfileCreateInput>;
+  update?: Maybe<UserProfileUpdateDataInput>;
+  upsert?: Maybe<UserProfileUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserProfileWhereUniqueInput>;
+}
+
+export interface UserProfileUpdateDataInput {
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  fullName?: Maybe<String>;
+  picture?: Maybe<String>;
+}
+
+export interface UserProfileUpsertNestedInput {
+  update: UserProfileUpdateDataInput;
+  create: UserProfileCreateInput;
+}
+
+export interface GqlSchemaUpdateManyWithoutMembersInput {
+  create?: Maybe<
+    GqlSchemaCreateWithoutMembersInput[] | GqlSchemaCreateWithoutMembersInput
+  >;
+  delete?: Maybe<GqlSchemaWhereUniqueInput[] | GqlSchemaWhereUniqueInput>;
+  connect?: Maybe<GqlSchemaWhereUniqueInput[] | GqlSchemaWhereUniqueInput>;
+  set?: Maybe<GqlSchemaWhereUniqueInput[] | GqlSchemaWhereUniqueInput>;
+  disconnect?: Maybe<GqlSchemaWhereUniqueInput[] | GqlSchemaWhereUniqueInput>;
+  update?: Maybe<
+    | GqlSchemaUpdateWithWhereUniqueWithoutMembersInput[]
+    | GqlSchemaUpdateWithWhereUniqueWithoutMembersInput
+  >;
+  upsert?: Maybe<
+    | GqlSchemaUpsertWithWhereUniqueWithoutMembersInput[]
+    | GqlSchemaUpsertWithWhereUniqueWithoutMembersInput
+  >;
+  deleteMany?: Maybe<GqlSchemaScalarWhereInput[] | GqlSchemaScalarWhereInput>;
+  updateMany?: Maybe<
+    | GqlSchemaUpdateManyWithWhereNestedInput[]
+    | GqlSchemaUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface GqlSchemaUpdateWithWhereUniqueWithoutMembersInput {
+  where: GqlSchemaWhereUniqueInput;
+  data: GqlSchemaUpdateWithoutMembersDataInput;
+}
+
+export interface GqlSchemaUpdateWithoutMembersDataInput {
+  name?: Maybe<String>;
+  owner?: Maybe<UserUpdateOneInput>;
+  apiKey?: Maybe<String>;
+}
+
+export interface GqlSchemaUpsertWithWhereUniqueWithoutMembersInput {
+  where: GqlSchemaWhereUniqueInput;
+  update: GqlSchemaUpdateWithoutMembersDataInput;
+  create: GqlSchemaCreateWithoutMembersInput;
+}
+
+export interface GqlSchemaScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  apiKey?: Maybe<String>;
+  apiKey_not?: Maybe<String>;
+  apiKey_in?: Maybe<String[] | String>;
+  apiKey_not_in?: Maybe<String[] | String>;
+  apiKey_lt?: Maybe<String>;
+  apiKey_lte?: Maybe<String>;
+  apiKey_gt?: Maybe<String>;
+  apiKey_gte?: Maybe<String>;
+  apiKey_contains?: Maybe<String>;
+  apiKey_not_contains?: Maybe<String>;
+  apiKey_starts_with?: Maybe<String>;
+  apiKey_not_starts_with?: Maybe<String>;
+  apiKey_ends_with?: Maybe<String>;
+  apiKey_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<GqlSchemaScalarWhereInput[] | GqlSchemaScalarWhereInput>;
+  OR?: Maybe<GqlSchemaScalarWhereInput[] | GqlSchemaScalarWhereInput>;
+  NOT?: Maybe<GqlSchemaScalarWhereInput[] | GqlSchemaScalarWhereInput>;
+}
+
+export interface GqlSchemaUpdateManyWithWhereNestedInput {
+  where: GqlSchemaScalarWhereInput;
+  data: GqlSchemaUpdateManyDataInput;
+}
+
+export interface GqlSchemaUpdateManyDataInput {
+  name?: Maybe<String>;
+  apiKey?: Maybe<String>;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface UserUpdateManyWithoutSchemasInput {
+  create?: Maybe<
+    UserCreateWithoutSchemasInput[] | UserCreateWithoutSchemasInput
+  >;
+  delete?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  set?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  disconnect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  update?: Maybe<
+    | UserUpdateWithWhereUniqueWithoutSchemasInput[]
+    | UserUpdateWithWhereUniqueWithoutSchemasInput
+  >;
+  upsert?: Maybe<
+    | UserUpsertWithWhereUniqueWithoutSchemasInput[]
+    | UserUpsertWithWhereUniqueWithoutSchemasInput
+  >;
+  deleteMany?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+  updateMany?: Maybe<
+    UserUpdateManyWithWhereNestedInput[] | UserUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface UserUpdateWithWhereUniqueWithoutSchemasInput {
+  where: UserWhereUniqueInput;
+  data: UserUpdateWithoutSchemasDataInput;
+}
+
+export interface UserUpdateWithoutSchemasDataInput {
+  sub?: Maybe<String>;
+  email?: Maybe<String>;
+  username?: Maybe<String>;
+  profile?: Maybe<UserProfileUpdateOneInput>;
+}
+
+export interface UserUpsertWithWhereUniqueWithoutSchemasInput {
+  where: UserWhereUniqueInput;
+  update: UserUpdateWithoutSchemasDataInput;
+  create: UserCreateWithoutSchemasInput;
+}
+
+export interface UserScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  sub?: Maybe<String>;
+  sub_not?: Maybe<String>;
+  sub_in?: Maybe<String[] | String>;
+  sub_not_in?: Maybe<String[] | String>;
+  sub_lt?: Maybe<String>;
+  sub_lte?: Maybe<String>;
+  sub_gt?: Maybe<String>;
+  sub_gte?: Maybe<String>;
+  sub_contains?: Maybe<String>;
+  sub_not_contains?: Maybe<String>;
+  sub_starts_with?: Maybe<String>;
+  sub_not_starts_with?: Maybe<String>;
+  sub_ends_with?: Maybe<String>;
+  sub_not_ends_with?: Maybe<String>;
+  email?: Maybe<String>;
+  email_not?: Maybe<String>;
+  email_in?: Maybe<String[] | String>;
+  email_not_in?: Maybe<String[] | String>;
+  email_lt?: Maybe<String>;
+  email_lte?: Maybe<String>;
+  email_gt?: Maybe<String>;
+  email_gte?: Maybe<String>;
+  email_contains?: Maybe<String>;
+  email_not_contains?: Maybe<String>;
+  email_starts_with?: Maybe<String>;
+  email_not_starts_with?: Maybe<String>;
+  email_ends_with?: Maybe<String>;
+  email_not_ends_with?: Maybe<String>;
+  username?: Maybe<String>;
+  username_not?: Maybe<String>;
+  username_in?: Maybe<String[] | String>;
+  username_not_in?: Maybe<String[] | String>;
+  username_lt?: Maybe<String>;
+  username_lte?: Maybe<String>;
+  username_gt?: Maybe<String>;
+  username_gte?: Maybe<String>;
+  username_contains?: Maybe<String>;
+  username_not_contains?: Maybe<String>;
+  username_starts_with?: Maybe<String>;
+  username_not_starts_with?: Maybe<String>;
+  username_ends_with?: Maybe<String>;
+  username_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+  OR?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+  NOT?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+}
+
+export interface UserUpdateManyWithWhereNestedInput {
+  where: UserScalarWhereInput;
+  data: UserUpdateManyDataInput;
+}
+
+export interface UserUpdateManyDataInput {
+  sub?: Maybe<String>;
+  email?: Maybe<String>;
+  username?: Maybe<String>;
+}
+
+export interface GqlSchemaUpdateManyMutationInput {
+  name?: Maybe<String>;
+  apiKey?: Maybe<String>;
+}
+
+export interface UserUpdateInput {
+  sub?: Maybe<String>;
+  email?: Maybe<String>;
+  username?: Maybe<String>;
+  profile?: Maybe<UserProfileUpdateOneInput>;
+  schemas?: Maybe<GqlSchemaUpdateManyWithoutMembersInput>;
 }
 
 export interface UserUpdateManyMutationInput {
-  name?: Maybe<String>;
+  sub?: Maybe<String>;
   email?: Maybe<String>;
-  password?: Maybe<String>;
+  username?: Maybe<String>;
 }
 
-export interface LinkSubscriptionWhereInput {
+export interface UserProfileUpdateInput {
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  fullName?: Maybe<String>;
+  picture?: Maybe<String>;
+}
+
+export interface UserProfileUpdateManyMutationInput {
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  fullName?: Maybe<String>;
+  picture?: Maybe<String>;
+}
+
+export interface GqlSchemaSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<LinkWhereInput>;
-  AND?: Maybe<LinkSubscriptionWhereInput[] | LinkSubscriptionWhereInput>;
-  OR?: Maybe<LinkSubscriptionWhereInput[] | LinkSubscriptionWhereInput>;
-  NOT?: Maybe<LinkSubscriptionWhereInput[] | LinkSubscriptionWhereInput>;
+  node?: Maybe<GqlSchemaWhereInput>;
+  AND?: Maybe<
+    GqlSchemaSubscriptionWhereInput[] | GqlSchemaSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    GqlSchemaSubscriptionWhereInput[] | GqlSchemaSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    GqlSchemaSubscriptionWhereInput[] | GqlSchemaSubscriptionWhereInput
+  >;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -503,123 +880,218 @@ export interface UserSubscriptionWhereInput {
   NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
 }
 
+export interface UserProfileSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserProfileWhereInput>;
+  AND?: Maybe<
+    UserProfileSubscriptionWhereInput[] | UserProfileSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    UserProfileSubscriptionWhereInput[] | UserProfileSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    UserProfileSubscriptionWhereInput[] | UserProfileSubscriptionWhereInput
+  >;
+}
+
 export interface NodeNode {
   id: ID_Output;
 }
 
-export interface Link {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  description: String;
-  url: String;
-}
-
-export interface LinkPromise extends Promise<Link>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  description: () => Promise<String>;
-  url: () => Promise<String>;
-  postedBy: <T = UserPromise>() => T;
-}
-
-export interface LinkSubscription
-  extends Promise<AsyncIterator<Link>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  description: () => Promise<AsyncIterator<String>>;
-  url: () => Promise<AsyncIterator<String>>;
-  postedBy: <T = UserSubscription>() => T;
-}
-
-export interface LinkNullablePromise
-  extends Promise<Link | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  description: () => Promise<String>;
-  url: () => Promise<String>;
-  postedBy: <T = UserPromise>() => T;
-}
-
-export interface User {
+export interface GqlSchema {
   id: ID_Output;
   name: String;
-  email: String;
-  password: String;
+  apiKey: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
+export interface GqlSchemaPromise extends Promise<GqlSchema>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  links: <T = FragmentableArray<Link>>(args?: {
-    where?: LinkWhereInput;
-    orderBy?: LinkOrderByInput;
+  owner: <T = UserPromise>() => T;
+  members: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
   }) => T;
+  apiKey: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface GqlSchemaSubscription
+  extends Promise<AsyncIterator<GqlSchema>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  owner: <T = UserSubscription>() => T;
+  members: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  apiKey: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface GqlSchemaNullablePromise
+  extends Promise<GqlSchema | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  owner: <T = UserPromise>() => T;
+  members: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  apiKey: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface User {
+  id: ID_Output;
+  sub: String;
+  email: String;
+  username: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  sub: () => Promise<String>;
+  email: () => Promise<String>;
+  username: () => Promise<String>;
+  profile: <T = UserProfilePromise>() => T;
+  schemas: <T = FragmentableArray<GqlSchema>>(args?: {
+    where?: GqlSchemaWhereInput;
+    orderBy?: GqlSchemaOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface UserSubscription
   extends Promise<AsyncIterator<User>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  sub: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  links: <T = Promise<AsyncIterator<LinkSubscription>>>(args?: {
-    where?: LinkWhereInput;
-    orderBy?: LinkOrderByInput;
+  username: () => Promise<AsyncIterator<String>>;
+  profile: <T = UserProfileSubscription>() => T;
+  schemas: <T = Promise<AsyncIterator<GqlSchemaSubscription>>>(args?: {
+    where?: GqlSchemaWhereInput;
+    orderBy?: GqlSchemaOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
   }) => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface UserNullablePromise
   extends Promise<User | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  sub: () => Promise<String>;
   email: () => Promise<String>;
-  password: () => Promise<String>;
-  links: <T = FragmentableArray<Link>>(args?: {
-    where?: LinkWhereInput;
-    orderBy?: LinkOrderByInput;
+  username: () => Promise<String>;
+  profile: <T = UserProfilePromise>() => T;
+  schemas: <T = FragmentableArray<GqlSchema>>(args?: {
+    where?: GqlSchemaWhereInput;
+    orderBy?: GqlSchemaOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
   }) => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface LinkConnection {
+export interface UserProfile {
+  id: ID_Output;
+  firstName?: String;
+  lastName?: String;
+  fullName?: String;
+  picture?: String;
+}
+
+export interface UserProfilePromise extends Promise<UserProfile>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  fullName: () => Promise<String>;
+  picture: () => Promise<String>;
+}
+
+export interface UserProfileSubscription
+  extends Promise<AsyncIterator<UserProfile>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  fullName: () => Promise<AsyncIterator<String>>;
+  picture: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserProfileNullablePromise
+  extends Promise<UserProfile | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  fullName: () => Promise<String>;
+  picture: () => Promise<String>;
+}
+
+export interface GqlSchemaConnection {
   pageInfo: PageInfo;
-  edges: LinkEdge[];
+  edges: GqlSchemaEdge[];
 }
 
-export interface LinkConnectionPromise
-  extends Promise<LinkConnection>,
+export interface GqlSchemaConnectionPromise
+  extends Promise<GqlSchemaConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<LinkEdge>>() => T;
-  aggregate: <T = AggregateLinkPromise>() => T;
+  edges: <T = FragmentableArray<GqlSchemaEdge>>() => T;
+  aggregate: <T = AggregateGqlSchemaPromise>() => T;
 }
 
-export interface LinkConnectionSubscription
-  extends Promise<AsyncIterator<LinkConnection>>,
+export interface GqlSchemaConnectionSubscription
+  extends Promise<AsyncIterator<GqlSchemaConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<LinkEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateLinkSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<GqlSchemaEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateGqlSchemaSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -645,35 +1117,37 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface LinkEdge {
-  node: Link;
+export interface GqlSchemaEdge {
+  node: GqlSchema;
   cursor: String;
 }
 
-export interface LinkEdgePromise extends Promise<LinkEdge>, Fragmentable {
-  node: <T = LinkPromise>() => T;
+export interface GqlSchemaEdgePromise
+  extends Promise<GqlSchemaEdge>,
+    Fragmentable {
+  node: <T = GqlSchemaPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface LinkEdgeSubscription
-  extends Promise<AsyncIterator<LinkEdge>>,
+export interface GqlSchemaEdgeSubscription
+  extends Promise<AsyncIterator<GqlSchemaEdge>>,
     Fragmentable {
-  node: <T = LinkSubscription>() => T;
+  node: <T = GqlSchemaSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateLink {
+export interface AggregateGqlSchema {
   count: Int;
 }
 
-export interface AggregateLinkPromise
-  extends Promise<AggregateLink>,
+export interface AggregateGqlSchemaPromise
+  extends Promise<AggregateGqlSchema>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateLinkSubscription
-  extends Promise<AsyncIterator<AggregateLink>>,
+export interface AggregateGqlSchemaSubscription
+  extends Promise<AsyncIterator<AggregateGqlSchema>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -732,6 +1206,62 @@ export interface AggregateUserSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface UserProfileConnection {
+  pageInfo: PageInfo;
+  edges: UserProfileEdge[];
+}
+
+export interface UserProfileConnectionPromise
+  extends Promise<UserProfileConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserProfileEdge>>() => T;
+  aggregate: <T = AggregateUserProfilePromise>() => T;
+}
+
+export interface UserProfileConnectionSubscription
+  extends Promise<AsyncIterator<UserProfileConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserProfileEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserProfileSubscription>() => T;
+}
+
+export interface UserProfileEdge {
+  node: UserProfile;
+  cursor: String;
+}
+
+export interface UserProfileEdgePromise
+  extends Promise<UserProfileEdge>,
+    Fragmentable {
+  node: <T = UserProfilePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserProfileEdgeSubscription
+  extends Promise<AsyncIterator<UserProfileEdge>>,
+    Fragmentable {
+  node: <T = UserProfileSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateUserProfile {
+  count: Int;
+}
+
+export interface AggregateUserProfilePromise
+  extends Promise<AggregateUserProfile>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserProfileSubscription
+  extends Promise<AsyncIterator<AggregateUserProfile>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface BatchPayload {
   count: Long;
 }
@@ -748,54 +1278,57 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
-export interface LinkSubscriptionPayload {
+export interface GqlSchemaSubscriptionPayload {
   mutation: MutationType;
-  node: Link;
+  node: GqlSchema;
   updatedFields: String[];
-  previousValues: LinkPreviousValues;
+  previousValues: GqlSchemaPreviousValues;
 }
 
-export interface LinkSubscriptionPayloadPromise
-  extends Promise<LinkSubscriptionPayload>,
+export interface GqlSchemaSubscriptionPayloadPromise
+  extends Promise<GqlSchemaSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = LinkPromise>() => T;
+  node: <T = GqlSchemaPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = LinkPreviousValuesPromise>() => T;
+  previousValues: <T = GqlSchemaPreviousValuesPromise>() => T;
 }
 
-export interface LinkSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<LinkSubscriptionPayload>>,
+export interface GqlSchemaSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<GqlSchemaSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = LinkSubscription>() => T;
+  node: <T = GqlSchemaSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = LinkPreviousValuesSubscription>() => T;
+  previousValues: <T = GqlSchemaPreviousValuesSubscription>() => T;
 }
 
-export interface LinkPreviousValues {
+export interface GqlSchemaPreviousValues {
   id: ID_Output;
+  name: String;
+  apiKey: String;
   createdAt: DateTimeOutput;
-  description: String;
-  url: String;
+  updatedAt: DateTimeOutput;
 }
 
-export interface LinkPreviousValuesPromise
-  extends Promise<LinkPreviousValues>,
+export interface GqlSchemaPreviousValuesPromise
+  extends Promise<GqlSchemaPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  apiKey: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
-  description: () => Promise<String>;
-  url: () => Promise<String>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface LinkPreviousValuesSubscription
-  extends Promise<AsyncIterator<LinkPreviousValues>>,
+export interface GqlSchemaPreviousValuesSubscription
+  extends Promise<AsyncIterator<GqlSchemaPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  apiKey: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  description: () => Promise<AsyncIterator<String>>;
-  url: () => Promise<AsyncIterator<String>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -825,27 +1358,86 @@ export interface UserSubscriptionPayloadSubscription
 
 export interface UserPreviousValues {
   id: ID_Output;
-  name: String;
+  sub: String;
   email: String;
-  password: String;
+  username: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
 export interface UserPreviousValuesPromise
   extends Promise<UserPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  sub: () => Promise<String>;
   email: () => Promise<String>;
-  password: () => Promise<String>;
+  username: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface UserPreviousValuesSubscription
   extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  sub: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
+  username: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface UserProfileSubscriptionPayload {
+  mutation: MutationType;
+  node: UserProfile;
+  updatedFields: String[];
+  previousValues: UserProfilePreviousValues;
+}
+
+export interface UserProfileSubscriptionPayloadPromise
+  extends Promise<UserProfileSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserProfilePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserProfilePreviousValuesPromise>() => T;
+}
+
+export interface UserProfileSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserProfileSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserProfileSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserProfilePreviousValuesSubscription>() => T;
+}
+
+export interface UserProfilePreviousValues {
+  id: ID_Output;
+  firstName?: String;
+  lastName?: String;
+  fullName?: String;
+  picture?: String;
+}
+
+export interface UserProfilePreviousValuesPromise
+  extends Promise<UserProfilePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  fullName: () => Promise<String>;
+  picture: () => Promise<String>;
+}
+
+export interface UserProfilePreviousValuesSubscription
+  extends Promise<AsyncIterator<UserProfilePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  fullName: () => Promise<AsyncIterator<String>>;
+  picture: () => Promise<AsyncIterator<String>>;
 }
 
 /*
@@ -853,6 +1445,11 @@ The `ID` scalar type represents a unique identifier, often used to refetch an ob
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
 
 /*
 DateTime scalar input type, allowing Date
@@ -863,11 +1460,6 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
-
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
@@ -887,11 +1479,15 @@ export type Long = string;
 
 export const models: Model[] = [
   {
-    name: "Link",
+    name: "User",
     embedded: false
   },
   {
-    name: "User",
+    name: "UserProfile",
+    embedded: false
+  },
+  {
+    name: "GqlSchema",
     embedded: false
   }
 ];

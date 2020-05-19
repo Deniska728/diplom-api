@@ -3,11 +3,15 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateLink {
+/* GraphQL */ `type AggregateGqlSchema {
   count: Int!
 }
 
 type AggregateUser {
+  count: Int!
+}
+
+type AggregateUserProfile {
   count: Int!
 }
 
@@ -17,403 +21,69 @@ type BatchPayload {
 
 scalar DateTime
 
-type Link {
+type GqlSchema {
   id: ID!
+  name: String!
+  owner: User
+  members(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  apiKey: String!
   createdAt: DateTime!
-  description: String!
-  url: String!
-  postedBy: User
+  updatedAt: DateTime!
 }
 
-type LinkConnection {
+type GqlSchemaConnection {
   pageInfo: PageInfo!
-  edges: [LinkEdge]!
-  aggregate: AggregateLink!
+  edges: [GqlSchemaEdge]!
+  aggregate: AggregateGqlSchema!
 }
 
-input LinkCreateInput {
+input GqlSchemaCreateInput {
   id: ID
-  description: String!
-  url: String!
-  postedBy: UserCreateOneWithoutLinksInput
+  name: String!
+  owner: UserCreateOneInput
+  members: UserCreateManyWithoutSchemasInput
+  apiKey: String!
 }
 
-input LinkCreateManyWithoutPostedByInput {
-  create: [LinkCreateWithoutPostedByInput!]
-  connect: [LinkWhereUniqueInput!]
+input GqlSchemaCreateManyWithoutMembersInput {
+  create: [GqlSchemaCreateWithoutMembersInput!]
+  connect: [GqlSchemaWhereUniqueInput!]
 }
 
-input LinkCreateWithoutPostedByInput {
+input GqlSchemaCreateWithoutMembersInput {
   id: ID
-  description: String!
-  url: String!
+  name: String!
+  owner: UserCreateOneInput
+  apiKey: String!
 }
 
-type LinkEdge {
-  node: Link!
+type GqlSchemaEdge {
+  node: GqlSchema!
   cursor: String!
 }
 
-enum LinkOrderByInput {
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  description_ASC
-  description_DESC
-  url_ASC
-  url_DESC
-}
-
-type LinkPreviousValues {
-  id: ID!
-  createdAt: DateTime!
-  description: String!
-  url: String!
-}
-
-input LinkScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  description: String
-  description_not: String
-  description_in: [String!]
-  description_not_in: [String!]
-  description_lt: String
-  description_lte: String
-  description_gt: String
-  description_gte: String
-  description_contains: String
-  description_not_contains: String
-  description_starts_with: String
-  description_not_starts_with: String
-  description_ends_with: String
-  description_not_ends_with: String
-  url: String
-  url_not: String
-  url_in: [String!]
-  url_not_in: [String!]
-  url_lt: String
-  url_lte: String
-  url_gt: String
-  url_gte: String
-  url_contains: String
-  url_not_contains: String
-  url_starts_with: String
-  url_not_starts_with: String
-  url_ends_with: String
-  url_not_ends_with: String
-  AND: [LinkScalarWhereInput!]
-  OR: [LinkScalarWhereInput!]
-  NOT: [LinkScalarWhereInput!]
-}
-
-type LinkSubscriptionPayload {
-  mutation: MutationType!
-  node: Link
-  updatedFields: [String!]
-  previousValues: LinkPreviousValues
-}
-
-input LinkSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: LinkWhereInput
-  AND: [LinkSubscriptionWhereInput!]
-  OR: [LinkSubscriptionWhereInput!]
-  NOT: [LinkSubscriptionWhereInput!]
-}
-
-input LinkUpdateInput {
-  description: String
-  url: String
-  postedBy: UserUpdateOneWithoutLinksInput
-}
-
-input LinkUpdateManyDataInput {
-  description: String
-  url: String
-}
-
-input LinkUpdateManyMutationInput {
-  description: String
-  url: String
-}
-
-input LinkUpdateManyWithoutPostedByInput {
-  create: [LinkCreateWithoutPostedByInput!]
-  delete: [LinkWhereUniqueInput!]
-  connect: [LinkWhereUniqueInput!]
-  set: [LinkWhereUniqueInput!]
-  disconnect: [LinkWhereUniqueInput!]
-  update: [LinkUpdateWithWhereUniqueWithoutPostedByInput!]
-  upsert: [LinkUpsertWithWhereUniqueWithoutPostedByInput!]
-  deleteMany: [LinkScalarWhereInput!]
-  updateMany: [LinkUpdateManyWithWhereNestedInput!]
-}
-
-input LinkUpdateManyWithWhereNestedInput {
-  where: LinkScalarWhereInput!
-  data: LinkUpdateManyDataInput!
-}
-
-input LinkUpdateWithoutPostedByDataInput {
-  description: String
-  url: String
-}
-
-input LinkUpdateWithWhereUniqueWithoutPostedByInput {
-  where: LinkWhereUniqueInput!
-  data: LinkUpdateWithoutPostedByDataInput!
-}
-
-input LinkUpsertWithWhereUniqueWithoutPostedByInput {
-  where: LinkWhereUniqueInput!
-  update: LinkUpdateWithoutPostedByDataInput!
-  create: LinkCreateWithoutPostedByInput!
-}
-
-input LinkWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  description: String
-  description_not: String
-  description_in: [String!]
-  description_not_in: [String!]
-  description_lt: String
-  description_lte: String
-  description_gt: String
-  description_gte: String
-  description_contains: String
-  description_not_contains: String
-  description_starts_with: String
-  description_not_starts_with: String
-  description_ends_with: String
-  description_not_ends_with: String
-  url: String
-  url_not: String
-  url_in: [String!]
-  url_not_in: [String!]
-  url_lt: String
-  url_lte: String
-  url_gt: String
-  url_gte: String
-  url_contains: String
-  url_not_contains: String
-  url_starts_with: String
-  url_not_starts_with: String
-  url_ends_with: String
-  url_not_ends_with: String
-  postedBy: UserWhereInput
-  AND: [LinkWhereInput!]
-  OR: [LinkWhereInput!]
-  NOT: [LinkWhereInput!]
-}
-
-input LinkWhereUniqueInput {
-  id: ID
-}
-
-scalar Long
-
-type Mutation {
-  createLink(data: LinkCreateInput!): Link!
-  updateLink(data: LinkUpdateInput!, where: LinkWhereUniqueInput!): Link
-  updateManyLinks(data: LinkUpdateManyMutationInput!, where: LinkWhereInput): BatchPayload!
-  upsertLink(where: LinkWhereUniqueInput!, create: LinkCreateInput!, update: LinkUpdateInput!): Link!
-  deleteLink(where: LinkWhereUniqueInput!): Link
-  deleteManyLinks(where: LinkWhereInput): BatchPayload!
-  createUser(data: UserCreateInput!): User!
-  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  deleteUser(where: UserWhereUniqueInput!): User
-  deleteManyUsers(where: UserWhereInput): BatchPayload!
-}
-
-enum MutationType {
-  CREATED
-  UPDATED
-  DELETED
-}
-
-interface Node {
-  id: ID!
-}
-
-type PageInfo {
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  startCursor: String
-  endCursor: String
-}
-
-type Query {
-  link(where: LinkWhereUniqueInput!): Link
-  links(where: LinkWhereInput, orderBy: LinkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Link]!
-  linksConnection(where: LinkWhereInput, orderBy: LinkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LinkConnection!
-  user(where: UserWhereUniqueInput!): User
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  node(id: ID!): Node
-}
-
-type Subscription {
-  link(where: LinkSubscriptionWhereInput): LinkSubscriptionPayload
-  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-}
-
-type User {
-  id: ID!
-  name: String!
-  email: String!
-  password: String!
-  links(where: LinkWhereInput, orderBy: LinkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Link!]
-}
-
-type UserConnection {
-  pageInfo: PageInfo!
-  edges: [UserEdge]!
-  aggregate: AggregateUser!
-}
-
-input UserCreateInput {
-  id: ID
-  name: String!
-  email: String!
-  password: String!
-  links: LinkCreateManyWithoutPostedByInput
-}
-
-input UserCreateOneWithoutLinksInput {
-  create: UserCreateWithoutLinksInput
-  connect: UserWhereUniqueInput
-}
-
-input UserCreateWithoutLinksInput {
-  id: ID
-  name: String!
-  email: String!
-  password: String!
-}
-
-type UserEdge {
-  node: User!
-  cursor: String!
-}
-
-enum UserOrderByInput {
+enum GqlSchemaOrderByInput {
   id_ASC
   id_DESC
   name_ASC
   name_DESC
-  email_ASC
-  email_DESC
-  password_ASC
-  password_DESC
+  apiKey_ASC
+  apiKey_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
-type UserPreviousValues {
+type GqlSchemaPreviousValues {
   id: ID!
   name: String!
-  email: String!
-  password: String!
+  apiKey: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
-type UserSubscriptionPayload {
-  mutation: MutationType!
-  node: User
-  updatedFields: [String!]
-  previousValues: UserPreviousValues
-}
-
-input UserSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: UserWhereInput
-  AND: [UserSubscriptionWhereInput!]
-  OR: [UserSubscriptionWhereInput!]
-  NOT: [UserSubscriptionWhereInput!]
-}
-
-input UserUpdateInput {
-  name: String
-  email: String
-  password: String
-  links: LinkUpdateManyWithoutPostedByInput
-}
-
-input UserUpdateManyMutationInput {
-  name: String
-  email: String
-  password: String
-}
-
-input UserUpdateOneWithoutLinksInput {
-  create: UserCreateWithoutLinksInput
-  update: UserUpdateWithoutLinksDataInput
-  upsert: UserUpsertWithoutLinksInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: UserWhereUniqueInput
-}
-
-input UserUpdateWithoutLinksDataInput {
-  name: String
-  email: String
-  password: String
-}
-
-input UserUpsertWithoutLinksInput {
-  update: UserUpdateWithoutLinksDataInput!
-  create: UserCreateWithoutLinksInput!
-}
-
-input UserWhereInput {
+input GqlSchemaScalarWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -442,6 +112,529 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  apiKey: String
+  apiKey_not: String
+  apiKey_in: [String!]
+  apiKey_not_in: [String!]
+  apiKey_lt: String
+  apiKey_lte: String
+  apiKey_gt: String
+  apiKey_gte: String
+  apiKey_contains: String
+  apiKey_not_contains: String
+  apiKey_starts_with: String
+  apiKey_not_starts_with: String
+  apiKey_ends_with: String
+  apiKey_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [GqlSchemaScalarWhereInput!]
+  OR: [GqlSchemaScalarWhereInput!]
+  NOT: [GqlSchemaScalarWhereInput!]
+}
+
+type GqlSchemaSubscriptionPayload {
+  mutation: MutationType!
+  node: GqlSchema
+  updatedFields: [String!]
+  previousValues: GqlSchemaPreviousValues
+}
+
+input GqlSchemaSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: GqlSchemaWhereInput
+  AND: [GqlSchemaSubscriptionWhereInput!]
+  OR: [GqlSchemaSubscriptionWhereInput!]
+  NOT: [GqlSchemaSubscriptionWhereInput!]
+}
+
+input GqlSchemaUpdateInput {
+  name: String
+  owner: UserUpdateOneInput
+  members: UserUpdateManyWithoutSchemasInput
+  apiKey: String
+}
+
+input GqlSchemaUpdateManyDataInput {
+  name: String
+  apiKey: String
+}
+
+input GqlSchemaUpdateManyMutationInput {
+  name: String
+  apiKey: String
+}
+
+input GqlSchemaUpdateManyWithoutMembersInput {
+  create: [GqlSchemaCreateWithoutMembersInput!]
+  delete: [GqlSchemaWhereUniqueInput!]
+  connect: [GqlSchemaWhereUniqueInput!]
+  set: [GqlSchemaWhereUniqueInput!]
+  disconnect: [GqlSchemaWhereUniqueInput!]
+  update: [GqlSchemaUpdateWithWhereUniqueWithoutMembersInput!]
+  upsert: [GqlSchemaUpsertWithWhereUniqueWithoutMembersInput!]
+  deleteMany: [GqlSchemaScalarWhereInput!]
+  updateMany: [GqlSchemaUpdateManyWithWhereNestedInput!]
+}
+
+input GqlSchemaUpdateManyWithWhereNestedInput {
+  where: GqlSchemaScalarWhereInput!
+  data: GqlSchemaUpdateManyDataInput!
+}
+
+input GqlSchemaUpdateWithoutMembersDataInput {
+  name: String
+  owner: UserUpdateOneInput
+  apiKey: String
+}
+
+input GqlSchemaUpdateWithWhereUniqueWithoutMembersInput {
+  where: GqlSchemaWhereUniqueInput!
+  data: GqlSchemaUpdateWithoutMembersDataInput!
+}
+
+input GqlSchemaUpsertWithWhereUniqueWithoutMembersInput {
+  where: GqlSchemaWhereUniqueInput!
+  update: GqlSchemaUpdateWithoutMembersDataInput!
+  create: GqlSchemaCreateWithoutMembersInput!
+}
+
+input GqlSchemaWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  owner: UserWhereInput
+  members_every: UserWhereInput
+  members_some: UserWhereInput
+  members_none: UserWhereInput
+  apiKey: String
+  apiKey_not: String
+  apiKey_in: [String!]
+  apiKey_not_in: [String!]
+  apiKey_lt: String
+  apiKey_lte: String
+  apiKey_gt: String
+  apiKey_gte: String
+  apiKey_contains: String
+  apiKey_not_contains: String
+  apiKey_starts_with: String
+  apiKey_not_starts_with: String
+  apiKey_ends_with: String
+  apiKey_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [GqlSchemaWhereInput!]
+  OR: [GqlSchemaWhereInput!]
+  NOT: [GqlSchemaWhereInput!]
+}
+
+input GqlSchemaWhereUniqueInput {
+  id: ID
+}
+
+scalar Long
+
+type Mutation {
+  createGqlSchema(data: GqlSchemaCreateInput!): GqlSchema!
+  updateGqlSchema(data: GqlSchemaUpdateInput!, where: GqlSchemaWhereUniqueInput!): GqlSchema
+  updateManyGqlSchemas(data: GqlSchemaUpdateManyMutationInput!, where: GqlSchemaWhereInput): BatchPayload!
+  upsertGqlSchema(where: GqlSchemaWhereUniqueInput!, create: GqlSchemaCreateInput!, update: GqlSchemaUpdateInput!): GqlSchema!
+  deleteGqlSchema(where: GqlSchemaWhereUniqueInput!): GqlSchema
+  deleteManyGqlSchemas(where: GqlSchemaWhereInput): BatchPayload!
+  createUser(data: UserCreateInput!): User!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  deleteUser(where: UserWhereUniqueInput!): User
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
+  createUserProfile(data: UserProfileCreateInput!): UserProfile!
+  updateUserProfile(data: UserProfileUpdateInput!, where: UserProfileWhereUniqueInput!): UserProfile
+  updateManyUserProfiles(data: UserProfileUpdateManyMutationInput!, where: UserProfileWhereInput): BatchPayload!
+  upsertUserProfile(where: UserProfileWhereUniqueInput!, create: UserProfileCreateInput!, update: UserProfileUpdateInput!): UserProfile!
+  deleteUserProfile(where: UserProfileWhereUniqueInput!): UserProfile
+  deleteManyUserProfiles(where: UserProfileWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Query {
+  gqlSchema(where: GqlSchemaWhereUniqueInput!): GqlSchema
+  gqlSchemas(where: GqlSchemaWhereInput, orderBy: GqlSchemaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlSchema]!
+  gqlSchemasConnection(where: GqlSchemaWhereInput, orderBy: GqlSchemaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GqlSchemaConnection!
+  user(where: UserWhereUniqueInput!): User
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  userProfile(where: UserProfileWhereUniqueInput!): UserProfile
+  userProfiles(where: UserProfileWhereInput, orderBy: UserProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserProfile]!
+  userProfilesConnection(where: UserProfileWhereInput, orderBy: UserProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserProfileConnection!
+  node(id: ID!): Node
+}
+
+type Subscription {
+  gqlSchema(where: GqlSchemaSubscriptionWhereInput): GqlSchemaSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  userProfile(where: UserProfileSubscriptionWhereInput): UserProfileSubscriptionPayload
+}
+
+type User {
+  id: ID!
+  sub: String!
+  email: String!
+  username: String!
+  profile: UserProfile
+  schemas(where: GqlSchemaWhereInput, orderBy: GqlSchemaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlSchema!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserConnection {
+  pageInfo: PageInfo!
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  id: ID
+  sub: String!
+  email: String!
+  username: String!
+  profile: UserProfileCreateOneInput
+  schemas: GqlSchemaCreateManyWithoutMembersInput
+}
+
+input UserCreateManyWithoutSchemasInput {
+  create: [UserCreateWithoutSchemasInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutSchemasInput {
+  id: ID
+  sub: String!
+  email: String!
+  username: String!
+  profile: UserProfileCreateOneInput
+}
+
+type UserEdge {
+  node: User!
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  sub_ASC
+  sub_DESC
+  email_ASC
+  email_DESC
+  username_ASC
+  username_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  sub: String!
+  email: String!
+  username: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserProfile {
+  id: ID!
+  firstName: String
+  lastName: String
+  fullName: String
+  picture: String
+}
+
+type UserProfileConnection {
+  pageInfo: PageInfo!
+  edges: [UserProfileEdge]!
+  aggregate: AggregateUserProfile!
+}
+
+input UserProfileCreateInput {
+  id: ID
+  firstName: String
+  lastName: String
+  fullName: String
+  picture: String
+}
+
+input UserProfileCreateOneInput {
+  create: UserProfileCreateInput
+  connect: UserProfileWhereUniqueInput
+}
+
+type UserProfileEdge {
+  node: UserProfile!
+  cursor: String!
+}
+
+enum UserProfileOrderByInput {
+  id_ASC
+  id_DESC
+  firstName_ASC
+  firstName_DESC
+  lastName_ASC
+  lastName_DESC
+  fullName_ASC
+  fullName_DESC
+  picture_ASC
+  picture_DESC
+}
+
+type UserProfilePreviousValues {
+  id: ID!
+  firstName: String
+  lastName: String
+  fullName: String
+  picture: String
+}
+
+type UserProfileSubscriptionPayload {
+  mutation: MutationType!
+  node: UserProfile
+  updatedFields: [String!]
+  previousValues: UserProfilePreviousValues
+}
+
+input UserProfileSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UserProfileWhereInput
+  AND: [UserProfileSubscriptionWhereInput!]
+  OR: [UserProfileSubscriptionWhereInput!]
+  NOT: [UserProfileSubscriptionWhereInput!]
+}
+
+input UserProfileUpdateDataInput {
+  firstName: String
+  lastName: String
+  fullName: String
+  picture: String
+}
+
+input UserProfileUpdateInput {
+  firstName: String
+  lastName: String
+  fullName: String
+  picture: String
+}
+
+input UserProfileUpdateManyMutationInput {
+  firstName: String
+  lastName: String
+  fullName: String
+  picture: String
+}
+
+input UserProfileUpdateOneInput {
+  create: UserProfileCreateInput
+  update: UserProfileUpdateDataInput
+  upsert: UserProfileUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserProfileWhereUniqueInput
+}
+
+input UserProfileUpsertNestedInput {
+  update: UserProfileUpdateDataInput!
+  create: UserProfileCreateInput!
+}
+
+input UserProfileWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  firstName: String
+  firstName_not: String
+  firstName_in: [String!]
+  firstName_not_in: [String!]
+  firstName_lt: String
+  firstName_lte: String
+  firstName_gt: String
+  firstName_gte: String
+  firstName_contains: String
+  firstName_not_contains: String
+  firstName_starts_with: String
+  firstName_not_starts_with: String
+  firstName_ends_with: String
+  firstName_not_ends_with: String
+  lastName: String
+  lastName_not: String
+  lastName_in: [String!]
+  lastName_not_in: [String!]
+  lastName_lt: String
+  lastName_lte: String
+  lastName_gt: String
+  lastName_gte: String
+  lastName_contains: String
+  lastName_not_contains: String
+  lastName_starts_with: String
+  lastName_not_starts_with: String
+  lastName_ends_with: String
+  lastName_not_ends_with: String
+  fullName: String
+  fullName_not: String
+  fullName_in: [String!]
+  fullName_not_in: [String!]
+  fullName_lt: String
+  fullName_lte: String
+  fullName_gt: String
+  fullName_gte: String
+  fullName_contains: String
+  fullName_not_contains: String
+  fullName_starts_with: String
+  fullName_not_starts_with: String
+  fullName_ends_with: String
+  fullName_not_ends_with: String
+  picture: String
+  picture_not: String
+  picture_in: [String!]
+  picture_not_in: [String!]
+  picture_lt: String
+  picture_lte: String
+  picture_gt: String
+  picture_gte: String
+  picture_contains: String
+  picture_not_contains: String
+  picture_starts_with: String
+  picture_not_starts_with: String
+  picture_ends_with: String
+  picture_not_ends_with: String
+  AND: [UserProfileWhereInput!]
+  OR: [UserProfileWhereInput!]
+  NOT: [UserProfileWhereInput!]
+}
+
+input UserProfileWhereUniqueInput {
+  id: ID
+}
+
+input UserScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  sub: String
+  sub_not: String
+  sub_in: [String!]
+  sub_not_in: [String!]
+  sub_lt: String
+  sub_lte: String
+  sub_gt: String
+  sub_gte: String
+  sub_contains: String
+  sub_not_contains: String
+  sub_starts_with: String
+  sub_not_starts_with: String
+  sub_ends_with: String
+  sub_not_ends_with: String
   email: String
   email_not: String
   email_in: [String!]
@@ -456,23 +649,213 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
-  password: String
-  password_not: String
-  password_in: [String!]
-  password_not_in: [String!]
-  password_lt: String
-  password_lte: String
-  password_gt: String
-  password_gte: String
-  password_contains: String
-  password_not_contains: String
-  password_starts_with: String
-  password_not_starts_with: String
-  password_ends_with: String
-  password_not_ends_with: String
-  links_every: LinkWhereInput
-  links_some: LinkWhereInput
-  links_none: LinkWhereInput
+  username: String
+  username_not: String
+  username_in: [String!]
+  username_not_in: [String!]
+  username_lt: String
+  username_lte: String
+  username_gt: String
+  username_gte: String
+  username_contains: String
+  username_not_contains: String
+  username_starts_with: String
+  username_not_starts_with: String
+  username_ends_with: String
+  username_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [UserScalarWhereInput!]
+  OR: [UserScalarWhereInput!]
+  NOT: [UserScalarWhereInput!]
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+  AND: [UserSubscriptionWhereInput!]
+  OR: [UserSubscriptionWhereInput!]
+  NOT: [UserSubscriptionWhereInput!]
+}
+
+input UserUpdateDataInput {
+  sub: String
+  email: String
+  username: String
+  profile: UserProfileUpdateOneInput
+  schemas: GqlSchemaUpdateManyWithoutMembersInput
+}
+
+input UserUpdateInput {
+  sub: String
+  email: String
+  username: String
+  profile: UserProfileUpdateOneInput
+  schemas: GqlSchemaUpdateManyWithoutMembersInput
+}
+
+input UserUpdateManyDataInput {
+  sub: String
+  email: String
+  username: String
+}
+
+input UserUpdateManyMutationInput {
+  sub: String
+  email: String
+  username: String
+}
+
+input UserUpdateManyWithoutSchemasInput {
+  create: [UserCreateWithoutSchemasInput!]
+  delete: [UserWhereUniqueInput!]
+  connect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutSchemasInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutSchemasInput!]
+  deleteMany: [UserScalarWhereInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
+}
+
+input UserUpdateManyWithWhereNestedInput {
+  where: UserScalarWhereInput!
+  data: UserUpdateManyDataInput!
+}
+
+input UserUpdateOneInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutSchemasDataInput {
+  sub: String
+  email: String
+  username: String
+  profile: UserProfileUpdateOneInput
+}
+
+input UserUpdateWithWhereUniqueWithoutSchemasInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutSchemasDataInput!
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutSchemasInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutSchemasDataInput!
+  create: UserCreateWithoutSchemasInput!
+}
+
+input UserWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  sub: String
+  sub_not: String
+  sub_in: [String!]
+  sub_not_in: [String!]
+  sub_lt: String
+  sub_lte: String
+  sub_gt: String
+  sub_gte: String
+  sub_contains: String
+  sub_not_contains: String
+  sub_starts_with: String
+  sub_not_starts_with: String
+  sub_ends_with: String
+  sub_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  username: String
+  username_not: String
+  username_in: [String!]
+  username_not_in: [String!]
+  username_lt: String
+  username_lte: String
+  username_gt: String
+  username_gte: String
+  username_contains: String
+  username_not_contains: String
+  username_starts_with: String
+  username_not_starts_with: String
+  username_ends_with: String
+  username_not_ends_with: String
+  profile: UserProfileWhereInput
+  schemas_every: GqlSchemaWhereInput
+  schemas_some: GqlSchemaWhereInput
+  schemas_none: GqlSchemaWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -480,7 +863,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
-  email: String
+  sub: String
 }
 `
       }

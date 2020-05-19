@@ -1,1 +1,3 @@
-export default (root, args, context) => context.user;
+export default (root, args, context) => {
+  return context.user;
+}

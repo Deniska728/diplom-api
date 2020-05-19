@@ -7,22 +7,18 @@ import './startup';
 
 import typeDefs from './schema.graphql';
 
-import { getUser } from './utils';
+import getUser from './api/users/functions/get-user';
 
 import { prisma } from './generated/prisma-client';
 
 import users from './api/users/resolvers';
-import auth from './api/auth/resolvers';
-import posts from './api/posts/resolvers';
 
 const resolvers = _.merge({
   JSON: GraphQLJSON,
   Query: {
-    test: () => 'Welcome to GraphQq',
+    info: () => 'Welcome to GraphQq',
   },
-}, users, auth, posts);
-
-console.log(resolvers, typeDefs)
+}, users);
 
 const port = 3000;
 

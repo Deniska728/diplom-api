@@ -1,33 +1,29 @@
 scalar JSON
 
-type Query {
-  test: String!
-  me: User
-  info: String!
-  posts: [Link!]!
-}
-
-type Mutation {
-  createPost(url: String!, description: String!): Link!
-  signup(email: String!, password: String!, name: String!): AuthPayload
-  login(email: String!, password: String!): AuthPayload
-}
-
-type Link {
-  id: ID!
-  description: String!
-  url: String!
-  postedBy: User
-}
-
-type AuthPayload {
-  token: String
-  user: User
-}
-
 type User {
   id: ID!
-  name: String!
+  sub: String!
   email: String!
-  links: [Link!]!
+  username: String!
+  profile: UserProfile
+}
+
+type UserProfile {
+  firstName: String
+  lastName: String
+  fullName: String
+  picture: String
+}
+
+type Schema {
+  id: ID!
+  name: String!
+  apiKey: String
+  owner: User
+  members: [User]!
+}
+
+type Query {
+  me: User
+  info: String!
 }

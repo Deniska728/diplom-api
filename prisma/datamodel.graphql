@@ -1,0 +1,28 @@
+type User {
+  id: ID! @id
+  sub: String! @unique
+  email: String!
+  username: String!
+  profile: UserProfile @relation(name: "UserProfile" onDelete: CASCADE)
+  schemas: [GqlSchema] @relation(name: "SchemasByUser" onDelete: CASCADE)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type UserProfile {
+  id: ID! @id
+  firstName: String
+  lastName: String
+  fullName: String
+  picture: String
+}
+
+type GqlSchema {
+  id: ID! @id
+  name: String!
+  owner: User @relation(name: "SchemasOwnedByUser")
+  members: [User]! @relation(name: "SchemasByUser") @unique
+  apiKey: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
