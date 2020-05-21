@@ -7,6 +7,10 @@ module.exports = {
   count: Int!
 }
 
+type AggregateGqlSchemaVersion {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -26,6 +30,8 @@ type GqlSchema {
   name: String!
   owner: User
   members(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  latestVersion: GqlSchemaVersion
+  versions(where: GqlSchemaVersionWhereInput, orderBy: GqlSchemaVersionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlSchemaVersion!]
   apiKey: String!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -42,6 +48,8 @@ input GqlSchemaCreateInput {
   name: String!
   owner: UserCreateOneInput
   members: UserCreateManyWithoutSchemasInput
+  latestVersion: GqlSchemaVersionCreateOneInput
+  versions: GqlSchemaVersionCreateManyWithoutSchemaInput
   apiKey: String!
 }
 
@@ -50,10 +58,26 @@ input GqlSchemaCreateManyWithoutMembersInput {
   connect: [GqlSchemaWhereUniqueInput!]
 }
 
+input GqlSchemaCreateOneWithoutVersionsInput {
+  create: GqlSchemaCreateWithoutVersionsInput
+  connect: GqlSchemaWhereUniqueInput
+}
+
 input GqlSchemaCreateWithoutMembersInput {
   id: ID
   name: String!
   owner: UserCreateOneInput
+  latestVersion: GqlSchemaVersionCreateOneInput
+  versions: GqlSchemaVersionCreateManyWithoutSchemaInput
+  apiKey: String!
+}
+
+input GqlSchemaCreateWithoutVersionsInput {
+  id: ID
+  name: String!
+  owner: UserCreateOneInput
+  members: UserCreateManyWithoutSchemasInput
+  latestVersion: GqlSchemaVersionCreateOneInput
   apiKey: String!
 }
 
@@ -169,6 +193,8 @@ input GqlSchemaUpdateInput {
   name: String
   owner: UserUpdateOneInput
   members: UserUpdateManyWithoutSchemasInput
+  latestVersion: GqlSchemaVersionUpdateOneInput
+  versions: GqlSchemaVersionUpdateManyWithoutSchemaInput
   apiKey: String
 }
 
@@ -199,9 +225,28 @@ input GqlSchemaUpdateManyWithWhereNestedInput {
   data: GqlSchemaUpdateManyDataInput!
 }
 
+input GqlSchemaUpdateOneWithoutVersionsInput {
+  create: GqlSchemaCreateWithoutVersionsInput
+  update: GqlSchemaUpdateWithoutVersionsDataInput
+  upsert: GqlSchemaUpsertWithoutVersionsInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: GqlSchemaWhereUniqueInput
+}
+
 input GqlSchemaUpdateWithoutMembersDataInput {
   name: String
   owner: UserUpdateOneInput
+  latestVersion: GqlSchemaVersionUpdateOneInput
+  versions: GqlSchemaVersionUpdateManyWithoutSchemaInput
+  apiKey: String
+}
+
+input GqlSchemaUpdateWithoutVersionsDataInput {
+  name: String
+  owner: UserUpdateOneInput
+  members: UserUpdateManyWithoutSchemasInput
+  latestVersion: GqlSchemaVersionUpdateOneInput
   apiKey: String
 }
 
@@ -210,10 +255,305 @@ input GqlSchemaUpdateWithWhereUniqueWithoutMembersInput {
   data: GqlSchemaUpdateWithoutMembersDataInput!
 }
 
+input GqlSchemaUpsertWithoutVersionsInput {
+  update: GqlSchemaUpdateWithoutVersionsDataInput!
+  create: GqlSchemaCreateWithoutVersionsInput!
+}
+
 input GqlSchemaUpsertWithWhereUniqueWithoutMembersInput {
   where: GqlSchemaWhereUniqueInput!
   update: GqlSchemaUpdateWithoutMembersDataInput!
   create: GqlSchemaCreateWithoutMembersInput!
+}
+
+type GqlSchemaVersion {
+  id: ID!
+  number: Int!
+  schema: GqlSchema
+  introspectionQuery: Json
+  endpointUrl: String
+  createdBy: User
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type GqlSchemaVersionConnection {
+  pageInfo: PageInfo!
+  edges: [GqlSchemaVersionEdge]!
+  aggregate: AggregateGqlSchemaVersion!
+}
+
+input GqlSchemaVersionCreateInput {
+  id: ID
+  number: Int!
+  schema: GqlSchemaCreateOneWithoutVersionsInput
+  introspectionQuery: Json
+  endpointUrl: String
+  createdBy: UserCreateOneInput
+}
+
+input GqlSchemaVersionCreateManyWithoutSchemaInput {
+  create: [GqlSchemaVersionCreateWithoutSchemaInput!]
+  connect: [GqlSchemaVersionWhereUniqueInput!]
+}
+
+input GqlSchemaVersionCreateOneInput {
+  create: GqlSchemaVersionCreateInput
+  connect: GqlSchemaVersionWhereUniqueInput
+}
+
+input GqlSchemaVersionCreateWithoutSchemaInput {
+  id: ID
+  number: Int!
+  introspectionQuery: Json
+  endpointUrl: String
+  createdBy: UserCreateOneInput
+}
+
+type GqlSchemaVersionEdge {
+  node: GqlSchemaVersion!
+  cursor: String!
+}
+
+enum GqlSchemaVersionOrderByInput {
+  id_ASC
+  id_DESC
+  number_ASC
+  number_DESC
+  introspectionQuery_ASC
+  introspectionQuery_DESC
+  endpointUrl_ASC
+  endpointUrl_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type GqlSchemaVersionPreviousValues {
+  id: ID!
+  number: Int!
+  introspectionQuery: Json
+  endpointUrl: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input GqlSchemaVersionScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  number: Int
+  number_not: Int
+  number_in: [Int!]
+  number_not_in: [Int!]
+  number_lt: Int
+  number_lte: Int
+  number_gt: Int
+  number_gte: Int
+  endpointUrl: String
+  endpointUrl_not: String
+  endpointUrl_in: [String!]
+  endpointUrl_not_in: [String!]
+  endpointUrl_lt: String
+  endpointUrl_lte: String
+  endpointUrl_gt: String
+  endpointUrl_gte: String
+  endpointUrl_contains: String
+  endpointUrl_not_contains: String
+  endpointUrl_starts_with: String
+  endpointUrl_not_starts_with: String
+  endpointUrl_ends_with: String
+  endpointUrl_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [GqlSchemaVersionScalarWhereInput!]
+  OR: [GqlSchemaVersionScalarWhereInput!]
+  NOT: [GqlSchemaVersionScalarWhereInput!]
+}
+
+type GqlSchemaVersionSubscriptionPayload {
+  mutation: MutationType!
+  node: GqlSchemaVersion
+  updatedFields: [String!]
+  previousValues: GqlSchemaVersionPreviousValues
+}
+
+input GqlSchemaVersionSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: GqlSchemaVersionWhereInput
+  AND: [GqlSchemaVersionSubscriptionWhereInput!]
+  OR: [GqlSchemaVersionSubscriptionWhereInput!]
+  NOT: [GqlSchemaVersionSubscriptionWhereInput!]
+}
+
+input GqlSchemaVersionUpdateDataInput {
+  number: Int
+  schema: GqlSchemaUpdateOneWithoutVersionsInput
+  introspectionQuery: Json
+  endpointUrl: String
+  createdBy: UserUpdateOneInput
+}
+
+input GqlSchemaVersionUpdateInput {
+  number: Int
+  schema: GqlSchemaUpdateOneWithoutVersionsInput
+  introspectionQuery: Json
+  endpointUrl: String
+  createdBy: UserUpdateOneInput
+}
+
+input GqlSchemaVersionUpdateManyDataInput {
+  number: Int
+  introspectionQuery: Json
+  endpointUrl: String
+}
+
+input GqlSchemaVersionUpdateManyMutationInput {
+  number: Int
+  introspectionQuery: Json
+  endpointUrl: String
+}
+
+input GqlSchemaVersionUpdateManyWithoutSchemaInput {
+  create: [GqlSchemaVersionCreateWithoutSchemaInput!]
+  delete: [GqlSchemaVersionWhereUniqueInput!]
+  connect: [GqlSchemaVersionWhereUniqueInput!]
+  set: [GqlSchemaVersionWhereUniqueInput!]
+  disconnect: [GqlSchemaVersionWhereUniqueInput!]
+  update: [GqlSchemaVersionUpdateWithWhereUniqueWithoutSchemaInput!]
+  upsert: [GqlSchemaVersionUpsertWithWhereUniqueWithoutSchemaInput!]
+  deleteMany: [GqlSchemaVersionScalarWhereInput!]
+  updateMany: [GqlSchemaVersionUpdateManyWithWhereNestedInput!]
+}
+
+input GqlSchemaVersionUpdateManyWithWhereNestedInput {
+  where: GqlSchemaVersionScalarWhereInput!
+  data: GqlSchemaVersionUpdateManyDataInput!
+}
+
+input GqlSchemaVersionUpdateOneInput {
+  create: GqlSchemaVersionCreateInput
+  update: GqlSchemaVersionUpdateDataInput
+  upsert: GqlSchemaVersionUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: GqlSchemaVersionWhereUniqueInput
+}
+
+input GqlSchemaVersionUpdateWithoutSchemaDataInput {
+  number: Int
+  introspectionQuery: Json
+  endpointUrl: String
+  createdBy: UserUpdateOneInput
+}
+
+input GqlSchemaVersionUpdateWithWhereUniqueWithoutSchemaInput {
+  where: GqlSchemaVersionWhereUniqueInput!
+  data: GqlSchemaVersionUpdateWithoutSchemaDataInput!
+}
+
+input GqlSchemaVersionUpsertNestedInput {
+  update: GqlSchemaVersionUpdateDataInput!
+  create: GqlSchemaVersionCreateInput!
+}
+
+input GqlSchemaVersionUpsertWithWhereUniqueWithoutSchemaInput {
+  where: GqlSchemaVersionWhereUniqueInput!
+  update: GqlSchemaVersionUpdateWithoutSchemaDataInput!
+  create: GqlSchemaVersionCreateWithoutSchemaInput!
+}
+
+input GqlSchemaVersionWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  number: Int
+  number_not: Int
+  number_in: [Int!]
+  number_not_in: [Int!]
+  number_lt: Int
+  number_lte: Int
+  number_gt: Int
+  number_gte: Int
+  schema: GqlSchemaWhereInput
+  endpointUrl: String
+  endpointUrl_not: String
+  endpointUrl_in: [String!]
+  endpointUrl_not_in: [String!]
+  endpointUrl_lt: String
+  endpointUrl_lte: String
+  endpointUrl_gt: String
+  endpointUrl_gte: String
+  endpointUrl_contains: String
+  endpointUrl_not_contains: String
+  endpointUrl_starts_with: String
+  endpointUrl_not_starts_with: String
+  endpointUrl_ends_with: String
+  endpointUrl_not_ends_with: String
+  createdBy: UserWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [GqlSchemaVersionWhereInput!]
+  OR: [GqlSchemaVersionWhereInput!]
+  NOT: [GqlSchemaVersionWhereInput!]
+}
+
+input GqlSchemaVersionWhereUniqueInput {
+  id: ID
 }
 
 input GqlSchemaWhereInput {
@@ -249,6 +589,10 @@ input GqlSchemaWhereInput {
   members_every: UserWhereInput
   members_some: UserWhereInput
   members_none: UserWhereInput
+  latestVersion: GqlSchemaVersionWhereInput
+  versions_every: GqlSchemaVersionWhereInput
+  versions_some: GqlSchemaVersionWhereInput
+  versions_none: GqlSchemaVersionWhereInput
   apiKey: String
   apiKey_not: String
   apiKey_in: [String!]
@@ -288,6 +632,8 @@ input GqlSchemaWhereUniqueInput {
   id: ID
 }
 
+scalar Json
+
 scalar Long
 
 type Mutation {
@@ -297,6 +643,12 @@ type Mutation {
   upsertGqlSchema(where: GqlSchemaWhereUniqueInput!, create: GqlSchemaCreateInput!, update: GqlSchemaUpdateInput!): GqlSchema!
   deleteGqlSchema(where: GqlSchemaWhereUniqueInput!): GqlSchema
   deleteManyGqlSchemas(where: GqlSchemaWhereInput): BatchPayload!
+  createGqlSchemaVersion(data: GqlSchemaVersionCreateInput!): GqlSchemaVersion!
+  updateGqlSchemaVersion(data: GqlSchemaVersionUpdateInput!, where: GqlSchemaVersionWhereUniqueInput!): GqlSchemaVersion
+  updateManyGqlSchemaVersions(data: GqlSchemaVersionUpdateManyMutationInput!, where: GqlSchemaVersionWhereInput): BatchPayload!
+  upsertGqlSchemaVersion(where: GqlSchemaVersionWhereUniqueInput!, create: GqlSchemaVersionCreateInput!, update: GqlSchemaVersionUpdateInput!): GqlSchemaVersion!
+  deleteGqlSchemaVersion(where: GqlSchemaVersionWhereUniqueInput!): GqlSchemaVersion
+  deleteManyGqlSchemaVersions(where: GqlSchemaVersionWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -332,6 +684,9 @@ type Query {
   gqlSchema(where: GqlSchemaWhereUniqueInput!): GqlSchema
   gqlSchemas(where: GqlSchemaWhereInput, orderBy: GqlSchemaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlSchema]!
   gqlSchemasConnection(where: GqlSchemaWhereInput, orderBy: GqlSchemaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GqlSchemaConnection!
+  gqlSchemaVersion(where: GqlSchemaVersionWhereUniqueInput!): GqlSchemaVersion
+  gqlSchemaVersions(where: GqlSchemaVersionWhereInput, orderBy: GqlSchemaVersionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlSchemaVersion]!
+  gqlSchemaVersionsConnection(where: GqlSchemaVersionWhereInput, orderBy: GqlSchemaVersionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GqlSchemaVersionConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -343,6 +698,7 @@ type Query {
 
 type Subscription {
   gqlSchema(where: GqlSchemaSubscriptionWhereInput): GqlSchemaSubscriptionPayload
+  gqlSchemaVersion(where: GqlSchemaVersionSubscriptionWhereInput): GqlSchemaVersionSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   userProfile(where: UserProfileSubscriptionWhereInput): UserProfileSubscriptionPayload
 }

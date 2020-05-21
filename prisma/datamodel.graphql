@@ -22,7 +22,20 @@ type GqlSchema {
   name: String!
   owner: User @relation(name: "SchemasOwnedByUser")
   members: [User]! @relation(name: "SchemasByUser") @unique
+  latestVersion: GqlSchemaVersion @relation(name: "LatestVersionBySchema" onDelete: CASCADE)
+  versions: [GqlSchemaVersion]! @relation(name: "VersionsBySchema" onDelete: CASCADE)
   apiKey: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type GqlSchemaVersion {
+  id: ID! @id
+  number: Int!
+  schema: GqlSchema @relation(name: "VersionsBySchema")
+  introspectionQuery: Json
+  endpointUrl: String
+  createdBy: User
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

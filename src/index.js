@@ -1,7 +1,7 @@
-import _ from 'lodash';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import GraphQLJSON from 'graphql-type-json';
+import _ from 'lodash';
 
 import './startup';
 
@@ -20,7 +20,7 @@ const resolvers = _.merge({
   },
 }, users);
 
-const port = 3000;
+const port = 3002;
 
 const server = new ApolloServer({
   typeDefs,

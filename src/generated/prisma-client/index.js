@@ -15,6 +15,10 @@ var models = [
   {
     name: "GqlSchema",
     embedded: false
+  },
+  {
+    name: "GqlSchemaVersion",
+    embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({

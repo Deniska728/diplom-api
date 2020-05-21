@@ -17,6 +17,7 @@ export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
   gqlSchema: (where?: GqlSchemaWhereInput) => Promise<boolean>;
+  gqlSchemaVersion: (where?: GqlSchemaVersionWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
   userProfile: (where?: UserProfileWhereInput) => Promise<boolean>;
 }
@@ -59,6 +60,27 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => GqlSchemaConnectionPromise;
+  gqlSchemaVersion: (
+    where: GqlSchemaVersionWhereUniqueInput
+  ) => GqlSchemaVersionNullablePromise;
+  gqlSchemaVersions: (args?: {
+    where?: GqlSchemaVersionWhereInput;
+    orderBy?: GqlSchemaVersionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<GqlSchemaVersion>;
+  gqlSchemaVersionsConnection: (args?: {
+    where?: GqlSchemaVersionWhereInput;
+    orderBy?: GqlSchemaVersionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => GqlSchemaVersionConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserNullablePromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -121,6 +143,28 @@ export interface Prisma {
   }) => GqlSchemaPromise;
   deleteGqlSchema: (where: GqlSchemaWhereUniqueInput) => GqlSchemaPromise;
   deleteManyGqlSchemas: (where?: GqlSchemaWhereInput) => BatchPayloadPromise;
+  createGqlSchemaVersion: (
+    data: GqlSchemaVersionCreateInput
+  ) => GqlSchemaVersionPromise;
+  updateGqlSchemaVersion: (args: {
+    data: GqlSchemaVersionUpdateInput;
+    where: GqlSchemaVersionWhereUniqueInput;
+  }) => GqlSchemaVersionPromise;
+  updateManyGqlSchemaVersions: (args: {
+    data: GqlSchemaVersionUpdateManyMutationInput;
+    where?: GqlSchemaVersionWhereInput;
+  }) => BatchPayloadPromise;
+  upsertGqlSchemaVersion: (args: {
+    where: GqlSchemaVersionWhereUniqueInput;
+    create: GqlSchemaVersionCreateInput;
+    update: GqlSchemaVersionUpdateInput;
+  }) => GqlSchemaVersionPromise;
+  deleteGqlSchemaVersion: (
+    where: GqlSchemaVersionWhereUniqueInput
+  ) => GqlSchemaVersionPromise;
+  deleteManyGqlSchemaVersions: (
+    where?: GqlSchemaVersionWhereInput
+  ) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -167,6 +211,9 @@ export interface Subscription {
   gqlSchema: (
     where?: GqlSchemaSubscriptionWhereInput
   ) => GqlSchemaSubscriptionPayloadSubscription;
+  gqlSchemaVersion: (
+    where?: GqlSchemaVersionSubscriptionWhereInput
+  ) => GqlSchemaVersionSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -204,6 +251,20 @@ export type UserOrderByInput =
   | "email_DESC"
   | "username_ASC"
   | "username_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type GqlSchemaVersionOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "number_ASC"
+  | "number_DESC"
+  | "introspectionQuery_ASC"
+  | "introspectionQuery_DESC"
+  | "endpointUrl_ASC"
+  | "endpointUrl_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -260,6 +321,10 @@ export interface GqlSchemaWhereInput {
   members_every?: Maybe<UserWhereInput>;
   members_some?: Maybe<UserWhereInput>;
   members_none?: Maybe<UserWhereInput>;
+  latestVersion?: Maybe<GqlSchemaVersionWhereInput>;
+  versions_every?: Maybe<GqlSchemaVersionWhereInput>;
+  versions_some?: Maybe<GqlSchemaVersionWhereInput>;
+  versions_none?: Maybe<GqlSchemaVersionWhereInput>;
   apiKey?: Maybe<String>;
   apiKey_not?: Maybe<String>;
   apiKey_in?: Maybe<String[] | String>;
@@ -453,6 +518,70 @@ export interface UserProfileWhereInput {
   NOT?: Maybe<UserProfileWhereInput[] | UserProfileWhereInput>;
 }
 
+export interface GqlSchemaVersionWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  number?: Maybe<Int>;
+  number_not?: Maybe<Int>;
+  number_in?: Maybe<Int[] | Int>;
+  number_not_in?: Maybe<Int[] | Int>;
+  number_lt?: Maybe<Int>;
+  number_lte?: Maybe<Int>;
+  number_gt?: Maybe<Int>;
+  number_gte?: Maybe<Int>;
+  schema?: Maybe<GqlSchemaWhereInput>;
+  endpointUrl?: Maybe<String>;
+  endpointUrl_not?: Maybe<String>;
+  endpointUrl_in?: Maybe<String[] | String>;
+  endpointUrl_not_in?: Maybe<String[] | String>;
+  endpointUrl_lt?: Maybe<String>;
+  endpointUrl_lte?: Maybe<String>;
+  endpointUrl_gt?: Maybe<String>;
+  endpointUrl_gte?: Maybe<String>;
+  endpointUrl_contains?: Maybe<String>;
+  endpointUrl_not_contains?: Maybe<String>;
+  endpointUrl_starts_with?: Maybe<String>;
+  endpointUrl_not_starts_with?: Maybe<String>;
+  endpointUrl_ends_with?: Maybe<String>;
+  endpointUrl_not_ends_with?: Maybe<String>;
+  createdBy?: Maybe<UserWhereInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<GqlSchemaVersionWhereInput[] | GqlSchemaVersionWhereInput>;
+  OR?: Maybe<GqlSchemaVersionWhereInput[] | GqlSchemaVersionWhereInput>;
+  NOT?: Maybe<GqlSchemaVersionWhereInput[] | GqlSchemaVersionWhereInput>;
+}
+
+export type GqlSchemaVersionWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   sub?: Maybe<String>;
@@ -467,6 +596,8 @@ export interface GqlSchemaCreateInput {
   name: String;
   owner?: Maybe<UserCreateOneInput>;
   members?: Maybe<UserCreateManyWithoutSchemasInput>;
+  latestVersion?: Maybe<GqlSchemaVersionCreateOneInput>;
+  versions?: Maybe<GqlSchemaVersionCreateManyWithoutSchemaInput>;
   apiKey: String;
 }
 
@@ -508,6 +639,36 @@ export interface GqlSchemaCreateWithoutMembersInput {
   id?: Maybe<ID_Input>;
   name: String;
   owner?: Maybe<UserCreateOneInput>;
+  latestVersion?: Maybe<GqlSchemaVersionCreateOneInput>;
+  versions?: Maybe<GqlSchemaVersionCreateManyWithoutSchemaInput>;
+  apiKey: String;
+}
+
+export interface GqlSchemaVersionCreateOneInput {
+  create?: Maybe<GqlSchemaVersionCreateInput>;
+  connect?: Maybe<GqlSchemaVersionWhereUniqueInput>;
+}
+
+export interface GqlSchemaVersionCreateInput {
+  id?: Maybe<ID_Input>;
+  number: Int;
+  schema?: Maybe<GqlSchemaCreateOneWithoutVersionsInput>;
+  introspectionQuery?: Maybe<Json>;
+  endpointUrl?: Maybe<String>;
+  createdBy?: Maybe<UserCreateOneInput>;
+}
+
+export interface GqlSchemaCreateOneWithoutVersionsInput {
+  create?: Maybe<GqlSchemaCreateWithoutVersionsInput>;
+  connect?: Maybe<GqlSchemaWhereUniqueInput>;
+}
+
+export interface GqlSchemaCreateWithoutVersionsInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  owner?: Maybe<UserCreateOneInput>;
+  members?: Maybe<UserCreateManyWithoutSchemasInput>;
+  latestVersion?: Maybe<GqlSchemaVersionCreateOneInput>;
   apiKey: String;
 }
 
@@ -526,10 +687,30 @@ export interface UserCreateWithoutSchemasInput {
   profile?: Maybe<UserProfileCreateOneInput>;
 }
 
+export interface GqlSchemaVersionCreateManyWithoutSchemaInput {
+  create?: Maybe<
+    | GqlSchemaVersionCreateWithoutSchemaInput[]
+    | GqlSchemaVersionCreateWithoutSchemaInput
+  >;
+  connect?: Maybe<
+    GqlSchemaVersionWhereUniqueInput[] | GqlSchemaVersionWhereUniqueInput
+  >;
+}
+
+export interface GqlSchemaVersionCreateWithoutSchemaInput {
+  id?: Maybe<ID_Input>;
+  number: Int;
+  introspectionQuery?: Maybe<Json>;
+  endpointUrl?: Maybe<String>;
+  createdBy?: Maybe<UserCreateOneInput>;
+}
+
 export interface GqlSchemaUpdateInput {
   name?: Maybe<String>;
   owner?: Maybe<UserUpdateOneInput>;
   members?: Maybe<UserUpdateManyWithoutSchemasInput>;
+  latestVersion?: Maybe<GqlSchemaVersionUpdateOneInput>;
+  versions?: Maybe<GqlSchemaVersionUpdateManyWithoutSchemaInput>;
   apiKey?: Maybe<String>;
 }
 
@@ -602,92 +783,43 @@ export interface GqlSchemaUpdateWithWhereUniqueWithoutMembersInput {
 export interface GqlSchemaUpdateWithoutMembersDataInput {
   name?: Maybe<String>;
   owner?: Maybe<UserUpdateOneInput>;
+  latestVersion?: Maybe<GqlSchemaVersionUpdateOneInput>;
+  versions?: Maybe<GqlSchemaVersionUpdateManyWithoutSchemaInput>;
   apiKey?: Maybe<String>;
 }
 
-export interface GqlSchemaUpsertWithWhereUniqueWithoutMembersInput {
-  where: GqlSchemaWhereUniqueInput;
-  update: GqlSchemaUpdateWithoutMembersDataInput;
-  create: GqlSchemaCreateWithoutMembersInput;
+export interface GqlSchemaVersionUpdateOneInput {
+  create?: Maybe<GqlSchemaVersionCreateInput>;
+  update?: Maybe<GqlSchemaVersionUpdateDataInput>;
+  upsert?: Maybe<GqlSchemaVersionUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<GqlSchemaVersionWhereUniqueInput>;
 }
 
-export interface GqlSchemaScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
+export interface GqlSchemaVersionUpdateDataInput {
+  number?: Maybe<Int>;
+  schema?: Maybe<GqlSchemaUpdateOneWithoutVersionsInput>;
+  introspectionQuery?: Maybe<Json>;
+  endpointUrl?: Maybe<String>;
+  createdBy?: Maybe<UserUpdateOneInput>;
+}
+
+export interface GqlSchemaUpdateOneWithoutVersionsInput {
+  create?: Maybe<GqlSchemaCreateWithoutVersionsInput>;
+  update?: Maybe<GqlSchemaUpdateWithoutVersionsDataInput>;
+  upsert?: Maybe<GqlSchemaUpsertWithoutVersionsInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<GqlSchemaWhereUniqueInput>;
+}
+
+export interface GqlSchemaUpdateWithoutVersionsDataInput {
   name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
+  owner?: Maybe<UserUpdateOneInput>;
+  members?: Maybe<UserUpdateManyWithoutSchemasInput>;
+  latestVersion?: Maybe<GqlSchemaVersionUpdateOneInput>;
   apiKey?: Maybe<String>;
-  apiKey_not?: Maybe<String>;
-  apiKey_in?: Maybe<String[] | String>;
-  apiKey_not_in?: Maybe<String[] | String>;
-  apiKey_lt?: Maybe<String>;
-  apiKey_lte?: Maybe<String>;
-  apiKey_gt?: Maybe<String>;
-  apiKey_gte?: Maybe<String>;
-  apiKey_contains?: Maybe<String>;
-  apiKey_not_contains?: Maybe<String>;
-  apiKey_starts_with?: Maybe<String>;
-  apiKey_not_starts_with?: Maybe<String>;
-  apiKey_ends_with?: Maybe<String>;
-  apiKey_not_ends_with?: Maybe<String>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<GqlSchemaScalarWhereInput[] | GqlSchemaScalarWhereInput>;
-  OR?: Maybe<GqlSchemaScalarWhereInput[] | GqlSchemaScalarWhereInput>;
-  NOT?: Maybe<GqlSchemaScalarWhereInput[] | GqlSchemaScalarWhereInput>;
-}
-
-export interface GqlSchemaUpdateManyWithWhereNestedInput {
-  where: GqlSchemaScalarWhereInput;
-  data: GqlSchemaUpdateManyDataInput;
-}
-
-export interface GqlSchemaUpdateManyDataInput {
-  name?: Maybe<String>;
-  apiKey?: Maybe<String>;
-}
-
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
 }
 
 export interface UserUpdateManyWithoutSchemasInput {
@@ -819,9 +951,245 @@ export interface UserUpdateManyDataInput {
   username?: Maybe<String>;
 }
 
+export interface GqlSchemaUpsertWithoutVersionsInput {
+  update: GqlSchemaUpdateWithoutVersionsDataInput;
+  create: GqlSchemaCreateWithoutVersionsInput;
+}
+
+export interface GqlSchemaVersionUpsertNestedInput {
+  update: GqlSchemaVersionUpdateDataInput;
+  create: GqlSchemaVersionCreateInput;
+}
+
+export interface GqlSchemaVersionUpdateManyWithoutSchemaInput {
+  create?: Maybe<
+    | GqlSchemaVersionCreateWithoutSchemaInput[]
+    | GqlSchemaVersionCreateWithoutSchemaInput
+  >;
+  delete?: Maybe<
+    GqlSchemaVersionWhereUniqueInput[] | GqlSchemaVersionWhereUniqueInput
+  >;
+  connect?: Maybe<
+    GqlSchemaVersionWhereUniqueInput[] | GqlSchemaVersionWhereUniqueInput
+  >;
+  set?: Maybe<
+    GqlSchemaVersionWhereUniqueInput[] | GqlSchemaVersionWhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    GqlSchemaVersionWhereUniqueInput[] | GqlSchemaVersionWhereUniqueInput
+  >;
+  update?: Maybe<
+    | GqlSchemaVersionUpdateWithWhereUniqueWithoutSchemaInput[]
+    | GqlSchemaVersionUpdateWithWhereUniqueWithoutSchemaInput
+  >;
+  upsert?: Maybe<
+    | GqlSchemaVersionUpsertWithWhereUniqueWithoutSchemaInput[]
+    | GqlSchemaVersionUpsertWithWhereUniqueWithoutSchemaInput
+  >;
+  deleteMany?: Maybe<
+    GqlSchemaVersionScalarWhereInput[] | GqlSchemaVersionScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | GqlSchemaVersionUpdateManyWithWhereNestedInput[]
+    | GqlSchemaVersionUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface GqlSchemaVersionUpdateWithWhereUniqueWithoutSchemaInput {
+  where: GqlSchemaVersionWhereUniqueInput;
+  data: GqlSchemaVersionUpdateWithoutSchemaDataInput;
+}
+
+export interface GqlSchemaVersionUpdateWithoutSchemaDataInput {
+  number?: Maybe<Int>;
+  introspectionQuery?: Maybe<Json>;
+  endpointUrl?: Maybe<String>;
+  createdBy?: Maybe<UserUpdateOneInput>;
+}
+
+export interface GqlSchemaVersionUpsertWithWhereUniqueWithoutSchemaInput {
+  where: GqlSchemaVersionWhereUniqueInput;
+  update: GqlSchemaVersionUpdateWithoutSchemaDataInput;
+  create: GqlSchemaVersionCreateWithoutSchemaInput;
+}
+
+export interface GqlSchemaVersionScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  number?: Maybe<Int>;
+  number_not?: Maybe<Int>;
+  number_in?: Maybe<Int[] | Int>;
+  number_not_in?: Maybe<Int[] | Int>;
+  number_lt?: Maybe<Int>;
+  number_lte?: Maybe<Int>;
+  number_gt?: Maybe<Int>;
+  number_gte?: Maybe<Int>;
+  endpointUrl?: Maybe<String>;
+  endpointUrl_not?: Maybe<String>;
+  endpointUrl_in?: Maybe<String[] | String>;
+  endpointUrl_not_in?: Maybe<String[] | String>;
+  endpointUrl_lt?: Maybe<String>;
+  endpointUrl_lte?: Maybe<String>;
+  endpointUrl_gt?: Maybe<String>;
+  endpointUrl_gte?: Maybe<String>;
+  endpointUrl_contains?: Maybe<String>;
+  endpointUrl_not_contains?: Maybe<String>;
+  endpointUrl_starts_with?: Maybe<String>;
+  endpointUrl_not_starts_with?: Maybe<String>;
+  endpointUrl_ends_with?: Maybe<String>;
+  endpointUrl_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<
+    GqlSchemaVersionScalarWhereInput[] | GqlSchemaVersionScalarWhereInput
+  >;
+  OR?: Maybe<
+    GqlSchemaVersionScalarWhereInput[] | GqlSchemaVersionScalarWhereInput
+  >;
+  NOT?: Maybe<
+    GqlSchemaVersionScalarWhereInput[] | GqlSchemaVersionScalarWhereInput
+  >;
+}
+
+export interface GqlSchemaVersionUpdateManyWithWhereNestedInput {
+  where: GqlSchemaVersionScalarWhereInput;
+  data: GqlSchemaVersionUpdateManyDataInput;
+}
+
+export interface GqlSchemaVersionUpdateManyDataInput {
+  number?: Maybe<Int>;
+  introspectionQuery?: Maybe<Json>;
+  endpointUrl?: Maybe<String>;
+}
+
+export interface GqlSchemaUpsertWithWhereUniqueWithoutMembersInput {
+  where: GqlSchemaWhereUniqueInput;
+  update: GqlSchemaUpdateWithoutMembersDataInput;
+  create: GqlSchemaCreateWithoutMembersInput;
+}
+
+export interface GqlSchemaScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  apiKey?: Maybe<String>;
+  apiKey_not?: Maybe<String>;
+  apiKey_in?: Maybe<String[] | String>;
+  apiKey_not_in?: Maybe<String[] | String>;
+  apiKey_lt?: Maybe<String>;
+  apiKey_lte?: Maybe<String>;
+  apiKey_gt?: Maybe<String>;
+  apiKey_gte?: Maybe<String>;
+  apiKey_contains?: Maybe<String>;
+  apiKey_not_contains?: Maybe<String>;
+  apiKey_starts_with?: Maybe<String>;
+  apiKey_not_starts_with?: Maybe<String>;
+  apiKey_ends_with?: Maybe<String>;
+  apiKey_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<GqlSchemaScalarWhereInput[] | GqlSchemaScalarWhereInput>;
+  OR?: Maybe<GqlSchemaScalarWhereInput[] | GqlSchemaScalarWhereInput>;
+  NOT?: Maybe<GqlSchemaScalarWhereInput[] | GqlSchemaScalarWhereInput>;
+}
+
+export interface GqlSchemaUpdateManyWithWhereNestedInput {
+  where: GqlSchemaScalarWhereInput;
+  data: GqlSchemaUpdateManyDataInput;
+}
+
+export interface GqlSchemaUpdateManyDataInput {
+  name?: Maybe<String>;
+  apiKey?: Maybe<String>;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
 export interface GqlSchemaUpdateManyMutationInput {
   name?: Maybe<String>;
   apiKey?: Maybe<String>;
+}
+
+export interface GqlSchemaVersionUpdateInput {
+  number?: Maybe<Int>;
+  schema?: Maybe<GqlSchemaUpdateOneWithoutVersionsInput>;
+  introspectionQuery?: Maybe<Json>;
+  endpointUrl?: Maybe<String>;
+  createdBy?: Maybe<UserUpdateOneInput>;
+}
+
+export interface GqlSchemaVersionUpdateManyMutationInput {
+  number?: Maybe<Int>;
+  introspectionQuery?: Maybe<Json>;
+  endpointUrl?: Maybe<String>;
 }
 
 export interface UserUpdateInput {
@@ -866,6 +1234,26 @@ export interface GqlSchemaSubscriptionWhereInput {
   >;
   NOT?: Maybe<
     GqlSchemaSubscriptionWhereInput[] | GqlSchemaSubscriptionWhereInput
+  >;
+}
+
+export interface GqlSchemaVersionSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<GqlSchemaVersionWhereInput>;
+  AND?: Maybe<
+    | GqlSchemaVersionSubscriptionWhereInput[]
+    | GqlSchemaVersionSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | GqlSchemaVersionSubscriptionWhereInput[]
+    | GqlSchemaVersionSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | GqlSchemaVersionSubscriptionWhereInput[]
+    | GqlSchemaVersionSubscriptionWhereInput
   >;
 }
 
@@ -922,6 +1310,16 @@ export interface GqlSchemaPromise extends Promise<GqlSchema>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  latestVersion: <T = GqlSchemaVersionPromise>() => T;
+  versions: <T = FragmentableArray<GqlSchemaVersion>>(args?: {
+    where?: GqlSchemaVersionWhereInput;
+    orderBy?: GqlSchemaVersionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   apiKey: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -942,6 +1340,16 @@ export interface GqlSchemaSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  latestVersion: <T = GqlSchemaVersionSubscription>() => T;
+  versions: <T = Promise<AsyncIterator<GqlSchemaVersionSubscription>>>(args?: {
+    where?: GqlSchemaVersionWhereInput;
+    orderBy?: GqlSchemaVersionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   apiKey: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -956,6 +1364,16 @@ export interface GqlSchemaNullablePromise
   members: <T = FragmentableArray<User>>(args?: {
     where?: UserWhereInput;
     orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  latestVersion: <T = GqlSchemaVersionPromise>() => T;
+  versions: <T = FragmentableArray<GqlSchemaVersion>>(args?: {
+    where?: GqlSchemaVersionWhereInput;
+    orderBy?: GqlSchemaVersionOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -1073,6 +1491,54 @@ export interface UserProfileNullablePromise
   picture: () => Promise<String>;
 }
 
+export interface GqlSchemaVersion {
+  id: ID_Output;
+  number: Int;
+  introspectionQuery?: Json;
+  endpointUrl?: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface GqlSchemaVersionPromise
+  extends Promise<GqlSchemaVersion>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  number: () => Promise<Int>;
+  schema: <T = GqlSchemaPromise>() => T;
+  introspectionQuery: () => Promise<Json>;
+  endpointUrl: () => Promise<String>;
+  createdBy: <T = UserPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface GqlSchemaVersionSubscription
+  extends Promise<AsyncIterator<GqlSchemaVersion>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  number: () => Promise<AsyncIterator<Int>>;
+  schema: <T = GqlSchemaSubscription>() => T;
+  introspectionQuery: () => Promise<AsyncIterator<Json>>;
+  endpointUrl: () => Promise<AsyncIterator<String>>;
+  createdBy: <T = UserSubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface GqlSchemaVersionNullablePromise
+  extends Promise<GqlSchemaVersion | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  number: () => Promise<Int>;
+  schema: <T = GqlSchemaPromise>() => T;
+  introspectionQuery: () => Promise<Json>;
+  endpointUrl: () => Promise<String>;
+  createdBy: <T = UserPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
 export interface GqlSchemaConnection {
   pageInfo: PageInfo;
   edges: GqlSchemaEdge[];
@@ -1148,6 +1614,62 @@ export interface AggregateGqlSchemaPromise
 
 export interface AggregateGqlSchemaSubscription
   extends Promise<AsyncIterator<AggregateGqlSchema>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface GqlSchemaVersionConnection {
+  pageInfo: PageInfo;
+  edges: GqlSchemaVersionEdge[];
+}
+
+export interface GqlSchemaVersionConnectionPromise
+  extends Promise<GqlSchemaVersionConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<GqlSchemaVersionEdge>>() => T;
+  aggregate: <T = AggregateGqlSchemaVersionPromise>() => T;
+}
+
+export interface GqlSchemaVersionConnectionSubscription
+  extends Promise<AsyncIterator<GqlSchemaVersionConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<GqlSchemaVersionEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateGqlSchemaVersionSubscription>() => T;
+}
+
+export interface GqlSchemaVersionEdge {
+  node: GqlSchemaVersion;
+  cursor: String;
+}
+
+export interface GqlSchemaVersionEdgePromise
+  extends Promise<GqlSchemaVersionEdge>,
+    Fragmentable {
+  node: <T = GqlSchemaVersionPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface GqlSchemaVersionEdgeSubscription
+  extends Promise<AsyncIterator<GqlSchemaVersionEdge>>,
+    Fragmentable {
+  node: <T = GqlSchemaVersionSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateGqlSchemaVersion {
+  count: Int;
+}
+
+export interface AggregateGqlSchemaVersionPromise
+  extends Promise<AggregateGqlSchemaVersion>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateGqlSchemaVersionSubscription
+  extends Promise<AsyncIterator<AggregateGqlSchemaVersion>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -1331,6 +1853,62 @@ export interface GqlSchemaPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
+export interface GqlSchemaVersionSubscriptionPayload {
+  mutation: MutationType;
+  node: GqlSchemaVersion;
+  updatedFields: String[];
+  previousValues: GqlSchemaVersionPreviousValues;
+}
+
+export interface GqlSchemaVersionSubscriptionPayloadPromise
+  extends Promise<GqlSchemaVersionSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = GqlSchemaVersionPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = GqlSchemaVersionPreviousValuesPromise>() => T;
+}
+
+export interface GqlSchemaVersionSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<GqlSchemaVersionSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = GqlSchemaVersionSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = GqlSchemaVersionPreviousValuesSubscription>() => T;
+}
+
+export interface GqlSchemaVersionPreviousValues {
+  id: ID_Output;
+  number: Int;
+  introspectionQuery?: Json;
+  endpointUrl?: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface GqlSchemaVersionPreviousValuesPromise
+  extends Promise<GqlSchemaVersionPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  number: () => Promise<Int>;
+  introspectionQuery: () => Promise<Json>;
+  endpointUrl: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface GqlSchemaVersionPreviousValuesSubscription
+  extends Promise<AsyncIterator<GqlSchemaVersionPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  number: () => Promise<AsyncIterator<Int>>;
+  introspectionQuery: () => Promise<AsyncIterator<Json>>;
+  endpointUrl: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
 export interface UserSubscriptionPayload {
   mutation: MutationType;
   node: User;
@@ -1466,6 +2044,8 @@ The `Int` scalar type represents non-fractional signed whole numeric values. Int
 */
 export type Int = number;
 
+export type Json = any;
+
 /*
 The `Boolean` scalar type represents `true` or `false`.
 */
@@ -1488,6 +2068,10 @@ export const models: Model[] = [
   },
   {
     name: "GqlSchema",
+    embedded: false
+  },
+  {
+    name: "GqlSchemaVersion",
     embedded: false
   }
 ];
