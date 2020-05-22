@@ -27,3 +27,11 @@ type Query {
   me: User
   info: String!
 }
+
+type Mutation {
+  createSchema(
+    endpoint: String!
+    apiKeyName: String
+    apiKey: String
+  ): Schema
+}
