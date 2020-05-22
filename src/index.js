@@ -12,13 +12,14 @@ import getUser from './api/users/functions/get-user';
 import { prisma } from './generated/prisma-client';
 
 import users from './api/users/resolvers';
+import schemas from './api/schemas/resolvers';
 
 const resolvers = _.merge({
   JSON: GraphQLJSON,
   Query: {
     info: () => 'Welcome to GraphQq',
   },
-}, users);
+}, users, schemas);
 
 const port = 3002;
 

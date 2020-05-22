@@ -21,10 +21,25 @@ type Schema {
   apiKey: String
   owner: User
   members: [User]!
+  latestVersion: SchemaVersion
+  versions: [SchemaVersion]!
+}
+
+type SchemaVersion {
+  id: ID!
+  number: Int!
+  introspectionQuery: JSON
+  endpointUrl: String
+  createdBy: User
 }
 
 type Query {
   me: User
+  schema(
+    id: ID
+    apiKey: String
+  ): Schema
+  schemas: [Schema]
   info: String!
 }
 
