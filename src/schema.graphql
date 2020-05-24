@@ -49,4 +49,7 @@ type Mutation {
     apiKeyName: String
     apiKey: String
   ): Schema
+  deleteSchema(
+    id: ID!
+  ): Schema
 }
