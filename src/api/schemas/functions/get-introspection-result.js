@@ -84,7 +84,7 @@ const getIntrospectionResult = async ({ endpoint, apiKey, apiKeyName }) => {
     headers[apiKeyName] = apiKey;
   }
 
-  axios
+  return axios
     .post(endpoint, IntrospectionQuery, { headers })
     .then((response) => response.data.data.__schema)
     .catch((err) => {

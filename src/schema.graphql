@@ -21,16 +21,99 @@ type Schema {
   apiKey: String
   owner: User
   members: [User]!
-  latestVersion: SchemaVersion
-  versions: [SchemaVersion]!
+  introspectionSchema: GqlIntrospectionSchema
+  endpointUrl: String
 }
 
-type SchemaVersion {
+type GqlIntrospectionSchema {
   id: ID!
-  number: Int!
-  introspectionQuery: JSON
-  endpointUrl: String
-  createdBy: User
+  name: String! 
+  types: [GqlType]!
+  directives: [GqlDirective]! 
+}
+
+type GqlType {
+  id: ID!
+  kind: GqlTypeKind!
+  name: String
+  description: String
+  fields: [GqlField!] 
+  interfaces: [GqlBaseType!] 
+  possibleTypes: [GqlBaseType!]
+  enumValues: [GqlEnumValue!]
+  inputFields: [GqlInputValue!] 
+}
+
+type GqlBaseType {
+  kind: GqlTypeKind!
+  name: String!
+}
+
+type GqlField {
+  id: ID!
+  name: String!
+  kinds: [GqlTypeKind]!
+  description: String
+  args: [GqlInputValue!]!
+  typeName: String!
+  isDeprecated: Boolean!
+  deprecationReason: String
+}
+
+type GqlInputValue {
+  id: ID!
+  name: String!
+  kinds: [GqlTypeKind]!
+  description: String
+  typeName: String!
+  defaultValue: String
+}
+
+type GqlEnumValue {
+  id: ID!
+  name: String!
+  description: String
+  isDeprecated: Boolean!
+  deprecationReason: String
+}
+type GqlDirective {
+  id: ID!
+  name: String!
+  description: String
+  locations: [GqlDirectiveLocation!]!
+  args: [GqlInputValue!]!
+}
+
+enum GqlTypeKind {
+  SCALAR
+  OBJECT
+  INTERFACE
+  UNION
+  ENUM
+  INPUT_OBJECT
+  LIST
+  NON_NULL
+}
+
+enum GqlDirectiveLocation {
+  QUERY
+  MUTATION
+  SUBSCRIPTION
+  FIELD
+  FRAGMENT_DEFINITION
+  FRAGMENT_SPREAD
+  INLINE_FRAGMENT
+  SCHEMA
+  SCALAR
+  OBJECT
+  FIELD_DEFINITION
+  ARGUMENT_DEFINITION
+  INTERFACE
+  UNION
+  ENUM
+  ENUM_VALUE
+  INPUT_OBJECT
+  INPUT_FIELD_DEFINITION
 }
 
 type Query {

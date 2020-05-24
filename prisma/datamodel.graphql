@@ -22,20 +22,102 @@ type GqlSchema {
   name: String!
   owner: User @relation(name: "SchemasOwnedByUser")
   members: [User]! @relation(name: "SchemasByUser") @unique
-  latestVersion: GqlSchemaVersion @relation(name: "LatestVersionBySchema" onDelete: CASCADE)
-  versions: [GqlSchemaVersion]! @relation(name: "VersionsBySchema" onDelete: CASCADE)
   apiKey: String!
+  introspectionSchema: GqlIntrospectionSchema @relation(name: "GqlIntrospectionSchema" onDelete:CASCADE)
+  endpointUrl: String
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
 
-type GqlSchemaVersion {
+type GqlIntrospectionSchema {
   id: ID! @id
-  number: Int!
-  schema: GqlSchema @relation(name: "VersionsBySchema")
-  introspectionQuery: Json
-  endpointUrl: String
-  createdBy: User
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  name: String! @default(value: "Primary Schema")
+  types: [GqlType]! @relation(name: "SchemaTypes" onDelete: CASCADE)
+  directives: [GqlDirective]! @relation(name: "Directives" onDelete: CASCADE)
+}
+
+type GqlType {
+  id: ID! @id
+  kind: GqlTypeKind!
+  name: String
+  description: String
+  schema: GqlIntrospectionSchema! @relation(name: "SchemaTypes")
+  fields: [GqlField!] @relation(name: "TypeFields" onDelete: CASCADE)
+  interfaces: [GqlBaseType!] @relation(name: "TypeInterfaces" onDelete: CASCADE)
+  possibleTypes: [GqlBaseType!] @relation(name: "TypePossibleTypes" onDelete: CASCADE)
+  enumValues: [GqlEnumValue!] @relation(name: "TypeEnums" onDelete: CASCADE)
+  inputFields: [GqlInputValue!] @relation(name: "TypeInputFields" onDelete: CASCADE)
+}
+
+type GqlBaseType {
+  id: ID! @id
+  kind: GqlTypeKind!
+  name: String!
+}
+
+type GqlField {
+  id: ID! @id
+  name: String!
+  description: String
+  typeName: String
+  kinds: [GqlTypeKind]! @scalarList(strategy: RELATION)
+  args: [GqlInputValue!]! @relation(name: "FieldInputValues" onDelete: CASCADE)
+  isDeprecated: Boolean!
+  deprecationReason: String
+}
+
+type GqlInputValue {
+  id: ID! @id
+  name: String!
+  kinds: [GqlTypeKind]! @scalarList(strategy: RELATION)
+  typeName: String
+  description: String
+  defaultValue: String
+}
+
+type GqlEnumValue {
+  id: ID! @id
+  name: String!
+  description: String
+  isDeprecated: Boolean!
+  deprecationReason: String
+}
+type GqlDirective {
+  id: ID! @id
+  name: String!
+  description: String
+  locations: [GqlDirectiveLocation!]! @scalarList(strategy: RELATION)
+  args: [GqlInputValue!]! @relation(name: "DirectiveInputValues" onDelete: CASCADE)
+}
+
+enum GqlTypeKind {
+  SCALAR
+  OBJECT
+  INTERFACE
+  UNION
+  ENUM
+  INPUT_OBJECT
+  LIST
+  NON_NULL
+}
+
+enum GqlDirectiveLocation {
+  QUERY
+  MUTATION
+  SUBSCRIPTION
+  FIELD
+  FRAGMENT_DEFINITION
+  FRAGMENT_SPREAD
+  INLINE_FRAGMENT
+  SCHEMA
+  SCALAR
+  OBJECT
+  FIELD_DEFINITION
+  ARGUMENT_DEFINITION
+  INTERFACE
+  UNION
+  ENUM
+  ENUM_VALUE
+  INPUT_OBJECT
+  INPUT_FIELD_DEFINITION
 }

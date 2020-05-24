@@ -1,7 +1,8 @@
 import crypto from 'crypto';
 import faker from 'faker';
 
-import getIntrospectionResult from '../../schema-versions/functions/get-introspection-result';
+import getIntrospectionResult from '../functions/get-introspection-result';
+import createIntrospection from '../functions/create-introspection';
 
 export default async (root, args, { prisma, user }) => {
   if (!user) throw new Error('Access denied');
@@ -14,19 +15,15 @@ export default async (root, args, { prisma, user }) => {
 
   const introspectionQuery = await getIntrospectionResult(args);
 
+  const introspectionSchema = await createIntrospection({ db: prisma, introspectionQuery, user });
+
   const schema = await prisma.createGqlSchema({
     name: faker.commerce.productName(),
     apiKey: apiKey || crypto.randomBytes(24).toString('hex'),
     owner: { connect: { id: user.id } },
     members: { connect: { id: user.id } },
-    latestVersion: {
-      create: {
-        number: 1,
-        introspectionQuery,
-        endpointUrl: endpoint,
-        createdBy: { connect: { id: user.id } },
-      },
-    },
+    introspectionSchema: { connect: { id: introspectionSchema } },
+    endpointUrl: endpoint,
   });
 
   return schema;
