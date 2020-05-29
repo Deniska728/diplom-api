@@ -3,11 +3,35 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateGqlSchema {
+/* GraphQL */ `type AggregateGqlBaseType {
   count: Int!
 }
 
-type AggregateGqlSchemaVersion {
+type AggregateGqlDirective {
+  count: Int!
+}
+
+type AggregateGqlEnumValue {
+  count: Int!
+}
+
+type AggregateGqlField {
+  count: Int!
+}
+
+type AggregateGqlInputValue {
+  count: Int!
+}
+
+type AggregateGqlIntrospectionSchema {
+  count: Int!
+}
+
+type AggregateGqlSchema {
+  count: Int!
+}
+
+type AggregateGqlType {
   count: Int!
 }
 
@@ -25,14 +49,1492 @@ type BatchPayload {
 
 scalar DateTime
 
+type GqlBaseType {
+  id: ID!
+  kind: GqlTypeKind!
+  name: String!
+}
+
+type GqlBaseTypeConnection {
+  pageInfo: PageInfo!
+  edges: [GqlBaseTypeEdge]!
+  aggregate: AggregateGqlBaseType!
+}
+
+input GqlBaseTypeCreateInput {
+  id: ID
+  kind: GqlTypeKind!
+  name: String!
+}
+
+input GqlBaseTypeCreateManyInput {
+  create: [GqlBaseTypeCreateInput!]
+  connect: [GqlBaseTypeWhereUniqueInput!]
+}
+
+type GqlBaseTypeEdge {
+  node: GqlBaseType!
+  cursor: String!
+}
+
+enum GqlBaseTypeOrderByInput {
+  id_ASC
+  id_DESC
+  kind_ASC
+  kind_DESC
+  name_ASC
+  name_DESC
+}
+
+type GqlBaseTypePreviousValues {
+  id: ID!
+  kind: GqlTypeKind!
+  name: String!
+}
+
+input GqlBaseTypeScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  kind: GqlTypeKind
+  kind_not: GqlTypeKind
+  kind_in: [GqlTypeKind!]
+  kind_not_in: [GqlTypeKind!]
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [GqlBaseTypeScalarWhereInput!]
+  OR: [GqlBaseTypeScalarWhereInput!]
+  NOT: [GqlBaseTypeScalarWhereInput!]
+}
+
+type GqlBaseTypeSubscriptionPayload {
+  mutation: MutationType!
+  node: GqlBaseType
+  updatedFields: [String!]
+  previousValues: GqlBaseTypePreviousValues
+}
+
+input GqlBaseTypeSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: GqlBaseTypeWhereInput
+  AND: [GqlBaseTypeSubscriptionWhereInput!]
+  OR: [GqlBaseTypeSubscriptionWhereInput!]
+  NOT: [GqlBaseTypeSubscriptionWhereInput!]
+}
+
+input GqlBaseTypeUpdateDataInput {
+  kind: GqlTypeKind
+  name: String
+}
+
+input GqlBaseTypeUpdateInput {
+  kind: GqlTypeKind
+  name: String
+}
+
+input GqlBaseTypeUpdateManyDataInput {
+  kind: GqlTypeKind
+  name: String
+}
+
+input GqlBaseTypeUpdateManyInput {
+  create: [GqlBaseTypeCreateInput!]
+  update: [GqlBaseTypeUpdateWithWhereUniqueNestedInput!]
+  upsert: [GqlBaseTypeUpsertWithWhereUniqueNestedInput!]
+  delete: [GqlBaseTypeWhereUniqueInput!]
+  connect: [GqlBaseTypeWhereUniqueInput!]
+  set: [GqlBaseTypeWhereUniqueInput!]
+  disconnect: [GqlBaseTypeWhereUniqueInput!]
+  deleteMany: [GqlBaseTypeScalarWhereInput!]
+  updateMany: [GqlBaseTypeUpdateManyWithWhereNestedInput!]
+}
+
+input GqlBaseTypeUpdateManyMutationInput {
+  kind: GqlTypeKind
+  name: String
+}
+
+input GqlBaseTypeUpdateManyWithWhereNestedInput {
+  where: GqlBaseTypeScalarWhereInput!
+  data: GqlBaseTypeUpdateManyDataInput!
+}
+
+input GqlBaseTypeUpdateWithWhereUniqueNestedInput {
+  where: GqlBaseTypeWhereUniqueInput!
+  data: GqlBaseTypeUpdateDataInput!
+}
+
+input GqlBaseTypeUpsertWithWhereUniqueNestedInput {
+  where: GqlBaseTypeWhereUniqueInput!
+  update: GqlBaseTypeUpdateDataInput!
+  create: GqlBaseTypeCreateInput!
+}
+
+input GqlBaseTypeWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  kind: GqlTypeKind
+  kind_not: GqlTypeKind
+  kind_in: [GqlTypeKind!]
+  kind_not_in: [GqlTypeKind!]
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [GqlBaseTypeWhereInput!]
+  OR: [GqlBaseTypeWhereInput!]
+  NOT: [GqlBaseTypeWhereInput!]
+}
+
+input GqlBaseTypeWhereUniqueInput {
+  id: ID
+}
+
+type GqlDirective {
+  id: ID!
+  name: String!
+  description: String
+  locations: [GqlDirectiveLocation!]!
+  args(where: GqlInputValueWhereInput, orderBy: GqlInputValueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlInputValue!]
+}
+
+type GqlDirectiveConnection {
+  pageInfo: PageInfo!
+  edges: [GqlDirectiveEdge]!
+  aggregate: AggregateGqlDirective!
+}
+
+input GqlDirectiveCreateInput {
+  id: ID
+  name: String!
+  description: String
+  locations: GqlDirectiveCreatelocationsInput
+  args: GqlInputValueCreateManyInput
+}
+
+input GqlDirectiveCreatelocationsInput {
+  set: [GqlDirectiveLocation!]
+}
+
+input GqlDirectiveCreateManyInput {
+  create: [GqlDirectiveCreateInput!]
+  connect: [GqlDirectiveWhereUniqueInput!]
+}
+
+type GqlDirectiveEdge {
+  node: GqlDirective!
+  cursor: String!
+}
+
+enum GqlDirectiveLocation {
+  QUERY
+  MUTATION
+  SUBSCRIPTION
+  FIELD
+  FRAGMENT_DEFINITION
+  FRAGMENT_SPREAD
+  INLINE_FRAGMENT
+  SCHEMA
+  SCALAR
+  OBJECT
+  FIELD_DEFINITION
+  ARGUMENT_DEFINITION
+  INTERFACE
+  UNION
+  ENUM
+  ENUM_VALUE
+  INPUT_OBJECT
+  INPUT_FIELD_DEFINITION
+}
+
+enum GqlDirectiveOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  description_ASC
+  description_DESC
+}
+
+type GqlDirectivePreviousValues {
+  id: ID!
+  name: String!
+  description: String
+  locations: [GqlDirectiveLocation!]!
+}
+
+input GqlDirectiveScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  AND: [GqlDirectiveScalarWhereInput!]
+  OR: [GqlDirectiveScalarWhereInput!]
+  NOT: [GqlDirectiveScalarWhereInput!]
+}
+
+type GqlDirectiveSubscriptionPayload {
+  mutation: MutationType!
+  node: GqlDirective
+  updatedFields: [String!]
+  previousValues: GqlDirectivePreviousValues
+}
+
+input GqlDirectiveSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: GqlDirectiveWhereInput
+  AND: [GqlDirectiveSubscriptionWhereInput!]
+  OR: [GqlDirectiveSubscriptionWhereInput!]
+  NOT: [GqlDirectiveSubscriptionWhereInput!]
+}
+
+input GqlDirectiveUpdateDataInput {
+  name: String
+  description: String
+  locations: GqlDirectiveUpdatelocationsInput
+  args: GqlInputValueUpdateManyInput
+}
+
+input GqlDirectiveUpdateInput {
+  name: String
+  description: String
+  locations: GqlDirectiveUpdatelocationsInput
+  args: GqlInputValueUpdateManyInput
+}
+
+input GqlDirectiveUpdatelocationsInput {
+  set: [GqlDirectiveLocation!]
+}
+
+input GqlDirectiveUpdateManyDataInput {
+  name: String
+  description: String
+  locations: GqlDirectiveUpdatelocationsInput
+}
+
+input GqlDirectiveUpdateManyInput {
+  create: [GqlDirectiveCreateInput!]
+  update: [GqlDirectiveUpdateWithWhereUniqueNestedInput!]
+  upsert: [GqlDirectiveUpsertWithWhereUniqueNestedInput!]
+  delete: [GqlDirectiveWhereUniqueInput!]
+  connect: [GqlDirectiveWhereUniqueInput!]
+  set: [GqlDirectiveWhereUniqueInput!]
+  disconnect: [GqlDirectiveWhereUniqueInput!]
+  deleteMany: [GqlDirectiveScalarWhereInput!]
+  updateMany: [GqlDirectiveUpdateManyWithWhereNestedInput!]
+}
+
+input GqlDirectiveUpdateManyMutationInput {
+  name: String
+  description: String
+  locations: GqlDirectiveUpdatelocationsInput
+}
+
+input GqlDirectiveUpdateManyWithWhereNestedInput {
+  where: GqlDirectiveScalarWhereInput!
+  data: GqlDirectiveUpdateManyDataInput!
+}
+
+input GqlDirectiveUpdateWithWhereUniqueNestedInput {
+  where: GqlDirectiveWhereUniqueInput!
+  data: GqlDirectiveUpdateDataInput!
+}
+
+input GqlDirectiveUpsertWithWhereUniqueNestedInput {
+  where: GqlDirectiveWhereUniqueInput!
+  update: GqlDirectiveUpdateDataInput!
+  create: GqlDirectiveCreateInput!
+}
+
+input GqlDirectiveWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  args_every: GqlInputValueWhereInput
+  args_some: GqlInputValueWhereInput
+  args_none: GqlInputValueWhereInput
+  AND: [GqlDirectiveWhereInput!]
+  OR: [GqlDirectiveWhereInput!]
+  NOT: [GqlDirectiveWhereInput!]
+}
+
+input GqlDirectiveWhereUniqueInput {
+  id: ID
+}
+
+type GqlEnumValue {
+  id: ID!
+  name: String!
+  description: String
+  isDeprecated: Boolean!
+  deprecationReason: String
+}
+
+type GqlEnumValueConnection {
+  pageInfo: PageInfo!
+  edges: [GqlEnumValueEdge]!
+  aggregate: AggregateGqlEnumValue!
+}
+
+input GqlEnumValueCreateInput {
+  id: ID
+  name: String!
+  description: String
+  isDeprecated: Boolean!
+  deprecationReason: String
+}
+
+input GqlEnumValueCreateManyInput {
+  create: [GqlEnumValueCreateInput!]
+  connect: [GqlEnumValueWhereUniqueInput!]
+}
+
+type GqlEnumValueEdge {
+  node: GqlEnumValue!
+  cursor: String!
+}
+
+enum GqlEnumValueOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  description_ASC
+  description_DESC
+  isDeprecated_ASC
+  isDeprecated_DESC
+  deprecationReason_ASC
+  deprecationReason_DESC
+}
+
+type GqlEnumValuePreviousValues {
+  id: ID!
+  name: String!
+  description: String
+  isDeprecated: Boolean!
+  deprecationReason: String
+}
+
+input GqlEnumValueScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  isDeprecated: Boolean
+  isDeprecated_not: Boolean
+  deprecationReason: String
+  deprecationReason_not: String
+  deprecationReason_in: [String!]
+  deprecationReason_not_in: [String!]
+  deprecationReason_lt: String
+  deprecationReason_lte: String
+  deprecationReason_gt: String
+  deprecationReason_gte: String
+  deprecationReason_contains: String
+  deprecationReason_not_contains: String
+  deprecationReason_starts_with: String
+  deprecationReason_not_starts_with: String
+  deprecationReason_ends_with: String
+  deprecationReason_not_ends_with: String
+  AND: [GqlEnumValueScalarWhereInput!]
+  OR: [GqlEnumValueScalarWhereInput!]
+  NOT: [GqlEnumValueScalarWhereInput!]
+}
+
+type GqlEnumValueSubscriptionPayload {
+  mutation: MutationType!
+  node: GqlEnumValue
+  updatedFields: [String!]
+  previousValues: GqlEnumValuePreviousValues
+}
+
+input GqlEnumValueSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: GqlEnumValueWhereInput
+  AND: [GqlEnumValueSubscriptionWhereInput!]
+  OR: [GqlEnumValueSubscriptionWhereInput!]
+  NOT: [GqlEnumValueSubscriptionWhereInput!]
+}
+
+input GqlEnumValueUpdateDataInput {
+  name: String
+  description: String
+  isDeprecated: Boolean
+  deprecationReason: String
+}
+
+input GqlEnumValueUpdateInput {
+  name: String
+  description: String
+  isDeprecated: Boolean
+  deprecationReason: String
+}
+
+input GqlEnumValueUpdateManyDataInput {
+  name: String
+  description: String
+  isDeprecated: Boolean
+  deprecationReason: String
+}
+
+input GqlEnumValueUpdateManyInput {
+  create: [GqlEnumValueCreateInput!]
+  update: [GqlEnumValueUpdateWithWhereUniqueNestedInput!]
+  upsert: [GqlEnumValueUpsertWithWhereUniqueNestedInput!]
+  delete: [GqlEnumValueWhereUniqueInput!]
+  connect: [GqlEnumValueWhereUniqueInput!]
+  set: [GqlEnumValueWhereUniqueInput!]
+  disconnect: [GqlEnumValueWhereUniqueInput!]
+  deleteMany: [GqlEnumValueScalarWhereInput!]
+  updateMany: [GqlEnumValueUpdateManyWithWhereNestedInput!]
+}
+
+input GqlEnumValueUpdateManyMutationInput {
+  name: String
+  description: String
+  isDeprecated: Boolean
+  deprecationReason: String
+}
+
+input GqlEnumValueUpdateManyWithWhereNestedInput {
+  where: GqlEnumValueScalarWhereInput!
+  data: GqlEnumValueUpdateManyDataInput!
+}
+
+input GqlEnumValueUpdateWithWhereUniqueNestedInput {
+  where: GqlEnumValueWhereUniqueInput!
+  data: GqlEnumValueUpdateDataInput!
+}
+
+input GqlEnumValueUpsertWithWhereUniqueNestedInput {
+  where: GqlEnumValueWhereUniqueInput!
+  update: GqlEnumValueUpdateDataInput!
+  create: GqlEnumValueCreateInput!
+}
+
+input GqlEnumValueWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  isDeprecated: Boolean
+  isDeprecated_not: Boolean
+  deprecationReason: String
+  deprecationReason_not: String
+  deprecationReason_in: [String!]
+  deprecationReason_not_in: [String!]
+  deprecationReason_lt: String
+  deprecationReason_lte: String
+  deprecationReason_gt: String
+  deprecationReason_gte: String
+  deprecationReason_contains: String
+  deprecationReason_not_contains: String
+  deprecationReason_starts_with: String
+  deprecationReason_not_starts_with: String
+  deprecationReason_ends_with: String
+  deprecationReason_not_ends_with: String
+  AND: [GqlEnumValueWhereInput!]
+  OR: [GqlEnumValueWhereInput!]
+  NOT: [GqlEnumValueWhereInput!]
+}
+
+input GqlEnumValueWhereUniqueInput {
+  id: ID
+}
+
+type GqlField {
+  id: ID!
+  name: String!
+  description: String
+  typeName: String
+  kinds: [GqlTypeKind!]!
+  args(where: GqlInputValueWhereInput, orderBy: GqlInputValueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlInputValue!]
+  isDeprecated: Boolean!
+  deprecationReason: String
+}
+
+type GqlFieldConnection {
+  pageInfo: PageInfo!
+  edges: [GqlFieldEdge]!
+  aggregate: AggregateGqlField!
+}
+
+input GqlFieldCreateInput {
+  id: ID
+  name: String!
+  description: String
+  typeName: String
+  kinds: GqlFieldCreatekindsInput
+  args: GqlInputValueCreateManyInput
+  isDeprecated: Boolean!
+  deprecationReason: String
+}
+
+input GqlFieldCreatekindsInput {
+  set: [GqlTypeKind!]
+}
+
+input GqlFieldCreateManyInput {
+  create: [GqlFieldCreateInput!]
+  connect: [GqlFieldWhereUniqueInput!]
+}
+
+type GqlFieldEdge {
+  node: GqlField!
+  cursor: String!
+}
+
+enum GqlFieldOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  description_ASC
+  description_DESC
+  typeName_ASC
+  typeName_DESC
+  isDeprecated_ASC
+  isDeprecated_DESC
+  deprecationReason_ASC
+  deprecationReason_DESC
+}
+
+type GqlFieldPreviousValues {
+  id: ID!
+  name: String!
+  description: String
+  typeName: String
+  kinds: [GqlTypeKind!]!
+  isDeprecated: Boolean!
+  deprecationReason: String
+}
+
+input GqlFieldScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  typeName: String
+  typeName_not: String
+  typeName_in: [String!]
+  typeName_not_in: [String!]
+  typeName_lt: String
+  typeName_lte: String
+  typeName_gt: String
+  typeName_gte: String
+  typeName_contains: String
+  typeName_not_contains: String
+  typeName_starts_with: String
+  typeName_not_starts_with: String
+  typeName_ends_with: String
+  typeName_not_ends_with: String
+  isDeprecated: Boolean
+  isDeprecated_not: Boolean
+  deprecationReason: String
+  deprecationReason_not: String
+  deprecationReason_in: [String!]
+  deprecationReason_not_in: [String!]
+  deprecationReason_lt: String
+  deprecationReason_lte: String
+  deprecationReason_gt: String
+  deprecationReason_gte: String
+  deprecationReason_contains: String
+  deprecationReason_not_contains: String
+  deprecationReason_starts_with: String
+  deprecationReason_not_starts_with: String
+  deprecationReason_ends_with: String
+  deprecationReason_not_ends_with: String
+  AND: [GqlFieldScalarWhereInput!]
+  OR: [GqlFieldScalarWhereInput!]
+  NOT: [GqlFieldScalarWhereInput!]
+}
+
+type GqlFieldSubscriptionPayload {
+  mutation: MutationType!
+  node: GqlField
+  updatedFields: [String!]
+  previousValues: GqlFieldPreviousValues
+}
+
+input GqlFieldSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: GqlFieldWhereInput
+  AND: [GqlFieldSubscriptionWhereInput!]
+  OR: [GqlFieldSubscriptionWhereInput!]
+  NOT: [GqlFieldSubscriptionWhereInput!]
+}
+
+input GqlFieldUpdateDataInput {
+  name: String
+  description: String
+  typeName: String
+  kinds: GqlFieldUpdatekindsInput
+  args: GqlInputValueUpdateManyInput
+  isDeprecated: Boolean
+  deprecationReason: String
+}
+
+input GqlFieldUpdateInput {
+  name: String
+  description: String
+  typeName: String
+  kinds: GqlFieldUpdatekindsInput
+  args: GqlInputValueUpdateManyInput
+  isDeprecated: Boolean
+  deprecationReason: String
+}
+
+input GqlFieldUpdatekindsInput {
+  set: [GqlTypeKind!]
+}
+
+input GqlFieldUpdateManyDataInput {
+  name: String
+  description: String
+  typeName: String
+  kinds: GqlFieldUpdatekindsInput
+  isDeprecated: Boolean
+  deprecationReason: String
+}
+
+input GqlFieldUpdateManyInput {
+  create: [GqlFieldCreateInput!]
+  update: [GqlFieldUpdateWithWhereUniqueNestedInput!]
+  upsert: [GqlFieldUpsertWithWhereUniqueNestedInput!]
+  delete: [GqlFieldWhereUniqueInput!]
+  connect: [GqlFieldWhereUniqueInput!]
+  set: [GqlFieldWhereUniqueInput!]
+  disconnect: [GqlFieldWhereUniqueInput!]
+  deleteMany: [GqlFieldScalarWhereInput!]
+  updateMany: [GqlFieldUpdateManyWithWhereNestedInput!]
+}
+
+input GqlFieldUpdateManyMutationInput {
+  name: String
+  description: String
+  typeName: String
+  kinds: GqlFieldUpdatekindsInput
+  isDeprecated: Boolean
+  deprecationReason: String
+}
+
+input GqlFieldUpdateManyWithWhereNestedInput {
+  where: GqlFieldScalarWhereInput!
+  data: GqlFieldUpdateManyDataInput!
+}
+
+input GqlFieldUpdateWithWhereUniqueNestedInput {
+  where: GqlFieldWhereUniqueInput!
+  data: GqlFieldUpdateDataInput!
+}
+
+input GqlFieldUpsertWithWhereUniqueNestedInput {
+  where: GqlFieldWhereUniqueInput!
+  update: GqlFieldUpdateDataInput!
+  create: GqlFieldCreateInput!
+}
+
+input GqlFieldWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  typeName: String
+  typeName_not: String
+  typeName_in: [String!]
+  typeName_not_in: [String!]
+  typeName_lt: String
+  typeName_lte: String
+  typeName_gt: String
+  typeName_gte: String
+  typeName_contains: String
+  typeName_not_contains: String
+  typeName_starts_with: String
+  typeName_not_starts_with: String
+  typeName_ends_with: String
+  typeName_not_ends_with: String
+  args_every: GqlInputValueWhereInput
+  args_some: GqlInputValueWhereInput
+  args_none: GqlInputValueWhereInput
+  isDeprecated: Boolean
+  isDeprecated_not: Boolean
+  deprecationReason: String
+  deprecationReason_not: String
+  deprecationReason_in: [String!]
+  deprecationReason_not_in: [String!]
+  deprecationReason_lt: String
+  deprecationReason_lte: String
+  deprecationReason_gt: String
+  deprecationReason_gte: String
+  deprecationReason_contains: String
+  deprecationReason_not_contains: String
+  deprecationReason_starts_with: String
+  deprecationReason_not_starts_with: String
+  deprecationReason_ends_with: String
+  deprecationReason_not_ends_with: String
+  AND: [GqlFieldWhereInput!]
+  OR: [GqlFieldWhereInput!]
+  NOT: [GqlFieldWhereInput!]
+}
+
+input GqlFieldWhereUniqueInput {
+  id: ID
+}
+
+type GqlInputValue {
+  id: ID!
+  name: String!
+  kinds: [GqlTypeKind!]!
+  typeName: String
+  description: String
+  defaultValue: String
+}
+
+type GqlInputValueConnection {
+  pageInfo: PageInfo!
+  edges: [GqlInputValueEdge]!
+  aggregate: AggregateGqlInputValue!
+}
+
+input GqlInputValueCreateInput {
+  id: ID
+  name: String!
+  kinds: GqlInputValueCreatekindsInput
+  typeName: String
+  description: String
+  defaultValue: String
+}
+
+input GqlInputValueCreatekindsInput {
+  set: [GqlTypeKind!]
+}
+
+input GqlInputValueCreateManyInput {
+  create: [GqlInputValueCreateInput!]
+  connect: [GqlInputValueWhereUniqueInput!]
+}
+
+type GqlInputValueEdge {
+  node: GqlInputValue!
+  cursor: String!
+}
+
+enum GqlInputValueOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  typeName_ASC
+  typeName_DESC
+  description_ASC
+  description_DESC
+  defaultValue_ASC
+  defaultValue_DESC
+}
+
+type GqlInputValuePreviousValues {
+  id: ID!
+  name: String!
+  kinds: [GqlTypeKind!]!
+  typeName: String
+  description: String
+  defaultValue: String
+}
+
+input GqlInputValueScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  typeName: String
+  typeName_not: String
+  typeName_in: [String!]
+  typeName_not_in: [String!]
+  typeName_lt: String
+  typeName_lte: String
+  typeName_gt: String
+  typeName_gte: String
+  typeName_contains: String
+  typeName_not_contains: String
+  typeName_starts_with: String
+  typeName_not_starts_with: String
+  typeName_ends_with: String
+  typeName_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  defaultValue: String
+  defaultValue_not: String
+  defaultValue_in: [String!]
+  defaultValue_not_in: [String!]
+  defaultValue_lt: String
+  defaultValue_lte: String
+  defaultValue_gt: String
+  defaultValue_gte: String
+  defaultValue_contains: String
+  defaultValue_not_contains: String
+  defaultValue_starts_with: String
+  defaultValue_not_starts_with: String
+  defaultValue_ends_with: String
+  defaultValue_not_ends_with: String
+  AND: [GqlInputValueScalarWhereInput!]
+  OR: [GqlInputValueScalarWhereInput!]
+  NOT: [GqlInputValueScalarWhereInput!]
+}
+
+type GqlInputValueSubscriptionPayload {
+  mutation: MutationType!
+  node: GqlInputValue
+  updatedFields: [String!]
+  previousValues: GqlInputValuePreviousValues
+}
+
+input GqlInputValueSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: GqlInputValueWhereInput
+  AND: [GqlInputValueSubscriptionWhereInput!]
+  OR: [GqlInputValueSubscriptionWhereInput!]
+  NOT: [GqlInputValueSubscriptionWhereInput!]
+}
+
+input GqlInputValueUpdateDataInput {
+  name: String
+  kinds: GqlInputValueUpdatekindsInput
+  typeName: String
+  description: String
+  defaultValue: String
+}
+
+input GqlInputValueUpdateInput {
+  name: String
+  kinds: GqlInputValueUpdatekindsInput
+  typeName: String
+  description: String
+  defaultValue: String
+}
+
+input GqlInputValueUpdatekindsInput {
+  set: [GqlTypeKind!]
+}
+
+input GqlInputValueUpdateManyDataInput {
+  name: String
+  kinds: GqlInputValueUpdatekindsInput
+  typeName: String
+  description: String
+  defaultValue: String
+}
+
+input GqlInputValueUpdateManyInput {
+  create: [GqlInputValueCreateInput!]
+  update: [GqlInputValueUpdateWithWhereUniqueNestedInput!]
+  upsert: [GqlInputValueUpsertWithWhereUniqueNestedInput!]
+  delete: [GqlInputValueWhereUniqueInput!]
+  connect: [GqlInputValueWhereUniqueInput!]
+  set: [GqlInputValueWhereUniqueInput!]
+  disconnect: [GqlInputValueWhereUniqueInput!]
+  deleteMany: [GqlInputValueScalarWhereInput!]
+  updateMany: [GqlInputValueUpdateManyWithWhereNestedInput!]
+}
+
+input GqlInputValueUpdateManyMutationInput {
+  name: String
+  kinds: GqlInputValueUpdatekindsInput
+  typeName: String
+  description: String
+  defaultValue: String
+}
+
+input GqlInputValueUpdateManyWithWhereNestedInput {
+  where: GqlInputValueScalarWhereInput!
+  data: GqlInputValueUpdateManyDataInput!
+}
+
+input GqlInputValueUpdateWithWhereUniqueNestedInput {
+  where: GqlInputValueWhereUniqueInput!
+  data: GqlInputValueUpdateDataInput!
+}
+
+input GqlInputValueUpsertWithWhereUniqueNestedInput {
+  where: GqlInputValueWhereUniqueInput!
+  update: GqlInputValueUpdateDataInput!
+  create: GqlInputValueCreateInput!
+}
+
+input GqlInputValueWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  typeName: String
+  typeName_not: String
+  typeName_in: [String!]
+  typeName_not_in: [String!]
+  typeName_lt: String
+  typeName_lte: String
+  typeName_gt: String
+  typeName_gte: String
+  typeName_contains: String
+  typeName_not_contains: String
+  typeName_starts_with: String
+  typeName_not_starts_with: String
+  typeName_ends_with: String
+  typeName_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  defaultValue: String
+  defaultValue_not: String
+  defaultValue_in: [String!]
+  defaultValue_not_in: [String!]
+  defaultValue_lt: String
+  defaultValue_lte: String
+  defaultValue_gt: String
+  defaultValue_gte: String
+  defaultValue_contains: String
+  defaultValue_not_contains: String
+  defaultValue_starts_with: String
+  defaultValue_not_starts_with: String
+  defaultValue_ends_with: String
+  defaultValue_not_ends_with: String
+  AND: [GqlInputValueWhereInput!]
+  OR: [GqlInputValueWhereInput!]
+  NOT: [GqlInputValueWhereInput!]
+}
+
+input GqlInputValueWhereUniqueInput {
+  id: ID
+}
+
+type GqlIntrospectionSchema {
+  id: ID!
+  name: String!
+  types(where: GqlTypeWhereInput, orderBy: GqlTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlType!]
+  directives(where: GqlDirectiveWhereInput, orderBy: GqlDirectiveOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlDirective!]
+}
+
+type GqlIntrospectionSchemaConnection {
+  pageInfo: PageInfo!
+  edges: [GqlIntrospectionSchemaEdge]!
+  aggregate: AggregateGqlIntrospectionSchema!
+}
+
+input GqlIntrospectionSchemaCreateInput {
+  id: ID
+  name: String
+  types: GqlTypeCreateManyWithoutSchemaInput
+  directives: GqlDirectiveCreateManyInput
+}
+
+input GqlIntrospectionSchemaCreateOneInput {
+  create: GqlIntrospectionSchemaCreateInput
+  connect: GqlIntrospectionSchemaWhereUniqueInput
+}
+
+input GqlIntrospectionSchemaCreateOneWithoutTypesInput {
+  create: GqlIntrospectionSchemaCreateWithoutTypesInput
+  connect: GqlIntrospectionSchemaWhereUniqueInput
+}
+
+input GqlIntrospectionSchemaCreateWithoutTypesInput {
+  id: ID
+  name: String
+  directives: GqlDirectiveCreateManyInput
+}
+
+type GqlIntrospectionSchemaEdge {
+  node: GqlIntrospectionSchema!
+  cursor: String!
+}
+
+enum GqlIntrospectionSchemaOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+}
+
+type GqlIntrospectionSchemaPreviousValues {
+  id: ID!
+  name: String!
+}
+
+type GqlIntrospectionSchemaSubscriptionPayload {
+  mutation: MutationType!
+  node: GqlIntrospectionSchema
+  updatedFields: [String!]
+  previousValues: GqlIntrospectionSchemaPreviousValues
+}
+
+input GqlIntrospectionSchemaSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: GqlIntrospectionSchemaWhereInput
+  AND: [GqlIntrospectionSchemaSubscriptionWhereInput!]
+  OR: [GqlIntrospectionSchemaSubscriptionWhereInput!]
+  NOT: [GqlIntrospectionSchemaSubscriptionWhereInput!]
+}
+
+input GqlIntrospectionSchemaUpdateDataInput {
+  name: String
+  types: GqlTypeUpdateManyWithoutSchemaInput
+  directives: GqlDirectiveUpdateManyInput
+}
+
+input GqlIntrospectionSchemaUpdateInput {
+  name: String
+  types: GqlTypeUpdateManyWithoutSchemaInput
+  directives: GqlDirectiveUpdateManyInput
+}
+
+input GqlIntrospectionSchemaUpdateManyMutationInput {
+  name: String
+}
+
+input GqlIntrospectionSchemaUpdateOneInput {
+  create: GqlIntrospectionSchemaCreateInput
+  update: GqlIntrospectionSchemaUpdateDataInput
+  upsert: GqlIntrospectionSchemaUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: GqlIntrospectionSchemaWhereUniqueInput
+}
+
+input GqlIntrospectionSchemaUpdateOneRequiredWithoutTypesInput {
+  create: GqlIntrospectionSchemaCreateWithoutTypesInput
+  update: GqlIntrospectionSchemaUpdateWithoutTypesDataInput
+  upsert: GqlIntrospectionSchemaUpsertWithoutTypesInput
+  connect: GqlIntrospectionSchemaWhereUniqueInput
+}
+
+input GqlIntrospectionSchemaUpdateWithoutTypesDataInput {
+  name: String
+  directives: GqlDirectiveUpdateManyInput
+}
+
+input GqlIntrospectionSchemaUpsertNestedInput {
+  update: GqlIntrospectionSchemaUpdateDataInput!
+  create: GqlIntrospectionSchemaCreateInput!
+}
+
+input GqlIntrospectionSchemaUpsertWithoutTypesInput {
+  update: GqlIntrospectionSchemaUpdateWithoutTypesDataInput!
+  create: GqlIntrospectionSchemaCreateWithoutTypesInput!
+}
+
+input GqlIntrospectionSchemaWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  types_every: GqlTypeWhereInput
+  types_some: GqlTypeWhereInput
+  types_none: GqlTypeWhereInput
+  directives_every: GqlDirectiveWhereInput
+  directives_some: GqlDirectiveWhereInput
+  directives_none: GqlDirectiveWhereInput
+  AND: [GqlIntrospectionSchemaWhereInput!]
+  OR: [GqlIntrospectionSchemaWhereInput!]
+  NOT: [GqlIntrospectionSchemaWhereInput!]
+}
+
+input GqlIntrospectionSchemaWhereUniqueInput {
+  id: ID
+}
+
 type GqlSchema {
   id: ID!
   name: String!
   owner: User
   members(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
-  latestVersion: GqlSchemaVersion
-  versions(where: GqlSchemaVersionWhereInput, orderBy: GqlSchemaVersionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlSchemaVersion!]
   apiKey: String!
+  introspectionSchema: GqlIntrospectionSchema
+  endpointUrl: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -48,9 +1550,9 @@ input GqlSchemaCreateInput {
   name: String!
   owner: UserCreateOneInput
   members: UserCreateManyWithoutSchemasInput
-  latestVersion: GqlSchemaVersionCreateOneInput
-  versions: GqlSchemaVersionCreateManyWithoutSchemaInput
   apiKey: String!
+  introspectionSchema: GqlIntrospectionSchemaCreateOneInput
+  endpointUrl: String
 }
 
 input GqlSchemaCreateManyWithoutMembersInput {
@@ -58,27 +1560,13 @@ input GqlSchemaCreateManyWithoutMembersInput {
   connect: [GqlSchemaWhereUniqueInput!]
 }
 
-input GqlSchemaCreateOneWithoutVersionsInput {
-  create: GqlSchemaCreateWithoutVersionsInput
-  connect: GqlSchemaWhereUniqueInput
-}
-
 input GqlSchemaCreateWithoutMembersInput {
   id: ID
   name: String!
   owner: UserCreateOneInput
-  latestVersion: GqlSchemaVersionCreateOneInput
-  versions: GqlSchemaVersionCreateManyWithoutSchemaInput
   apiKey: String!
-}
-
-input GqlSchemaCreateWithoutVersionsInput {
-  id: ID
-  name: String!
-  owner: UserCreateOneInput
-  members: UserCreateManyWithoutSchemasInput
-  latestVersion: GqlSchemaVersionCreateOneInput
-  apiKey: String!
+  introspectionSchema: GqlIntrospectionSchemaCreateOneInput
+  endpointUrl: String
 }
 
 type GqlSchemaEdge {
@@ -93,6 +1581,8 @@ enum GqlSchemaOrderByInput {
   name_DESC
   apiKey_ASC
   apiKey_DESC
+  endpointUrl_ASC
+  endpointUrl_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -103,6 +1593,7 @@ type GqlSchemaPreviousValues {
   id: ID!
   name: String!
   apiKey: String!
+  endpointUrl: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -150,6 +1641,20 @@ input GqlSchemaScalarWhereInput {
   apiKey_not_starts_with: String
   apiKey_ends_with: String
   apiKey_not_ends_with: String
+  endpointUrl: String
+  endpointUrl_not: String
+  endpointUrl_in: [String!]
+  endpointUrl_not_in: [String!]
+  endpointUrl_lt: String
+  endpointUrl_lte: String
+  endpointUrl_gt: String
+  endpointUrl_gte: String
+  endpointUrl_contains: String
+  endpointUrl_not_contains: String
+  endpointUrl_starts_with: String
+  endpointUrl_not_starts_with: String
+  endpointUrl_ends_with: String
+  endpointUrl_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -193,19 +1698,21 @@ input GqlSchemaUpdateInput {
   name: String
   owner: UserUpdateOneInput
   members: UserUpdateManyWithoutSchemasInput
-  latestVersion: GqlSchemaVersionUpdateOneInput
-  versions: GqlSchemaVersionUpdateManyWithoutSchemaInput
   apiKey: String
+  introspectionSchema: GqlIntrospectionSchemaUpdateOneInput
+  endpointUrl: String
 }
 
 input GqlSchemaUpdateManyDataInput {
   name: String
   apiKey: String
+  endpointUrl: String
 }
 
 input GqlSchemaUpdateManyMutationInput {
   name: String
   apiKey: String
+  endpointUrl: String
 }
 
 input GqlSchemaUpdateManyWithoutMembersInput {
@@ -225,29 +1732,12 @@ input GqlSchemaUpdateManyWithWhereNestedInput {
   data: GqlSchemaUpdateManyDataInput!
 }
 
-input GqlSchemaUpdateOneWithoutVersionsInput {
-  create: GqlSchemaCreateWithoutVersionsInput
-  update: GqlSchemaUpdateWithoutVersionsDataInput
-  upsert: GqlSchemaUpsertWithoutVersionsInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: GqlSchemaWhereUniqueInput
-}
-
 input GqlSchemaUpdateWithoutMembersDataInput {
   name: String
   owner: UserUpdateOneInput
-  latestVersion: GqlSchemaVersionUpdateOneInput
-  versions: GqlSchemaVersionUpdateManyWithoutSchemaInput
   apiKey: String
-}
-
-input GqlSchemaUpdateWithoutVersionsDataInput {
-  name: String
-  owner: UserUpdateOneInput
-  members: UserUpdateManyWithoutSchemasInput
-  latestVersion: GqlSchemaVersionUpdateOneInput
-  apiKey: String
+  introspectionSchema: GqlIntrospectionSchemaUpdateOneInput
+  endpointUrl: String
 }
 
 input GqlSchemaUpdateWithWhereUniqueWithoutMembersInput {
@@ -255,305 +1745,10 @@ input GqlSchemaUpdateWithWhereUniqueWithoutMembersInput {
   data: GqlSchemaUpdateWithoutMembersDataInput!
 }
 
-input GqlSchemaUpsertWithoutVersionsInput {
-  update: GqlSchemaUpdateWithoutVersionsDataInput!
-  create: GqlSchemaCreateWithoutVersionsInput!
-}
-
 input GqlSchemaUpsertWithWhereUniqueWithoutMembersInput {
   where: GqlSchemaWhereUniqueInput!
   update: GqlSchemaUpdateWithoutMembersDataInput!
   create: GqlSchemaCreateWithoutMembersInput!
-}
-
-type GqlSchemaVersion {
-  id: ID!
-  number: Int!
-  schema: GqlSchema
-  introspectionQuery: Json
-  endpointUrl: String
-  createdBy: User
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type GqlSchemaVersionConnection {
-  pageInfo: PageInfo!
-  edges: [GqlSchemaVersionEdge]!
-  aggregate: AggregateGqlSchemaVersion!
-}
-
-input GqlSchemaVersionCreateInput {
-  id: ID
-  number: Int!
-  schema: GqlSchemaCreateOneWithoutVersionsInput
-  introspectionQuery: Json
-  endpointUrl: String
-  createdBy: UserCreateOneInput
-}
-
-input GqlSchemaVersionCreateManyWithoutSchemaInput {
-  create: [GqlSchemaVersionCreateWithoutSchemaInput!]
-  connect: [GqlSchemaVersionWhereUniqueInput!]
-}
-
-input GqlSchemaVersionCreateOneInput {
-  create: GqlSchemaVersionCreateInput
-  connect: GqlSchemaVersionWhereUniqueInput
-}
-
-input GqlSchemaVersionCreateWithoutSchemaInput {
-  id: ID
-  number: Int!
-  introspectionQuery: Json
-  endpointUrl: String
-  createdBy: UserCreateOneInput
-}
-
-type GqlSchemaVersionEdge {
-  node: GqlSchemaVersion!
-  cursor: String!
-}
-
-enum GqlSchemaVersionOrderByInput {
-  id_ASC
-  id_DESC
-  number_ASC
-  number_DESC
-  introspectionQuery_ASC
-  introspectionQuery_DESC
-  endpointUrl_ASC
-  endpointUrl_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
-type GqlSchemaVersionPreviousValues {
-  id: ID!
-  number: Int!
-  introspectionQuery: Json
-  endpointUrl: String
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-input GqlSchemaVersionScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  number: Int
-  number_not: Int
-  number_in: [Int!]
-  number_not_in: [Int!]
-  number_lt: Int
-  number_lte: Int
-  number_gt: Int
-  number_gte: Int
-  endpointUrl: String
-  endpointUrl_not: String
-  endpointUrl_in: [String!]
-  endpointUrl_not_in: [String!]
-  endpointUrl_lt: String
-  endpointUrl_lte: String
-  endpointUrl_gt: String
-  endpointUrl_gte: String
-  endpointUrl_contains: String
-  endpointUrl_not_contains: String
-  endpointUrl_starts_with: String
-  endpointUrl_not_starts_with: String
-  endpointUrl_ends_with: String
-  endpointUrl_not_ends_with: String
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  AND: [GqlSchemaVersionScalarWhereInput!]
-  OR: [GqlSchemaVersionScalarWhereInput!]
-  NOT: [GqlSchemaVersionScalarWhereInput!]
-}
-
-type GqlSchemaVersionSubscriptionPayload {
-  mutation: MutationType!
-  node: GqlSchemaVersion
-  updatedFields: [String!]
-  previousValues: GqlSchemaVersionPreviousValues
-}
-
-input GqlSchemaVersionSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: GqlSchemaVersionWhereInput
-  AND: [GqlSchemaVersionSubscriptionWhereInput!]
-  OR: [GqlSchemaVersionSubscriptionWhereInput!]
-  NOT: [GqlSchemaVersionSubscriptionWhereInput!]
-}
-
-input GqlSchemaVersionUpdateDataInput {
-  number: Int
-  schema: GqlSchemaUpdateOneWithoutVersionsInput
-  introspectionQuery: Json
-  endpointUrl: String
-  createdBy: UserUpdateOneInput
-}
-
-input GqlSchemaVersionUpdateInput {
-  number: Int
-  schema: GqlSchemaUpdateOneWithoutVersionsInput
-  introspectionQuery: Json
-  endpointUrl: String
-  createdBy: UserUpdateOneInput
-}
-
-input GqlSchemaVersionUpdateManyDataInput {
-  number: Int
-  introspectionQuery: Json
-  endpointUrl: String
-}
-
-input GqlSchemaVersionUpdateManyMutationInput {
-  number: Int
-  introspectionQuery: Json
-  endpointUrl: String
-}
-
-input GqlSchemaVersionUpdateManyWithoutSchemaInput {
-  create: [GqlSchemaVersionCreateWithoutSchemaInput!]
-  delete: [GqlSchemaVersionWhereUniqueInput!]
-  connect: [GqlSchemaVersionWhereUniqueInput!]
-  set: [GqlSchemaVersionWhereUniqueInput!]
-  disconnect: [GqlSchemaVersionWhereUniqueInput!]
-  update: [GqlSchemaVersionUpdateWithWhereUniqueWithoutSchemaInput!]
-  upsert: [GqlSchemaVersionUpsertWithWhereUniqueWithoutSchemaInput!]
-  deleteMany: [GqlSchemaVersionScalarWhereInput!]
-  updateMany: [GqlSchemaVersionUpdateManyWithWhereNestedInput!]
-}
-
-input GqlSchemaVersionUpdateManyWithWhereNestedInput {
-  where: GqlSchemaVersionScalarWhereInput!
-  data: GqlSchemaVersionUpdateManyDataInput!
-}
-
-input GqlSchemaVersionUpdateOneInput {
-  create: GqlSchemaVersionCreateInput
-  update: GqlSchemaVersionUpdateDataInput
-  upsert: GqlSchemaVersionUpsertNestedInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: GqlSchemaVersionWhereUniqueInput
-}
-
-input GqlSchemaVersionUpdateWithoutSchemaDataInput {
-  number: Int
-  introspectionQuery: Json
-  endpointUrl: String
-  createdBy: UserUpdateOneInput
-}
-
-input GqlSchemaVersionUpdateWithWhereUniqueWithoutSchemaInput {
-  where: GqlSchemaVersionWhereUniqueInput!
-  data: GqlSchemaVersionUpdateWithoutSchemaDataInput!
-}
-
-input GqlSchemaVersionUpsertNestedInput {
-  update: GqlSchemaVersionUpdateDataInput!
-  create: GqlSchemaVersionCreateInput!
-}
-
-input GqlSchemaVersionUpsertWithWhereUniqueWithoutSchemaInput {
-  where: GqlSchemaVersionWhereUniqueInput!
-  update: GqlSchemaVersionUpdateWithoutSchemaDataInput!
-  create: GqlSchemaVersionCreateWithoutSchemaInput!
-}
-
-input GqlSchemaVersionWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  number: Int
-  number_not: Int
-  number_in: [Int!]
-  number_not_in: [Int!]
-  number_lt: Int
-  number_lte: Int
-  number_gt: Int
-  number_gte: Int
-  schema: GqlSchemaWhereInput
-  endpointUrl: String
-  endpointUrl_not: String
-  endpointUrl_in: [String!]
-  endpointUrl_not_in: [String!]
-  endpointUrl_lt: String
-  endpointUrl_lte: String
-  endpointUrl_gt: String
-  endpointUrl_gte: String
-  endpointUrl_contains: String
-  endpointUrl_not_contains: String
-  endpointUrl_starts_with: String
-  endpointUrl_not_starts_with: String
-  endpointUrl_ends_with: String
-  endpointUrl_not_ends_with: String
-  createdBy: UserWhereInput
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  AND: [GqlSchemaVersionWhereInput!]
-  OR: [GqlSchemaVersionWhereInput!]
-  NOT: [GqlSchemaVersionWhereInput!]
-}
-
-input GqlSchemaVersionWhereUniqueInput {
-  id: ID
 }
 
 input GqlSchemaWhereInput {
@@ -589,10 +1784,6 @@ input GqlSchemaWhereInput {
   members_every: UserWhereInput
   members_some: UserWhereInput
   members_none: UserWhereInput
-  latestVersion: GqlSchemaVersionWhereInput
-  versions_every: GqlSchemaVersionWhereInput
-  versions_some: GqlSchemaVersionWhereInput
-  versions_none: GqlSchemaVersionWhereInput
   apiKey: String
   apiKey_not: String
   apiKey_in: [String!]
@@ -607,6 +1798,21 @@ input GqlSchemaWhereInput {
   apiKey_not_starts_with: String
   apiKey_ends_with: String
   apiKey_not_ends_with: String
+  introspectionSchema: GqlIntrospectionSchemaWhereInput
+  endpointUrl: String
+  endpointUrl_not: String
+  endpointUrl_in: [String!]
+  endpointUrl_not_in: [String!]
+  endpointUrl_lt: String
+  endpointUrl_lte: String
+  endpointUrl_gt: String
+  endpointUrl_gte: String
+  endpointUrl_contains: String
+  endpointUrl_not_contains: String
+  endpointUrl_starts_with: String
+  endpointUrl_not_starts_with: String
+  endpointUrl_ends_with: String
+  endpointUrl_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -632,23 +1838,345 @@ input GqlSchemaWhereUniqueInput {
   id: ID
 }
 
-scalar Json
+type GqlType {
+  id: ID!
+  kind: GqlTypeKind!
+  name: String
+  description: String
+  schema: GqlIntrospectionSchema!
+  fields(where: GqlFieldWhereInput, orderBy: GqlFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlField!]
+  interfaces(where: GqlBaseTypeWhereInput, orderBy: GqlBaseTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlBaseType!]
+  possibleTypes(where: GqlBaseTypeWhereInput, orderBy: GqlBaseTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlBaseType!]
+  enumValues(where: GqlEnumValueWhereInput, orderBy: GqlEnumValueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlEnumValue!]
+  inputFields(where: GqlInputValueWhereInput, orderBy: GqlInputValueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlInputValue!]
+}
+
+type GqlTypeConnection {
+  pageInfo: PageInfo!
+  edges: [GqlTypeEdge]!
+  aggregate: AggregateGqlType!
+}
+
+input GqlTypeCreateInput {
+  id: ID
+  kind: GqlTypeKind!
+  name: String
+  description: String
+  schema: GqlIntrospectionSchemaCreateOneWithoutTypesInput!
+  fields: GqlFieldCreateManyInput
+  interfaces: GqlBaseTypeCreateManyInput
+  possibleTypes: GqlBaseTypeCreateManyInput
+  enumValues: GqlEnumValueCreateManyInput
+  inputFields: GqlInputValueCreateManyInput
+}
+
+input GqlTypeCreateManyWithoutSchemaInput {
+  create: [GqlTypeCreateWithoutSchemaInput!]
+  connect: [GqlTypeWhereUniqueInput!]
+}
+
+input GqlTypeCreateWithoutSchemaInput {
+  id: ID
+  kind: GqlTypeKind!
+  name: String
+  description: String
+  fields: GqlFieldCreateManyInput
+  interfaces: GqlBaseTypeCreateManyInput
+  possibleTypes: GqlBaseTypeCreateManyInput
+  enumValues: GqlEnumValueCreateManyInput
+  inputFields: GqlInputValueCreateManyInput
+}
+
+type GqlTypeEdge {
+  node: GqlType!
+  cursor: String!
+}
+
+enum GqlTypeKind {
+  SCALAR
+  OBJECT
+  INTERFACE
+  UNION
+  ENUM
+  INPUT_OBJECT
+  LIST
+  NON_NULL
+}
+
+enum GqlTypeOrderByInput {
+  id_ASC
+  id_DESC
+  kind_ASC
+  kind_DESC
+  name_ASC
+  name_DESC
+  description_ASC
+  description_DESC
+}
+
+type GqlTypePreviousValues {
+  id: ID!
+  kind: GqlTypeKind!
+  name: String
+  description: String
+}
+
+input GqlTypeScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  kind: GqlTypeKind
+  kind_not: GqlTypeKind
+  kind_in: [GqlTypeKind!]
+  kind_not_in: [GqlTypeKind!]
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  AND: [GqlTypeScalarWhereInput!]
+  OR: [GqlTypeScalarWhereInput!]
+  NOT: [GqlTypeScalarWhereInput!]
+}
+
+type GqlTypeSubscriptionPayload {
+  mutation: MutationType!
+  node: GqlType
+  updatedFields: [String!]
+  previousValues: GqlTypePreviousValues
+}
+
+input GqlTypeSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: GqlTypeWhereInput
+  AND: [GqlTypeSubscriptionWhereInput!]
+  OR: [GqlTypeSubscriptionWhereInput!]
+  NOT: [GqlTypeSubscriptionWhereInput!]
+}
+
+input GqlTypeUpdateInput {
+  kind: GqlTypeKind
+  name: String
+  description: String
+  schema: GqlIntrospectionSchemaUpdateOneRequiredWithoutTypesInput
+  fields: GqlFieldUpdateManyInput
+  interfaces: GqlBaseTypeUpdateManyInput
+  possibleTypes: GqlBaseTypeUpdateManyInput
+  enumValues: GqlEnumValueUpdateManyInput
+  inputFields: GqlInputValueUpdateManyInput
+}
+
+input GqlTypeUpdateManyDataInput {
+  kind: GqlTypeKind
+  name: String
+  description: String
+}
+
+input GqlTypeUpdateManyMutationInput {
+  kind: GqlTypeKind
+  name: String
+  description: String
+}
+
+input GqlTypeUpdateManyWithoutSchemaInput {
+  create: [GqlTypeCreateWithoutSchemaInput!]
+  delete: [GqlTypeWhereUniqueInput!]
+  connect: [GqlTypeWhereUniqueInput!]
+  set: [GqlTypeWhereUniqueInput!]
+  disconnect: [GqlTypeWhereUniqueInput!]
+  update: [GqlTypeUpdateWithWhereUniqueWithoutSchemaInput!]
+  upsert: [GqlTypeUpsertWithWhereUniqueWithoutSchemaInput!]
+  deleteMany: [GqlTypeScalarWhereInput!]
+  updateMany: [GqlTypeUpdateManyWithWhereNestedInput!]
+}
+
+input GqlTypeUpdateManyWithWhereNestedInput {
+  where: GqlTypeScalarWhereInput!
+  data: GqlTypeUpdateManyDataInput!
+}
+
+input GqlTypeUpdateWithoutSchemaDataInput {
+  kind: GqlTypeKind
+  name: String
+  description: String
+  fields: GqlFieldUpdateManyInput
+  interfaces: GqlBaseTypeUpdateManyInput
+  possibleTypes: GqlBaseTypeUpdateManyInput
+  enumValues: GqlEnumValueUpdateManyInput
+  inputFields: GqlInputValueUpdateManyInput
+}
+
+input GqlTypeUpdateWithWhereUniqueWithoutSchemaInput {
+  where: GqlTypeWhereUniqueInput!
+  data: GqlTypeUpdateWithoutSchemaDataInput!
+}
+
+input GqlTypeUpsertWithWhereUniqueWithoutSchemaInput {
+  where: GqlTypeWhereUniqueInput!
+  update: GqlTypeUpdateWithoutSchemaDataInput!
+  create: GqlTypeCreateWithoutSchemaInput!
+}
+
+input GqlTypeWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  kind: GqlTypeKind
+  kind_not: GqlTypeKind
+  kind_in: [GqlTypeKind!]
+  kind_not_in: [GqlTypeKind!]
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  schema: GqlIntrospectionSchemaWhereInput
+  fields_every: GqlFieldWhereInput
+  fields_some: GqlFieldWhereInput
+  fields_none: GqlFieldWhereInput
+  interfaces_every: GqlBaseTypeWhereInput
+  interfaces_some: GqlBaseTypeWhereInput
+  interfaces_none: GqlBaseTypeWhereInput
+  possibleTypes_every: GqlBaseTypeWhereInput
+  possibleTypes_some: GqlBaseTypeWhereInput
+  possibleTypes_none: GqlBaseTypeWhereInput
+  enumValues_every: GqlEnumValueWhereInput
+  enumValues_some: GqlEnumValueWhereInput
+  enumValues_none: GqlEnumValueWhereInput
+  inputFields_every: GqlInputValueWhereInput
+  inputFields_some: GqlInputValueWhereInput
+  inputFields_none: GqlInputValueWhereInput
+  AND: [GqlTypeWhereInput!]
+  OR: [GqlTypeWhereInput!]
+  NOT: [GqlTypeWhereInput!]
+}
+
+input GqlTypeWhereUniqueInput {
+  id: ID
+}
 
 scalar Long
 
 type Mutation {
+  createGqlBaseType(data: GqlBaseTypeCreateInput!): GqlBaseType!
+  updateGqlBaseType(data: GqlBaseTypeUpdateInput!, where: GqlBaseTypeWhereUniqueInput!): GqlBaseType
+  updateManyGqlBaseTypes(data: GqlBaseTypeUpdateManyMutationInput!, where: GqlBaseTypeWhereInput): BatchPayload!
+  upsertGqlBaseType(where: GqlBaseTypeWhereUniqueInput!, create: GqlBaseTypeCreateInput!, update: GqlBaseTypeUpdateInput!): GqlBaseType!
+  deleteGqlBaseType(where: GqlBaseTypeWhereUniqueInput!): GqlBaseType
+  deleteManyGqlBaseTypes(where: GqlBaseTypeWhereInput): BatchPayload!
+  createGqlDirective(data: GqlDirectiveCreateInput!): GqlDirective!
+  updateGqlDirective(data: GqlDirectiveUpdateInput!, where: GqlDirectiveWhereUniqueInput!): GqlDirective
+  updateManyGqlDirectives(data: GqlDirectiveUpdateManyMutationInput!, where: GqlDirectiveWhereInput): BatchPayload!
+  upsertGqlDirective(where: GqlDirectiveWhereUniqueInput!, create: GqlDirectiveCreateInput!, update: GqlDirectiveUpdateInput!): GqlDirective!
+  deleteGqlDirective(where: GqlDirectiveWhereUniqueInput!): GqlDirective
+  deleteManyGqlDirectives(where: GqlDirectiveWhereInput): BatchPayload!
+  createGqlEnumValue(data: GqlEnumValueCreateInput!): GqlEnumValue!
+  updateGqlEnumValue(data: GqlEnumValueUpdateInput!, where: GqlEnumValueWhereUniqueInput!): GqlEnumValue
+  updateManyGqlEnumValues(data: GqlEnumValueUpdateManyMutationInput!, where: GqlEnumValueWhereInput): BatchPayload!
+  upsertGqlEnumValue(where: GqlEnumValueWhereUniqueInput!, create: GqlEnumValueCreateInput!, update: GqlEnumValueUpdateInput!): GqlEnumValue!
+  deleteGqlEnumValue(where: GqlEnumValueWhereUniqueInput!): GqlEnumValue
+  deleteManyGqlEnumValues(where: GqlEnumValueWhereInput): BatchPayload!
+  createGqlField(data: GqlFieldCreateInput!): GqlField!
+  updateGqlField(data: GqlFieldUpdateInput!, where: GqlFieldWhereUniqueInput!): GqlField
+  updateManyGqlFields(data: GqlFieldUpdateManyMutationInput!, where: GqlFieldWhereInput): BatchPayload!
+  upsertGqlField(where: GqlFieldWhereUniqueInput!, create: GqlFieldCreateInput!, update: GqlFieldUpdateInput!): GqlField!
+  deleteGqlField(where: GqlFieldWhereUniqueInput!): GqlField
+  deleteManyGqlFields(where: GqlFieldWhereInput): BatchPayload!
+  createGqlInputValue(data: GqlInputValueCreateInput!): GqlInputValue!
+  updateGqlInputValue(data: GqlInputValueUpdateInput!, where: GqlInputValueWhereUniqueInput!): GqlInputValue
+  updateManyGqlInputValues(data: GqlInputValueUpdateManyMutationInput!, where: GqlInputValueWhereInput): BatchPayload!
+  upsertGqlInputValue(where: GqlInputValueWhereUniqueInput!, create: GqlInputValueCreateInput!, update: GqlInputValueUpdateInput!): GqlInputValue!
+  deleteGqlInputValue(where: GqlInputValueWhereUniqueInput!): GqlInputValue
+  deleteManyGqlInputValues(where: GqlInputValueWhereInput): BatchPayload!
+  createGqlIntrospectionSchema(data: GqlIntrospectionSchemaCreateInput!): GqlIntrospectionSchema!
+  updateGqlIntrospectionSchema(data: GqlIntrospectionSchemaUpdateInput!, where: GqlIntrospectionSchemaWhereUniqueInput!): GqlIntrospectionSchema
+  updateManyGqlIntrospectionSchemas(data: GqlIntrospectionSchemaUpdateManyMutationInput!, where: GqlIntrospectionSchemaWhereInput): BatchPayload!
+  upsertGqlIntrospectionSchema(where: GqlIntrospectionSchemaWhereUniqueInput!, create: GqlIntrospectionSchemaCreateInput!, update: GqlIntrospectionSchemaUpdateInput!): GqlIntrospectionSchema!
+  deleteGqlIntrospectionSchema(where: GqlIntrospectionSchemaWhereUniqueInput!): GqlIntrospectionSchema
+  deleteManyGqlIntrospectionSchemas(where: GqlIntrospectionSchemaWhereInput): BatchPayload!
   createGqlSchema(data: GqlSchemaCreateInput!): GqlSchema!
   updateGqlSchema(data: GqlSchemaUpdateInput!, where: GqlSchemaWhereUniqueInput!): GqlSchema
   updateManyGqlSchemas(data: GqlSchemaUpdateManyMutationInput!, where: GqlSchemaWhereInput): BatchPayload!
   upsertGqlSchema(where: GqlSchemaWhereUniqueInput!, create: GqlSchemaCreateInput!, update: GqlSchemaUpdateInput!): GqlSchema!
   deleteGqlSchema(where: GqlSchemaWhereUniqueInput!): GqlSchema
   deleteManyGqlSchemas(where: GqlSchemaWhereInput): BatchPayload!
-  createGqlSchemaVersion(data: GqlSchemaVersionCreateInput!): GqlSchemaVersion!
-  updateGqlSchemaVersion(data: GqlSchemaVersionUpdateInput!, where: GqlSchemaVersionWhereUniqueInput!): GqlSchemaVersion
-  updateManyGqlSchemaVersions(data: GqlSchemaVersionUpdateManyMutationInput!, where: GqlSchemaVersionWhereInput): BatchPayload!
-  upsertGqlSchemaVersion(where: GqlSchemaVersionWhereUniqueInput!, create: GqlSchemaVersionCreateInput!, update: GqlSchemaVersionUpdateInput!): GqlSchemaVersion!
-  deleteGqlSchemaVersion(where: GqlSchemaVersionWhereUniqueInput!): GqlSchemaVersion
-  deleteManyGqlSchemaVersions(where: GqlSchemaVersionWhereInput): BatchPayload!
+  createGqlType(data: GqlTypeCreateInput!): GqlType!
+  updateGqlType(data: GqlTypeUpdateInput!, where: GqlTypeWhereUniqueInput!): GqlType
+  updateManyGqlTypes(data: GqlTypeUpdateManyMutationInput!, where: GqlTypeWhereInput): BatchPayload!
+  upsertGqlType(where: GqlTypeWhereUniqueInput!, create: GqlTypeCreateInput!, update: GqlTypeUpdateInput!): GqlType!
+  deleteGqlType(where: GqlTypeWhereUniqueInput!): GqlType
+  deleteManyGqlTypes(where: GqlTypeWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -681,12 +2209,30 @@ type PageInfo {
 }
 
 type Query {
+  gqlBaseType(where: GqlBaseTypeWhereUniqueInput!): GqlBaseType
+  gqlBaseTypes(where: GqlBaseTypeWhereInput, orderBy: GqlBaseTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlBaseType]!
+  gqlBaseTypesConnection(where: GqlBaseTypeWhereInput, orderBy: GqlBaseTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GqlBaseTypeConnection!
+  gqlDirective(where: GqlDirectiveWhereUniqueInput!): GqlDirective
+  gqlDirectives(where: GqlDirectiveWhereInput, orderBy: GqlDirectiveOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlDirective]!
+  gqlDirectivesConnection(where: GqlDirectiveWhereInput, orderBy: GqlDirectiveOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GqlDirectiveConnection!
+  gqlEnumValue(where: GqlEnumValueWhereUniqueInput!): GqlEnumValue
+  gqlEnumValues(where: GqlEnumValueWhereInput, orderBy: GqlEnumValueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlEnumValue]!
+  gqlEnumValuesConnection(where: GqlEnumValueWhereInput, orderBy: GqlEnumValueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GqlEnumValueConnection!
+  gqlField(where: GqlFieldWhereUniqueInput!): GqlField
+  gqlFields(where: GqlFieldWhereInput, orderBy: GqlFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlField]!
+  gqlFieldsConnection(where: GqlFieldWhereInput, orderBy: GqlFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GqlFieldConnection!
+  gqlInputValue(where: GqlInputValueWhereUniqueInput!): GqlInputValue
+  gqlInputValues(where: GqlInputValueWhereInput, orderBy: GqlInputValueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlInputValue]!
+  gqlInputValuesConnection(where: GqlInputValueWhereInput, orderBy: GqlInputValueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GqlInputValueConnection!
+  gqlIntrospectionSchema(where: GqlIntrospectionSchemaWhereUniqueInput!): GqlIntrospectionSchema
+  gqlIntrospectionSchemas(where: GqlIntrospectionSchemaWhereInput, orderBy: GqlIntrospectionSchemaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlIntrospectionSchema]!
+  gqlIntrospectionSchemasConnection(where: GqlIntrospectionSchemaWhereInput, orderBy: GqlIntrospectionSchemaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GqlIntrospectionSchemaConnection!
   gqlSchema(where: GqlSchemaWhereUniqueInput!): GqlSchema
   gqlSchemas(where: GqlSchemaWhereInput, orderBy: GqlSchemaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlSchema]!
   gqlSchemasConnection(where: GqlSchemaWhereInput, orderBy: GqlSchemaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GqlSchemaConnection!
-  gqlSchemaVersion(where: GqlSchemaVersionWhereUniqueInput!): GqlSchemaVersion
-  gqlSchemaVersions(where: GqlSchemaVersionWhereInput, orderBy: GqlSchemaVersionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlSchemaVersion]!
-  gqlSchemaVersionsConnection(where: GqlSchemaVersionWhereInput, orderBy: GqlSchemaVersionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GqlSchemaVersionConnection!
+  gqlType(where: GqlTypeWhereUniqueInput!): GqlType
+  gqlTypes(where: GqlTypeWhereInput, orderBy: GqlTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlType]!
+  gqlTypesConnection(where: GqlTypeWhereInput, orderBy: GqlTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GqlTypeConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -697,8 +2243,14 @@ type Query {
 }
 
 type Subscription {
+  gqlBaseType(where: GqlBaseTypeSubscriptionWhereInput): GqlBaseTypeSubscriptionPayload
+  gqlDirective(where: GqlDirectiveSubscriptionWhereInput): GqlDirectiveSubscriptionPayload
+  gqlEnumValue(where: GqlEnumValueSubscriptionWhereInput): GqlEnumValueSubscriptionPayload
+  gqlField(where: GqlFieldSubscriptionWhereInput): GqlFieldSubscriptionPayload
+  gqlInputValue(where: GqlInputValueSubscriptionWhereInput): GqlInputValueSubscriptionPayload
+  gqlIntrospectionSchema(where: GqlIntrospectionSchemaSubscriptionWhereInput): GqlIntrospectionSchemaSubscriptionPayload
   gqlSchema(where: GqlSchemaSubscriptionWhereInput): GqlSchemaSubscriptionPayload
-  gqlSchemaVersion(where: GqlSchemaVersionSubscriptionWhereInput): GqlSchemaVersionSubscriptionPayload
+  gqlType(where: GqlTypeSubscriptionWhereInput): GqlTypeSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   userProfile(where: UserProfileSubscriptionWhereInput): UserProfileSubscriptionPayload
 }

@@ -17,7 +17,39 @@ var models = [
     embedded: false
   },
   {
-    name: "GqlSchemaVersion",
+    name: "GqlIntrospectionSchema",
+    embedded: false
+  },
+  {
+    name: "GqlType",
+    embedded: false
+  },
+  {
+    name: "GqlBaseType",
+    embedded: false
+  },
+  {
+    name: "GqlField",
+    embedded: false
+  },
+  {
+    name: "GqlInputValue",
+    embedded: false
+  },
+  {
+    name: "GqlEnumValue",
+    embedded: false
+  },
+  {
+    name: "GqlDirective",
+    embedded: false
+  },
+  {
+    name: "GqlTypeKind",
+    embedded: false
+  },
+  {
+    name: "GqlDirectiveLocation",
     embedded: false
   }
 ];
