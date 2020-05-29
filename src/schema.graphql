@@ -135,4 +135,12 @@ type Mutation {
   deleteSchema(
     id: ID!
   ): Schema
+  addSchemaMember(
+    schemaId: ID!
+    email: String!
+  ): [User]
+  removeSchemaMember(
+    schemaId: ID!
+    userId: ID!
+  ): [User]
 }
