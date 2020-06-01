@@ -7,14 +7,14 @@ export default async (root, { schemaId, userId }, { prisma, user }) => {
   });
   if (!doesSchemaExist) throw new Error('Schema not found or access denied');
 
-  const members = await prisma.updateGqlSchema({
+  await prisma.updateGqlSchema({
     where: { id: schemaId },
     data: {
       members: {
         disconnect: { id: userId },
       },
     },
-  }).members();
+  });
 
-  return members;
+  return userId;
 };
