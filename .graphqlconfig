@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "GraphQq": {
+      "schemaPath": "./src/schema.graphql",
+      "extensions": {
+        "endpoints": {
+          "local": {
+            "url": "http://localhost:3002/api",
+            "subscription": {
+              "url": "ws://localhost:3002/api-subscriptions"
+            }
+          },
+        }
+      }
+    }
+  }
+}

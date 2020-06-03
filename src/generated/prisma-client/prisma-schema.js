@@ -3,7 +3,15 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateGqlBaseType {
+/* GraphQL */ `type AggregateComment {
+  count: Int!
+}
+
+type AggregateCommentContent {
+  count: Int!
+}
+
+type AggregateGqlBaseType {
   count: Int!
 }
 
@@ -45,6 +53,287 @@ type AggregateUserProfile {
 
 type BatchPayload {
   count: Long!
+}
+
+type Comment {
+  id: ID!
+  content: CommentContent!
+  gqlType: GqlType
+  createdBy: User!
+  createdAt: DateTime!
+}
+
+type CommentConnection {
+  pageInfo: PageInfo!
+  edges: [CommentEdge]!
+  aggregate: AggregateComment!
+}
+
+type CommentContent {
+  id: ID!
+  message: String!
+}
+
+type CommentContentConnection {
+  pageInfo: PageInfo!
+  edges: [CommentContentEdge]!
+  aggregate: AggregateCommentContent!
+}
+
+input CommentContentCreateInput {
+  id: ID
+  message: String!
+}
+
+input CommentContentCreateOneInput {
+  create: CommentContentCreateInput
+  connect: CommentContentWhereUniqueInput
+}
+
+type CommentContentEdge {
+  node: CommentContent!
+  cursor: String!
+}
+
+enum CommentContentOrderByInput {
+  id_ASC
+  id_DESC
+  message_ASC
+  message_DESC
+}
+
+type CommentContentPreviousValues {
+  id: ID!
+  message: String!
+}
+
+type CommentContentSubscriptionPayload {
+  mutation: MutationType!
+  node: CommentContent
+  updatedFields: [String!]
+  previousValues: CommentContentPreviousValues
+}
+
+input CommentContentSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CommentContentWhereInput
+  AND: [CommentContentSubscriptionWhereInput!]
+  OR: [CommentContentSubscriptionWhereInput!]
+  NOT: [CommentContentSubscriptionWhereInput!]
+}
+
+input CommentContentUpdateDataInput {
+  message: String
+}
+
+input CommentContentUpdateInput {
+  message: String
+}
+
+input CommentContentUpdateManyMutationInput {
+  message: String
+}
+
+input CommentContentUpdateOneRequiredInput {
+  create: CommentContentCreateInput
+  update: CommentContentUpdateDataInput
+  upsert: CommentContentUpsertNestedInput
+  connect: CommentContentWhereUniqueInput
+}
+
+input CommentContentUpsertNestedInput {
+  update: CommentContentUpdateDataInput!
+  create: CommentContentCreateInput!
+}
+
+input CommentContentWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  message: String
+  message_not: String
+  message_in: [String!]
+  message_not_in: [String!]
+  message_lt: String
+  message_lte: String
+  message_gt: String
+  message_gte: String
+  message_contains: String
+  message_not_contains: String
+  message_starts_with: String
+  message_not_starts_with: String
+  message_ends_with: String
+  message_not_ends_with: String
+  AND: [CommentContentWhereInput!]
+  OR: [CommentContentWhereInput!]
+  NOT: [CommentContentWhereInput!]
+}
+
+input CommentContentWhereUniqueInput {
+  id: ID
+}
+
+input CommentCreateInput {
+  id: ID
+  content: CommentContentCreateOneInput!
+  gqlType: GqlTypeCreateOneWithoutCommentsInput
+  createdBy: UserCreateOneInput!
+}
+
+input CommentCreateManyWithoutGqlTypeInput {
+  create: [CommentCreateWithoutGqlTypeInput!]
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateWithoutGqlTypeInput {
+  id: ID
+  content: CommentContentCreateOneInput!
+  createdBy: UserCreateOneInput!
+}
+
+type CommentEdge {
+  node: Comment!
+  cursor: String!
+}
+
+enum CommentOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type CommentPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+}
+
+input CommentScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  AND: [CommentScalarWhereInput!]
+  OR: [CommentScalarWhereInput!]
+  NOT: [CommentScalarWhereInput!]
+}
+
+type CommentSubscriptionPayload {
+  mutation: MutationType!
+  node: Comment
+  updatedFields: [String!]
+  previousValues: CommentPreviousValues
+}
+
+input CommentSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CommentWhereInput
+  AND: [CommentSubscriptionWhereInput!]
+  OR: [CommentSubscriptionWhereInput!]
+  NOT: [CommentSubscriptionWhereInput!]
+}
+
+input CommentUpdateInput {
+  content: CommentContentUpdateOneRequiredInput
+  gqlType: GqlTypeUpdateOneWithoutCommentsInput
+  createdBy: UserUpdateOneRequiredInput
+}
+
+input CommentUpdateManyWithoutGqlTypeInput {
+  create: [CommentCreateWithoutGqlTypeInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutGqlTypeInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutGqlTypeInput!]
+  deleteMany: [CommentScalarWhereInput!]
+}
+
+input CommentUpdateWithoutGqlTypeDataInput {
+  content: CommentContentUpdateOneRequiredInput
+  createdBy: UserUpdateOneRequiredInput
+}
+
+input CommentUpdateWithWhereUniqueWithoutGqlTypeInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutGqlTypeDataInput!
+}
+
+input CommentUpsertWithWhereUniqueWithoutGqlTypeInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutGqlTypeDataInput!
+  create: CommentCreateWithoutGqlTypeInput!
+}
+
+input CommentWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  content: CommentContentWhereInput
+  gqlType: GqlTypeWhereInput
+  createdBy: UserWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  AND: [CommentWhereInput!]
+  OR: [CommentWhereInput!]
+  NOT: [CommentWhereInput!]
+}
+
+input CommentWhereUniqueInput {
+  id: ID
 }
 
 scalar DateTime
@@ -1849,6 +2138,7 @@ type GqlType {
   possibleTypes(where: GqlBaseTypeWhereInput, orderBy: GqlBaseTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlBaseType!]
   enumValues(where: GqlEnumValueWhereInput, orderBy: GqlEnumValueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlEnumValue!]
   inputFields(where: GqlInputValueWhereInput, orderBy: GqlInputValueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlInputValue!]
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
 }
 
 type GqlTypeConnection {
@@ -1868,11 +2158,30 @@ input GqlTypeCreateInput {
   possibleTypes: GqlBaseTypeCreateManyInput
   enumValues: GqlEnumValueCreateManyInput
   inputFields: GqlInputValueCreateManyInput
+  comments: CommentCreateManyWithoutGqlTypeInput
 }
 
 input GqlTypeCreateManyWithoutSchemaInput {
   create: [GqlTypeCreateWithoutSchemaInput!]
   connect: [GqlTypeWhereUniqueInput!]
+}
+
+input GqlTypeCreateOneWithoutCommentsInput {
+  create: GqlTypeCreateWithoutCommentsInput
+  connect: GqlTypeWhereUniqueInput
+}
+
+input GqlTypeCreateWithoutCommentsInput {
+  id: ID
+  kind: GqlTypeKind!
+  name: String
+  description: String
+  schema: GqlIntrospectionSchemaCreateOneWithoutTypesInput!
+  fields: GqlFieldCreateManyInput
+  interfaces: GqlBaseTypeCreateManyInput
+  possibleTypes: GqlBaseTypeCreateManyInput
+  enumValues: GqlEnumValueCreateManyInput
+  inputFields: GqlInputValueCreateManyInput
 }
 
 input GqlTypeCreateWithoutSchemaInput {
@@ -1885,6 +2194,7 @@ input GqlTypeCreateWithoutSchemaInput {
   possibleTypes: GqlBaseTypeCreateManyInput
   enumValues: GqlEnumValueCreateManyInput
   inputFields: GqlInputValueCreateManyInput
+  comments: CommentCreateManyWithoutGqlTypeInput
 }
 
 type GqlTypeEdge {
@@ -2001,6 +2311,7 @@ input GqlTypeUpdateInput {
   possibleTypes: GqlBaseTypeUpdateManyInput
   enumValues: GqlEnumValueUpdateManyInput
   inputFields: GqlInputValueUpdateManyInput
+  comments: CommentUpdateManyWithoutGqlTypeInput
 }
 
 input GqlTypeUpdateManyDataInput {
@@ -2032,6 +2343,27 @@ input GqlTypeUpdateManyWithWhereNestedInput {
   data: GqlTypeUpdateManyDataInput!
 }
 
+input GqlTypeUpdateOneWithoutCommentsInput {
+  create: GqlTypeCreateWithoutCommentsInput
+  update: GqlTypeUpdateWithoutCommentsDataInput
+  upsert: GqlTypeUpsertWithoutCommentsInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: GqlTypeWhereUniqueInput
+}
+
+input GqlTypeUpdateWithoutCommentsDataInput {
+  kind: GqlTypeKind
+  name: String
+  description: String
+  schema: GqlIntrospectionSchemaUpdateOneRequiredWithoutTypesInput
+  fields: GqlFieldUpdateManyInput
+  interfaces: GqlBaseTypeUpdateManyInput
+  possibleTypes: GqlBaseTypeUpdateManyInput
+  enumValues: GqlEnumValueUpdateManyInput
+  inputFields: GqlInputValueUpdateManyInput
+}
+
 input GqlTypeUpdateWithoutSchemaDataInput {
   kind: GqlTypeKind
   name: String
@@ -2041,11 +2373,17 @@ input GqlTypeUpdateWithoutSchemaDataInput {
   possibleTypes: GqlBaseTypeUpdateManyInput
   enumValues: GqlEnumValueUpdateManyInput
   inputFields: GqlInputValueUpdateManyInput
+  comments: CommentUpdateManyWithoutGqlTypeInput
 }
 
 input GqlTypeUpdateWithWhereUniqueWithoutSchemaInput {
   where: GqlTypeWhereUniqueInput!
   data: GqlTypeUpdateWithoutSchemaDataInput!
+}
+
+input GqlTypeUpsertWithoutCommentsInput {
+  update: GqlTypeUpdateWithoutCommentsDataInput!
+  create: GqlTypeCreateWithoutCommentsInput!
 }
 
 input GqlTypeUpsertWithWhereUniqueWithoutSchemaInput {
@@ -2117,6 +2455,9 @@ input GqlTypeWhereInput {
   inputFields_every: GqlInputValueWhereInput
   inputFields_some: GqlInputValueWhereInput
   inputFields_none: GqlInputValueWhereInput
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
   AND: [GqlTypeWhereInput!]
   OR: [GqlTypeWhereInput!]
   NOT: [GqlTypeWhereInput!]
@@ -2129,6 +2470,17 @@ input GqlTypeWhereUniqueInput {
 scalar Long
 
 type Mutation {
+  createComment(data: CommentCreateInput!): Comment!
+  updateComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment
+  upsertComment(where: CommentWhereUniqueInput!, create: CommentCreateInput!, update: CommentUpdateInput!): Comment!
+  deleteComment(where: CommentWhereUniqueInput!): Comment
+  deleteManyComments(where: CommentWhereInput): BatchPayload!
+  createCommentContent(data: CommentContentCreateInput!): CommentContent!
+  updateCommentContent(data: CommentContentUpdateInput!, where: CommentContentWhereUniqueInput!): CommentContent
+  updateManyCommentContents(data: CommentContentUpdateManyMutationInput!, where: CommentContentWhereInput): BatchPayload!
+  upsertCommentContent(where: CommentContentWhereUniqueInput!, create: CommentContentCreateInput!, update: CommentContentUpdateInput!): CommentContent!
+  deleteCommentContent(where: CommentContentWhereUniqueInput!): CommentContent
+  deleteManyCommentContents(where: CommentContentWhereInput): BatchPayload!
   createGqlBaseType(data: GqlBaseTypeCreateInput!): GqlBaseType!
   updateGqlBaseType(data: GqlBaseTypeUpdateInput!, where: GqlBaseTypeWhereUniqueInput!): GqlBaseType
   updateManyGqlBaseTypes(data: GqlBaseTypeUpdateManyMutationInput!, where: GqlBaseTypeWhereInput): BatchPayload!
@@ -2209,6 +2561,12 @@ type PageInfo {
 }
 
 type Query {
+  comment(where: CommentWhereUniqueInput!): Comment
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
+  commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
+  commentContent(where: CommentContentWhereUniqueInput!): CommentContent
+  commentContents(where: CommentContentWhereInput, orderBy: CommentContentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CommentContent]!
+  commentContentsConnection(where: CommentContentWhereInput, orderBy: CommentContentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentContentConnection!
   gqlBaseType(where: GqlBaseTypeWhereUniqueInput!): GqlBaseType
   gqlBaseTypes(where: GqlBaseTypeWhereInput, orderBy: GqlBaseTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlBaseType]!
   gqlBaseTypesConnection(where: GqlBaseTypeWhereInput, orderBy: GqlBaseTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GqlBaseTypeConnection!
@@ -2243,6 +2601,8 @@ type Query {
 }
 
 type Subscription {
+  comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
+  commentContent(where: CommentContentSubscriptionWhereInput): CommentContentSubscriptionPayload
   gqlBaseType(where: GqlBaseTypeSubscriptionWhereInput): GqlBaseTypeSubscriptionPayload
   gqlDirective(where: GqlDirectiveSubscriptionWhereInput): GqlDirectiveSubscriptionPayload
   gqlEnumValue(where: GqlEnumValueSubscriptionWhereInput): GqlEnumValueSubscriptionPayload
@@ -2661,6 +3021,13 @@ input UserUpdateOneInput {
   upsert: UserUpsertNestedInput
   delete: Boolean
   disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
   connect: UserWhereUniqueInput
 }
 

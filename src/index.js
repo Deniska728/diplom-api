@@ -13,13 +13,14 @@ import { prisma } from './generated/prisma-client';
 
 import users from './api/users/resolvers';
 import schemas from './api/schemas/resolvers';
+import comments from './api/comments/resolvers';
 
 const resolvers = _.merge({
   JSON: GraphQLJSON,
   Query: {
     info: () => 'Welcome to GraphQq',
   },
-}, users, schemas);
+}, users, schemas, comments);
 
 const port = 3002;
 
@@ -37,7 +38,22 @@ const server = new ApolloServer({
 
     return context;
   },
+  subscriptions: {
+    path: '/api-subscriptions',
+    onConnect: async (connectionParams) => {
+      const context = {
+        prisma,
+      };
+
+      if (connectionParams.authorization) {
+        context.user = await getUser(connectionParams.authorization, context);
+      }
+
+      return context;
+    },
+  },
 });
+
 
 const app = express();
 

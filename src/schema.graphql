@@ -15,6 +15,29 @@ type UserProfile {
   picture: String
 }
 
+type Comment {
+  id: ID!
+  gqlType: GqlType!
+  content: CommentContent!
+  createdBy: User
+  createdAt: String
+}
+
+type CommentContent {
+  message: String!
+}
+
+type CommentSubscriptionResponse {
+  mutation: MutationType
+  comment: Comment
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
 type Schema {
   id: ID!
   name: String!
@@ -123,6 +146,10 @@ type Query {
     apiKey: String
   ): Schema
   schemas: [Schema]
+  comments(
+    schemaId: ID!
+    gqlTypeId: ID!
+  ): [Comment]!
   info: String!
 }
 
@@ -143,4 +170,16 @@ type Mutation {
     schemaId: ID!
     userId: ID!
   ): ID
+  createComment(
+    schemaId: ID!
+    gqlTypeId: ID!
+    content: String!
+  ): Comment!
+}
+
+type Subscription {
+  comment(
+    schemaId: ID!
+    gqlTypeId: ID!
+  ): CommentSubscriptionResponse
 }

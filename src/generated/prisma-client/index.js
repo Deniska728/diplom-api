@@ -13,6 +13,14 @@ var models = [
     embedded: false
   },
   {
+    name: "Comment",
+    embedded: false
+  },
+  {
+    name: "CommentContent",
+    embedded: false
+  },
+  {
     name: "GqlSchema",
     embedded: false
   },
