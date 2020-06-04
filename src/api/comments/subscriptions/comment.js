@@ -1,4 +1,11 @@
 export default {
+  resolve: (payload) => {
+    return {
+      mutation: payload.mutation,
+      comment: payload.node,
+      previousValues: payload.previousValues,
+    };
+  },
   subscribe: async (parent, { schemaId, gqlTypeId }, { prisma, user }) => {
     if (!user) throw new Error('Access denied');
 
@@ -15,10 +22,8 @@ export default {
     if (!schema) throw new Error('Schema not found or access denied');
 
     return prisma.$subscribe.comment({
-      where: {
-        node: {
-          gqlType: { id: gqlTypeId },
-        },
+      node: {
+        gqlType: { id: gqlTypeId },
       },
     });
   },

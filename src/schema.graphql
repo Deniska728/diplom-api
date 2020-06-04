@@ -30,6 +30,11 @@ type CommentContent {
 type CommentSubscriptionResponse {
   mutation: MutationType
   comment: Comment
+  previousValues: DeletedCommentResponse
+}
+
+type DeletedCommentResponse {
+  id: ID!
 }
 
 enum MutationType {
@@ -99,6 +104,7 @@ type GqlEnumValue {
   isDeprecated: Boolean!
   deprecationReason: String
 }
+
 type GqlDirective {
   id: ID!
   name: String!
@@ -175,6 +181,9 @@ type Mutation {
     gqlTypeId: ID!
     content: String!
   ): Comment!
+  deleteComment(
+    commentId: ID!
+  ): DeletedCommentResponse!
 }
 
 type Subscription {

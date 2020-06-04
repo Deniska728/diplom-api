@@ -2,7 +2,7 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import GraphQLJSON from 'graphql-type-json';
 import _ from 'lodash';
-
+import { createServer } from 'http';
 import './startup';
 
 import typeDefs from './schema.graphql';
@@ -27,26 +27,29 @@ const port = 3002;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: async ({ req }) => {
-    const { headers } = req;
+  context: async (params) => {
+    if (params && params.connection && params.connection.context) return params.connection.context;
 
     const context = {
       prisma,
     };
+
+    if (!params.req) return context;
+    const { headers } = params.req;
+
 
     context.user = await getUser(headers.authorization, context);
 
     return context;
   },
   subscriptions: {
-    path: '/api-subscriptions',
     onConnect: async (connectionParams) => {
       const context = {
         prisma,
       };
-
-      if (connectionParams.authorization) {
-        context.user = await getUser(connectionParams.authorization, context);
+      const authToken = connectionParams.authorization || connectionParams.Authorization;
+      if (authToken) {
+        context.user = await getUser(authToken, context);
       }
 
       return context;
@@ -54,16 +57,13 @@ const server = new ApolloServer({
   },
 });
 
-
 const app = express();
 
-server.applyMiddleware({ app, path: process.env.GRAPHQL_ENDPOINT || '/api' });
-app.get('/schema', (req, res) => {
-  res.json(JSON.stringify({ schema: typeDefs }));
-  res.status(200);
-  res.end();
-});
+server.applyMiddleware({ app, path: '/graphql' });
 
-app.listen({ port }, () => {
-  console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`);
+const httpServer = createServer(app);
+server.installSubscriptionHandlers(httpServer);
+
+httpServer.listen({ port }, () => {
+  console.log(`Apollo Server on http://localhost:${port}/graphql`);
 });
