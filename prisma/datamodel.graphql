@@ -17,6 +17,19 @@ type UserProfile {
   picture: String
 }
 
+type Comment {
+  id: ID! @id
+  content: CommentContent!
+  gqlType: GqlType @relation(name: "CommentsByGqlType")
+  createdBy: User!
+  createdAt: DateTime! @createdAt
+}
+
+type CommentContent {
+  id: ID! @id
+  message: String!
+}
+
 type GqlSchema {
   id: ID! @id
   name: String!
@@ -47,6 +60,7 @@ type GqlType {
   possibleTypes: [GqlBaseType!] @relation(name: "TypePossibleTypes" onDelete: CASCADE)
   enumValues: [GqlEnumValue!] @relation(name: "TypeEnums" onDelete: CASCADE)
   inputFields: [GqlInputValue!] @relation(name: "TypeInputFields" onDelete: CASCADE)
+  comments: [Comment]! @relation(name: "CommentsByGqlType", onDelete: CASCADE)
 }
 
 type GqlBaseType {

@@ -15,6 +15,34 @@ type UserProfile {
   picture: String
 }
 
+type Comment {
+  id: ID!
+  gqlType: GqlType!
+  content: CommentContent!
+  createdBy: User
+  createdAt: String
+}
+
+type CommentContent {
+  message: String!
+}
+
+type CommentSubscriptionResponse {
+  mutation: MutationType
+  comment: Comment
+  previousValues: DeletedCommentResponse
+}
+
+type DeletedCommentResponse {
+  id: ID!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
 type Schema {
   id: ID!
   name: String!
@@ -76,6 +104,7 @@ type GqlEnumValue {
   isDeprecated: Boolean!
   deprecationReason: String
 }
+
 type GqlDirective {
   id: ID!
   name: String!
@@ -123,6 +152,10 @@ type Query {
     apiKey: String
   ): Schema
   schemas: [Schema]
+  comments(
+    schemaId: ID!
+    gqlTypeId: ID!
+  ): [Comment]!
   info: String!
 }
 
@@ -143,4 +176,19 @@ type Mutation {
     schemaId: ID!
     userId: ID!
   ): ID
+  createComment(
+    schemaId: ID!
+    gqlTypeId: ID!
+    content: String!
+  ): Comment!
+  deleteComment(
+    commentId: ID!
+  ): DeletedCommentResponse!
+}
+
+type Subscription {
+  comment(
+    schemaId: ID!
+    gqlTypeId: ID!
+  ): CommentSubscriptionResponse
 }

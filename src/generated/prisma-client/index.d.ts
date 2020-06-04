@@ -16,6 +16,8 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  comment: (where?: CommentWhereInput) => Promise<boolean>;
+  commentContent: (where?: CommentContentWhereInput) => Promise<boolean>;
   gqlBaseType: (where?: GqlBaseTypeWhereInput) => Promise<boolean>;
   gqlDirective: (where?: GqlDirectiveWhereInput) => Promise<boolean>;
   gqlEnumValue: (where?: GqlEnumValueWhereInput) => Promise<boolean>;
@@ -49,6 +51,46 @@ export interface Prisma {
    * Queries
    */
 
+  comment: (where: CommentWhereUniqueInput) => CommentNullablePromise;
+  comments: (args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Comment>;
+  commentsConnection: (args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => CommentConnectionPromise;
+  commentContent: (
+    where: CommentContentWhereUniqueInput
+  ) => CommentContentNullablePromise;
+  commentContents: (args?: {
+    where?: CommentContentWhereInput;
+    orderBy?: CommentContentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<CommentContent>;
+  commentContentsConnection: (args?: {
+    where?: CommentContentWhereInput;
+    orderBy?: CommentContentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => CommentContentConnectionPromise;
   gqlBaseType: (
     where: GqlBaseTypeWhereUniqueInput
   ) => GqlBaseTypeNullablePromise;
@@ -257,6 +299,40 @@ export interface Prisma {
    * Mutations
    */
 
+  createComment: (data: CommentCreateInput) => CommentPromise;
+  updateComment: (args: {
+    data: CommentUpdateInput;
+    where: CommentWhereUniqueInput;
+  }) => CommentPromise;
+  upsertComment: (args: {
+    where: CommentWhereUniqueInput;
+    create: CommentCreateInput;
+    update: CommentUpdateInput;
+  }) => CommentPromise;
+  deleteComment: (where: CommentWhereUniqueInput) => CommentPromise;
+  deleteManyComments: (where?: CommentWhereInput) => BatchPayloadPromise;
+  createCommentContent: (
+    data: CommentContentCreateInput
+  ) => CommentContentPromise;
+  updateCommentContent: (args: {
+    data: CommentContentUpdateInput;
+    where: CommentContentWhereUniqueInput;
+  }) => CommentContentPromise;
+  updateManyCommentContents: (args: {
+    data: CommentContentUpdateManyMutationInput;
+    where?: CommentContentWhereInput;
+  }) => BatchPayloadPromise;
+  upsertCommentContent: (args: {
+    where: CommentContentWhereUniqueInput;
+    create: CommentContentCreateInput;
+    update: CommentContentUpdateInput;
+  }) => CommentContentPromise;
+  deleteCommentContent: (
+    where: CommentContentWhereUniqueInput
+  ) => CommentContentPromise;
+  deleteManyCommentContents: (
+    where?: CommentContentWhereInput
+  ) => BatchPayloadPromise;
   createGqlBaseType: (data: GqlBaseTypeCreateInput) => GqlBaseTypePromise;
   updateGqlBaseType: (args: {
     data: GqlBaseTypeUpdateInput;
@@ -448,6 +524,12 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  comment: (
+    where?: CommentSubscriptionWhereInput
+  ) => CommentSubscriptionPayloadSubscription;
+  commentContent: (
+    where?: CommentContentSubscriptionWhereInput
+  ) => CommentContentSubscriptionPayloadSubscription;
   gqlBaseType: (
     where?: GqlBaseTypeSubscriptionWhereInput
   ) => GqlBaseTypeSubscriptionPayloadSubscription;
@@ -498,13 +580,23 @@ export type GqlTypeKind =
   | "LIST"
   | "NON_NULL";
 
-export type GqlBaseTypeOrderByInput =
+export type GqlTypeOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "kind_ASC"
   | "kind_DESC"
   | "name_ASC"
-  | "name_DESC";
+  | "name_DESC"
+  | "description_ASC"
+  | "description_DESC";
+
+export type GqlDirectiveOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "description_ASC"
+  | "description_DESC";
 
 export type GqlDirectiveLocation =
   | "QUERY"
@@ -538,26 +630,6 @@ export type GqlInputValueOrderByInput =
   | "defaultValue_ASC"
   | "defaultValue_DESC";
 
-export type GqlDirectiveOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "description_ASC"
-  | "description_DESC";
-
-export type GqlEnumValueOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "description_ASC"
-  | "description_DESC"
-  | "isDeprecated_ASC"
-  | "isDeprecated_DESC"
-  | "deprecationReason_ASC"
-  | "deprecationReason_DESC";
-
 export type GqlFieldOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -572,21 +644,31 @@ export type GqlFieldOrderByInput =
   | "deprecationReason_ASC"
   | "deprecationReason_DESC";
 
-export type GqlTypeOrderByInput =
+export type GqlBaseTypeOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "kind_ASC"
   | "kind_DESC"
   | "name_ASC"
-  | "name_DESC"
-  | "description_ASC"
-  | "description_DESC";
+  | "name_DESC";
 
-export type GqlIntrospectionSchemaOrderByInput =
+export type GqlEnumValueOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "name_ASC"
-  | "name_DESC";
+  | "name_DESC"
+  | "description_ASC"
+  | "description_DESC"
+  | "isDeprecated_ASC"
+  | "isDeprecated_DESC"
+  | "deprecationReason_ASC"
+  | "deprecationReason_DESC";
+
+export type CommentOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC";
 
 export type GqlSchemaOrderByInput =
   | "id_ASC"
@@ -616,6 +698,18 @@ export type UserOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
+export type CommentContentOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "message_ASC"
+  | "message_DESC";
+
+export type GqlIntrospectionSchemaOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC";
+
 export type UserProfileOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -630,11 +724,11 @@ export type UserProfileOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type GqlBaseTypeWhereUniqueInput = AtLeastOne<{
+export type CommentWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface GqlBaseTypeWhereInput {
+export interface GqlTypeWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -667,14 +761,140 @@ export interface GqlBaseTypeWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
-  AND?: Maybe<GqlBaseTypeWhereInput[] | GqlBaseTypeWhereInput>;
-  OR?: Maybe<GqlBaseTypeWhereInput[] | GqlBaseTypeWhereInput>;
-  NOT?: Maybe<GqlBaseTypeWhereInput[] | GqlBaseTypeWhereInput>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  schema?: Maybe<GqlIntrospectionSchemaWhereInput>;
+  fields_every?: Maybe<GqlFieldWhereInput>;
+  fields_some?: Maybe<GqlFieldWhereInput>;
+  fields_none?: Maybe<GqlFieldWhereInput>;
+  interfaces_every?: Maybe<GqlBaseTypeWhereInput>;
+  interfaces_some?: Maybe<GqlBaseTypeWhereInput>;
+  interfaces_none?: Maybe<GqlBaseTypeWhereInput>;
+  possibleTypes_every?: Maybe<GqlBaseTypeWhereInput>;
+  possibleTypes_some?: Maybe<GqlBaseTypeWhereInput>;
+  possibleTypes_none?: Maybe<GqlBaseTypeWhereInput>;
+  enumValues_every?: Maybe<GqlEnumValueWhereInput>;
+  enumValues_some?: Maybe<GqlEnumValueWhereInput>;
+  enumValues_none?: Maybe<GqlEnumValueWhereInput>;
+  inputFields_every?: Maybe<GqlInputValueWhereInput>;
+  inputFields_some?: Maybe<GqlInputValueWhereInput>;
+  inputFields_none?: Maybe<GqlInputValueWhereInput>;
+  comments_every?: Maybe<CommentWhereInput>;
+  comments_some?: Maybe<CommentWhereInput>;
+  comments_none?: Maybe<CommentWhereInput>;
+  AND?: Maybe<GqlTypeWhereInput[] | GqlTypeWhereInput>;
+  OR?: Maybe<GqlTypeWhereInput[] | GqlTypeWhereInput>;
+  NOT?: Maybe<GqlTypeWhereInput[] | GqlTypeWhereInput>;
 }
 
-export type GqlDirectiveWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
+export interface GqlIntrospectionSchemaWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  types_every?: Maybe<GqlTypeWhereInput>;
+  types_some?: Maybe<GqlTypeWhereInput>;
+  types_none?: Maybe<GqlTypeWhereInput>;
+  directives_every?: Maybe<GqlDirectiveWhereInput>;
+  directives_some?: Maybe<GqlDirectiveWhereInput>;
+  directives_none?: Maybe<GqlDirectiveWhereInput>;
+  AND?: Maybe<
+    GqlIntrospectionSchemaWhereInput[] | GqlIntrospectionSchemaWhereInput
+  >;
+  OR?: Maybe<
+    GqlIntrospectionSchemaWhereInput[] | GqlIntrospectionSchemaWhereInput
+  >;
+  NOT?: Maybe<
+    GqlIntrospectionSchemaWhereInput[] | GqlIntrospectionSchemaWhereInput
+  >;
+}
+
+export interface GqlDirectiveWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  args_every?: Maybe<GqlInputValueWhereInput>;
+  args_some?: Maybe<GqlInputValueWhereInput>;
+  args_none?: Maybe<GqlInputValueWhereInput>;
+  AND?: Maybe<GqlDirectiveWhereInput[] | GqlDirectiveWhereInput>;
+  OR?: Maybe<GqlDirectiveWhereInput[] | GqlDirectiveWhereInput>;
+  NOT?: Maybe<GqlDirectiveWhereInput[] | GqlDirectiveWhereInput>;
+}
 
 export interface GqlInputValueWhereInput {
   id?: Maybe<ID_Input>;
@@ -751,129 +971,6 @@ export interface GqlInputValueWhereInput {
   OR?: Maybe<GqlInputValueWhereInput[] | GqlInputValueWhereInput>;
   NOT?: Maybe<GqlInputValueWhereInput[] | GqlInputValueWhereInput>;
 }
-
-export interface GqlDirectiveWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  description?: Maybe<String>;
-  description_not?: Maybe<String>;
-  description_in?: Maybe<String[] | String>;
-  description_not_in?: Maybe<String[] | String>;
-  description_lt?: Maybe<String>;
-  description_lte?: Maybe<String>;
-  description_gt?: Maybe<String>;
-  description_gte?: Maybe<String>;
-  description_contains?: Maybe<String>;
-  description_not_contains?: Maybe<String>;
-  description_starts_with?: Maybe<String>;
-  description_not_starts_with?: Maybe<String>;
-  description_ends_with?: Maybe<String>;
-  description_not_ends_with?: Maybe<String>;
-  args_every?: Maybe<GqlInputValueWhereInput>;
-  args_some?: Maybe<GqlInputValueWhereInput>;
-  args_none?: Maybe<GqlInputValueWhereInput>;
-  AND?: Maybe<GqlDirectiveWhereInput[] | GqlDirectiveWhereInput>;
-  OR?: Maybe<GqlDirectiveWhereInput[] | GqlDirectiveWhereInput>;
-  NOT?: Maybe<GqlDirectiveWhereInput[] | GqlDirectiveWhereInput>;
-}
-
-export type GqlEnumValueWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface GqlEnumValueWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  description?: Maybe<String>;
-  description_not?: Maybe<String>;
-  description_in?: Maybe<String[] | String>;
-  description_not_in?: Maybe<String[] | String>;
-  description_lt?: Maybe<String>;
-  description_lte?: Maybe<String>;
-  description_gt?: Maybe<String>;
-  description_gte?: Maybe<String>;
-  description_contains?: Maybe<String>;
-  description_not_contains?: Maybe<String>;
-  description_starts_with?: Maybe<String>;
-  description_not_starts_with?: Maybe<String>;
-  description_ends_with?: Maybe<String>;
-  description_not_ends_with?: Maybe<String>;
-  isDeprecated?: Maybe<Boolean>;
-  isDeprecated_not?: Maybe<Boolean>;
-  deprecationReason?: Maybe<String>;
-  deprecationReason_not?: Maybe<String>;
-  deprecationReason_in?: Maybe<String[] | String>;
-  deprecationReason_not_in?: Maybe<String[] | String>;
-  deprecationReason_lt?: Maybe<String>;
-  deprecationReason_lte?: Maybe<String>;
-  deprecationReason_gt?: Maybe<String>;
-  deprecationReason_gte?: Maybe<String>;
-  deprecationReason_contains?: Maybe<String>;
-  deprecationReason_not_contains?: Maybe<String>;
-  deprecationReason_starts_with?: Maybe<String>;
-  deprecationReason_not_starts_with?: Maybe<String>;
-  deprecationReason_ends_with?: Maybe<String>;
-  deprecationReason_not_ends_with?: Maybe<String>;
-  AND?: Maybe<GqlEnumValueWhereInput[] | GqlEnumValueWhereInput>;
-  OR?: Maybe<GqlEnumValueWhereInput[] | GqlEnumValueWhereInput>;
-  NOT?: Maybe<GqlEnumValueWhereInput[] | GqlEnumValueWhereInput>;
-}
-
-export type GqlFieldWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
 
 export interface GqlFieldWhereInput {
   id?: Maybe<ID_Input>;
@@ -956,15 +1053,7 @@ export interface GqlFieldWhereInput {
   NOT?: Maybe<GqlFieldWhereInput[] | GqlFieldWhereInput>;
 }
 
-export type GqlInputValueWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export type GqlIntrospectionSchemaWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface GqlTypeWhereInput {
+export interface GqlBaseTypeWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -997,6 +1086,40 @@ export interface GqlTypeWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  AND?: Maybe<GqlBaseTypeWhereInput[] | GqlBaseTypeWhereInput>;
+  OR?: Maybe<GqlBaseTypeWhereInput[] | GqlBaseTypeWhereInput>;
+  NOT?: Maybe<GqlBaseTypeWhereInput[] | GqlBaseTypeWhereInput>;
+}
+
+export interface GqlEnumValueWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
   description?: Maybe<String>;
   description_not?: Maybe<String>;
   description_in?: Maybe<String[] | String>;
@@ -1011,28 +1134,28 @@ export interface GqlTypeWhereInput {
   description_not_starts_with?: Maybe<String>;
   description_ends_with?: Maybe<String>;
   description_not_ends_with?: Maybe<String>;
-  schema?: Maybe<GqlIntrospectionSchemaWhereInput>;
-  fields_every?: Maybe<GqlFieldWhereInput>;
-  fields_some?: Maybe<GqlFieldWhereInput>;
-  fields_none?: Maybe<GqlFieldWhereInput>;
-  interfaces_every?: Maybe<GqlBaseTypeWhereInput>;
-  interfaces_some?: Maybe<GqlBaseTypeWhereInput>;
-  interfaces_none?: Maybe<GqlBaseTypeWhereInput>;
-  possibleTypes_every?: Maybe<GqlBaseTypeWhereInput>;
-  possibleTypes_some?: Maybe<GqlBaseTypeWhereInput>;
-  possibleTypes_none?: Maybe<GqlBaseTypeWhereInput>;
-  enumValues_every?: Maybe<GqlEnumValueWhereInput>;
-  enumValues_some?: Maybe<GqlEnumValueWhereInput>;
-  enumValues_none?: Maybe<GqlEnumValueWhereInput>;
-  inputFields_every?: Maybe<GqlInputValueWhereInput>;
-  inputFields_some?: Maybe<GqlInputValueWhereInput>;
-  inputFields_none?: Maybe<GqlInputValueWhereInput>;
-  AND?: Maybe<GqlTypeWhereInput[] | GqlTypeWhereInput>;
-  OR?: Maybe<GqlTypeWhereInput[] | GqlTypeWhereInput>;
-  NOT?: Maybe<GqlTypeWhereInput[] | GqlTypeWhereInput>;
+  isDeprecated?: Maybe<Boolean>;
+  isDeprecated_not?: Maybe<Boolean>;
+  deprecationReason?: Maybe<String>;
+  deprecationReason_not?: Maybe<String>;
+  deprecationReason_in?: Maybe<String[] | String>;
+  deprecationReason_not_in?: Maybe<String[] | String>;
+  deprecationReason_lt?: Maybe<String>;
+  deprecationReason_lte?: Maybe<String>;
+  deprecationReason_gt?: Maybe<String>;
+  deprecationReason_gte?: Maybe<String>;
+  deprecationReason_contains?: Maybe<String>;
+  deprecationReason_not_contains?: Maybe<String>;
+  deprecationReason_starts_with?: Maybe<String>;
+  deprecationReason_not_starts_with?: Maybe<String>;
+  deprecationReason_ends_with?: Maybe<String>;
+  deprecationReason_not_ends_with?: Maybe<String>;
+  AND?: Maybe<GqlEnumValueWhereInput[] | GqlEnumValueWhereInput>;
+  OR?: Maybe<GqlEnumValueWhereInput[] | GqlEnumValueWhereInput>;
+  NOT?: Maybe<GqlEnumValueWhereInput[] | GqlEnumValueWhereInput>;
 }
 
-export interface GqlIntrospectionSchemaWhereInput {
+export interface CommentWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -1047,103 +1170,9 @@ export interface GqlIntrospectionSchemaWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  types_every?: Maybe<GqlTypeWhereInput>;
-  types_some?: Maybe<GqlTypeWhereInput>;
-  types_none?: Maybe<GqlTypeWhereInput>;
-  directives_every?: Maybe<GqlDirectiveWhereInput>;
-  directives_some?: Maybe<GqlDirectiveWhereInput>;
-  directives_none?: Maybe<GqlDirectiveWhereInput>;
-  AND?: Maybe<
-    GqlIntrospectionSchemaWhereInput[] | GqlIntrospectionSchemaWhereInput
-  >;
-  OR?: Maybe<
-    GqlIntrospectionSchemaWhereInput[] | GqlIntrospectionSchemaWhereInput
-  >;
-  NOT?: Maybe<
-    GqlIntrospectionSchemaWhereInput[] | GqlIntrospectionSchemaWhereInput
-  >;
-}
-
-export type GqlSchemaWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface GqlSchemaWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  owner?: Maybe<UserWhereInput>;
-  members_every?: Maybe<UserWhereInput>;
-  members_some?: Maybe<UserWhereInput>;
-  members_none?: Maybe<UserWhereInput>;
-  apiKey?: Maybe<String>;
-  apiKey_not?: Maybe<String>;
-  apiKey_in?: Maybe<String[] | String>;
-  apiKey_not_in?: Maybe<String[] | String>;
-  apiKey_lt?: Maybe<String>;
-  apiKey_lte?: Maybe<String>;
-  apiKey_gt?: Maybe<String>;
-  apiKey_gte?: Maybe<String>;
-  apiKey_contains?: Maybe<String>;
-  apiKey_not_contains?: Maybe<String>;
-  apiKey_starts_with?: Maybe<String>;
-  apiKey_not_starts_with?: Maybe<String>;
-  apiKey_ends_with?: Maybe<String>;
-  apiKey_not_ends_with?: Maybe<String>;
-  introspectionSchema?: Maybe<GqlIntrospectionSchemaWhereInput>;
-  endpointUrl?: Maybe<String>;
-  endpointUrl_not?: Maybe<String>;
-  endpointUrl_in?: Maybe<String[] | String>;
-  endpointUrl_not_in?: Maybe<String[] | String>;
-  endpointUrl_lt?: Maybe<String>;
-  endpointUrl_lte?: Maybe<String>;
-  endpointUrl_gt?: Maybe<String>;
-  endpointUrl_gte?: Maybe<String>;
-  endpointUrl_contains?: Maybe<String>;
-  endpointUrl_not_contains?: Maybe<String>;
-  endpointUrl_starts_with?: Maybe<String>;
-  endpointUrl_not_starts_with?: Maybe<String>;
-  endpointUrl_ends_with?: Maybe<String>;
-  endpointUrl_not_ends_with?: Maybe<String>;
+  content?: Maybe<CommentContentWhereInput>;
+  gqlType?: Maybe<GqlTypeWhereInput>;
+  createdBy?: Maybe<UserWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -1152,17 +1181,43 @@ export interface GqlSchemaWhereInput {
   createdAt_lte?: Maybe<DateTimeInput>;
   createdAt_gt?: Maybe<DateTimeInput>;
   createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<GqlSchemaWhereInput[] | GqlSchemaWhereInput>;
-  OR?: Maybe<GqlSchemaWhereInput[] | GqlSchemaWhereInput>;
-  NOT?: Maybe<GqlSchemaWhereInput[] | GqlSchemaWhereInput>;
+  AND?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+  OR?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+  NOT?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+}
+
+export interface CommentContentWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  message?: Maybe<String>;
+  message_not?: Maybe<String>;
+  message_in?: Maybe<String[] | String>;
+  message_not_in?: Maybe<String[] | String>;
+  message_lt?: Maybe<String>;
+  message_lte?: Maybe<String>;
+  message_gt?: Maybe<String>;
+  message_gte?: Maybe<String>;
+  message_contains?: Maybe<String>;
+  message_not_contains?: Maybe<String>;
+  message_starts_with?: Maybe<String>;
+  message_not_starts_with?: Maybe<String>;
+  message_ends_with?: Maybe<String>;
+  message_not_ends_with?: Maybe<String>;
+  AND?: Maybe<CommentContentWhereInput[] | CommentContentWhereInput>;
+  OR?: Maybe<CommentContentWhereInput[] | CommentContentWhereInput>;
+  NOT?: Maybe<CommentContentWhereInput[] | CommentContentWhereInput>;
 }
 
 export interface UserWhereInput {
@@ -1323,6 +1378,121 @@ export interface UserProfileWhereInput {
   NOT?: Maybe<UserProfileWhereInput[] | UserProfileWhereInput>;
 }
 
+export interface GqlSchemaWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  owner?: Maybe<UserWhereInput>;
+  members_every?: Maybe<UserWhereInput>;
+  members_some?: Maybe<UserWhereInput>;
+  members_none?: Maybe<UserWhereInput>;
+  apiKey?: Maybe<String>;
+  apiKey_not?: Maybe<String>;
+  apiKey_in?: Maybe<String[] | String>;
+  apiKey_not_in?: Maybe<String[] | String>;
+  apiKey_lt?: Maybe<String>;
+  apiKey_lte?: Maybe<String>;
+  apiKey_gt?: Maybe<String>;
+  apiKey_gte?: Maybe<String>;
+  apiKey_contains?: Maybe<String>;
+  apiKey_not_contains?: Maybe<String>;
+  apiKey_starts_with?: Maybe<String>;
+  apiKey_not_starts_with?: Maybe<String>;
+  apiKey_ends_with?: Maybe<String>;
+  apiKey_not_ends_with?: Maybe<String>;
+  introspectionSchema?: Maybe<GqlIntrospectionSchemaWhereInput>;
+  endpointUrl?: Maybe<String>;
+  endpointUrl_not?: Maybe<String>;
+  endpointUrl_in?: Maybe<String[] | String>;
+  endpointUrl_not_in?: Maybe<String[] | String>;
+  endpointUrl_lt?: Maybe<String>;
+  endpointUrl_lte?: Maybe<String>;
+  endpointUrl_gt?: Maybe<String>;
+  endpointUrl_gte?: Maybe<String>;
+  endpointUrl_contains?: Maybe<String>;
+  endpointUrl_not_contains?: Maybe<String>;
+  endpointUrl_starts_with?: Maybe<String>;
+  endpointUrl_not_starts_with?: Maybe<String>;
+  endpointUrl_ends_with?: Maybe<String>;
+  endpointUrl_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<GqlSchemaWhereInput[] | GqlSchemaWhereInput>;
+  OR?: Maybe<GqlSchemaWhereInput[] | GqlSchemaWhereInput>;
+  NOT?: Maybe<GqlSchemaWhereInput[] | GqlSchemaWhereInput>;
+}
+
+export type CommentContentWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type GqlBaseTypeWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type GqlDirectiveWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type GqlEnumValueWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type GqlFieldWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type GqlInputValueWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type GqlIntrospectionSchemaWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type GqlSchemaWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
 export type GqlTypeWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
@@ -1336,20 +1506,57 @@ export type UserProfileWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface GqlBaseTypeCreateInput {
+export interface CommentCreateInput {
+  id?: Maybe<ID_Input>;
+  content: CommentContentCreateOneInput;
+  gqlType?: Maybe<GqlTypeCreateOneWithoutCommentsInput>;
+  createdBy: UserCreateOneInput;
+}
+
+export interface CommentContentCreateOneInput {
+  create?: Maybe<CommentContentCreateInput>;
+  connect?: Maybe<CommentContentWhereUniqueInput>;
+}
+
+export interface CommentContentCreateInput {
+  id?: Maybe<ID_Input>;
+  message: String;
+}
+
+export interface GqlTypeCreateOneWithoutCommentsInput {
+  create?: Maybe<GqlTypeCreateWithoutCommentsInput>;
+  connect?: Maybe<GqlTypeWhereUniqueInput>;
+}
+
+export interface GqlTypeCreateWithoutCommentsInput {
   id?: Maybe<ID_Input>;
   kind: GqlTypeKind;
-  name: String;
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  schema: GqlIntrospectionSchemaCreateOneWithoutTypesInput;
+  fields?: Maybe<GqlFieldCreateManyInput>;
+  interfaces?: Maybe<GqlBaseTypeCreateManyInput>;
+  possibleTypes?: Maybe<GqlBaseTypeCreateManyInput>;
+  enumValues?: Maybe<GqlEnumValueCreateManyInput>;
+  inputFields?: Maybe<GqlInputValueCreateManyInput>;
 }
 
-export interface GqlBaseTypeUpdateInput {
-  kind?: Maybe<GqlTypeKind>;
-  name?: Maybe<String>;
+export interface GqlIntrospectionSchemaCreateOneWithoutTypesInput {
+  create?: Maybe<GqlIntrospectionSchemaCreateWithoutTypesInput>;
+  connect?: Maybe<GqlIntrospectionSchemaWhereUniqueInput>;
 }
 
-export interface GqlBaseTypeUpdateManyMutationInput {
-  kind?: Maybe<GqlTypeKind>;
+export interface GqlIntrospectionSchemaCreateWithoutTypesInput {
+  id?: Maybe<ID_Input>;
   name?: Maybe<String>;
+  directives?: Maybe<GqlDirectiveCreateManyInput>;
+}
+
+export interface GqlDirectiveCreateManyInput {
+  create?: Maybe<GqlDirectiveCreateInput[] | GqlDirectiveCreateInput>;
+  connect?: Maybe<
+    GqlDirectiveWhereUniqueInput[] | GqlDirectiveWhereUniqueInput
+  >;
 }
 
 export interface GqlDirectiveCreateInput {
@@ -1384,7 +1591,228 @@ export interface GqlInputValueCreatekindsInput {
   set?: Maybe<GqlTypeKind[] | GqlTypeKind>;
 }
 
-export interface GqlDirectiveUpdateInput {
+export interface GqlFieldCreateManyInput {
+  create?: Maybe<GqlFieldCreateInput[] | GqlFieldCreateInput>;
+  connect?: Maybe<GqlFieldWhereUniqueInput[] | GqlFieldWhereUniqueInput>;
+}
+
+export interface GqlFieldCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  description?: Maybe<String>;
+  typeName?: Maybe<String>;
+  kinds?: Maybe<GqlFieldCreatekindsInput>;
+  args?: Maybe<GqlInputValueCreateManyInput>;
+  isDeprecated: Boolean;
+  deprecationReason?: Maybe<String>;
+}
+
+export interface GqlFieldCreatekindsInput {
+  set?: Maybe<GqlTypeKind[] | GqlTypeKind>;
+}
+
+export interface GqlBaseTypeCreateManyInput {
+  create?: Maybe<GqlBaseTypeCreateInput[] | GqlBaseTypeCreateInput>;
+  connect?: Maybe<GqlBaseTypeWhereUniqueInput[] | GqlBaseTypeWhereUniqueInput>;
+}
+
+export interface GqlBaseTypeCreateInput {
+  id?: Maybe<ID_Input>;
+  kind: GqlTypeKind;
+  name: String;
+}
+
+export interface GqlEnumValueCreateManyInput {
+  create?: Maybe<GqlEnumValueCreateInput[] | GqlEnumValueCreateInput>;
+  connect?: Maybe<
+    GqlEnumValueWhereUniqueInput[] | GqlEnumValueWhereUniqueInput
+  >;
+}
+
+export interface GqlEnumValueCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  description?: Maybe<String>;
+  isDeprecated: Boolean;
+  deprecationReason?: Maybe<String>;
+}
+
+export interface UserCreateOneInput {
+  create?: Maybe<UserCreateInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  sub: String;
+  email: String;
+  username: String;
+  profile?: Maybe<UserProfileCreateOneInput>;
+  schemas?: Maybe<GqlSchemaCreateManyWithoutMembersInput>;
+}
+
+export interface UserProfileCreateOneInput {
+  create?: Maybe<UserProfileCreateInput>;
+  connect?: Maybe<UserProfileWhereUniqueInput>;
+}
+
+export interface UserProfileCreateInput {
+  id?: Maybe<ID_Input>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  fullName?: Maybe<String>;
+  picture?: Maybe<String>;
+}
+
+export interface GqlSchemaCreateManyWithoutMembersInput {
+  create?: Maybe<
+    GqlSchemaCreateWithoutMembersInput[] | GqlSchemaCreateWithoutMembersInput
+  >;
+  connect?: Maybe<GqlSchemaWhereUniqueInput[] | GqlSchemaWhereUniqueInput>;
+}
+
+export interface GqlSchemaCreateWithoutMembersInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  owner?: Maybe<UserCreateOneInput>;
+  apiKey: String;
+  introspectionSchema?: Maybe<GqlIntrospectionSchemaCreateOneInput>;
+  endpointUrl?: Maybe<String>;
+}
+
+export interface GqlIntrospectionSchemaCreateOneInput {
+  create?: Maybe<GqlIntrospectionSchemaCreateInput>;
+  connect?: Maybe<GqlIntrospectionSchemaWhereUniqueInput>;
+}
+
+export interface GqlIntrospectionSchemaCreateInput {
+  id?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  types?: Maybe<GqlTypeCreateManyWithoutSchemaInput>;
+  directives?: Maybe<GqlDirectiveCreateManyInput>;
+}
+
+export interface GqlTypeCreateManyWithoutSchemaInput {
+  create?: Maybe<
+    GqlTypeCreateWithoutSchemaInput[] | GqlTypeCreateWithoutSchemaInput
+  >;
+  connect?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
+}
+
+export interface GqlTypeCreateWithoutSchemaInput {
+  id?: Maybe<ID_Input>;
+  kind: GqlTypeKind;
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  fields?: Maybe<GqlFieldCreateManyInput>;
+  interfaces?: Maybe<GqlBaseTypeCreateManyInput>;
+  possibleTypes?: Maybe<GqlBaseTypeCreateManyInput>;
+  enumValues?: Maybe<GqlEnumValueCreateManyInput>;
+  inputFields?: Maybe<GqlInputValueCreateManyInput>;
+  comments?: Maybe<CommentCreateManyWithoutGqlTypeInput>;
+}
+
+export interface CommentCreateManyWithoutGqlTypeInput {
+  create?: Maybe<
+    CommentCreateWithoutGqlTypeInput[] | CommentCreateWithoutGqlTypeInput
+  >;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+}
+
+export interface CommentCreateWithoutGqlTypeInput {
+  id?: Maybe<ID_Input>;
+  content: CommentContentCreateOneInput;
+  createdBy: UserCreateOneInput;
+}
+
+export interface CommentUpdateInput {
+  content?: Maybe<CommentContentUpdateOneRequiredInput>;
+  gqlType?: Maybe<GqlTypeUpdateOneWithoutCommentsInput>;
+  createdBy?: Maybe<UserUpdateOneRequiredInput>;
+}
+
+export interface CommentContentUpdateOneRequiredInput {
+  create?: Maybe<CommentContentCreateInput>;
+  update?: Maybe<CommentContentUpdateDataInput>;
+  upsert?: Maybe<CommentContentUpsertNestedInput>;
+  connect?: Maybe<CommentContentWhereUniqueInput>;
+}
+
+export interface CommentContentUpdateDataInput {
+  message?: Maybe<String>;
+}
+
+export interface CommentContentUpsertNestedInput {
+  update: CommentContentUpdateDataInput;
+  create: CommentContentCreateInput;
+}
+
+export interface GqlTypeUpdateOneWithoutCommentsInput {
+  create?: Maybe<GqlTypeCreateWithoutCommentsInput>;
+  update?: Maybe<GqlTypeUpdateWithoutCommentsDataInput>;
+  upsert?: Maybe<GqlTypeUpsertWithoutCommentsInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<GqlTypeWhereUniqueInput>;
+}
+
+export interface GqlTypeUpdateWithoutCommentsDataInput {
+  kind?: Maybe<GqlTypeKind>;
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  schema?: Maybe<GqlIntrospectionSchemaUpdateOneRequiredWithoutTypesInput>;
+  fields?: Maybe<GqlFieldUpdateManyInput>;
+  interfaces?: Maybe<GqlBaseTypeUpdateManyInput>;
+  possibleTypes?: Maybe<GqlBaseTypeUpdateManyInput>;
+  enumValues?: Maybe<GqlEnumValueUpdateManyInput>;
+  inputFields?: Maybe<GqlInputValueUpdateManyInput>;
+}
+
+export interface GqlIntrospectionSchemaUpdateOneRequiredWithoutTypesInput {
+  create?: Maybe<GqlIntrospectionSchemaCreateWithoutTypesInput>;
+  update?: Maybe<GqlIntrospectionSchemaUpdateWithoutTypesDataInput>;
+  upsert?: Maybe<GqlIntrospectionSchemaUpsertWithoutTypesInput>;
+  connect?: Maybe<GqlIntrospectionSchemaWhereUniqueInput>;
+}
+
+export interface GqlIntrospectionSchemaUpdateWithoutTypesDataInput {
+  name?: Maybe<String>;
+  directives?: Maybe<GqlDirectiveUpdateManyInput>;
+}
+
+export interface GqlDirectiveUpdateManyInput {
+  create?: Maybe<GqlDirectiveCreateInput[] | GqlDirectiveCreateInput>;
+  update?: Maybe<
+    | GqlDirectiveUpdateWithWhereUniqueNestedInput[]
+    | GqlDirectiveUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | GqlDirectiveUpsertWithWhereUniqueNestedInput[]
+    | GqlDirectiveUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<GqlDirectiveWhereUniqueInput[] | GqlDirectiveWhereUniqueInput>;
+  connect?: Maybe<
+    GqlDirectiveWhereUniqueInput[] | GqlDirectiveWhereUniqueInput
+  >;
+  set?: Maybe<GqlDirectiveWhereUniqueInput[] | GqlDirectiveWhereUniqueInput>;
+  disconnect?: Maybe<
+    GqlDirectiveWhereUniqueInput[] | GqlDirectiveWhereUniqueInput
+  >;
+  deleteMany?: Maybe<
+    GqlDirectiveScalarWhereInput[] | GqlDirectiveScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | GqlDirectiveUpdateManyWithWhereNestedInput[]
+    | GqlDirectiveUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface GqlDirectiveUpdateWithWhereUniqueNestedInput {
+  where: GqlDirectiveWhereUniqueInput;
+  data: GqlDirectiveUpdateDataInput;
+}
+
+export interface GqlDirectiveUpdateDataInput {
   name?: Maybe<String>;
   description?: Maybe<String>;
   locations?: Maybe<GqlDirectiveUpdatelocationsInput>;
@@ -1536,181 +1964,74 @@ export interface GqlInputValueUpdateManyDataInput {
   defaultValue?: Maybe<String>;
 }
 
-export interface GqlDirectiveUpdateManyMutationInput {
+export interface GqlDirectiveUpsertWithWhereUniqueNestedInput {
+  where: GqlDirectiveWhereUniqueInput;
+  update: GqlDirectiveUpdateDataInput;
+  create: GqlDirectiveCreateInput;
+}
+
+export interface GqlDirectiveScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  AND?: Maybe<GqlDirectiveScalarWhereInput[] | GqlDirectiveScalarWhereInput>;
+  OR?: Maybe<GqlDirectiveScalarWhereInput[] | GqlDirectiveScalarWhereInput>;
+  NOT?: Maybe<GqlDirectiveScalarWhereInput[] | GqlDirectiveScalarWhereInput>;
+}
+
+export interface GqlDirectiveUpdateManyWithWhereNestedInput {
+  where: GqlDirectiveScalarWhereInput;
+  data: GqlDirectiveUpdateManyDataInput;
+}
+
+export interface GqlDirectiveUpdateManyDataInput {
   name?: Maybe<String>;
   description?: Maybe<String>;
   locations?: Maybe<GqlDirectiveUpdatelocationsInput>;
 }
 
-export interface GqlEnumValueCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  description?: Maybe<String>;
-  isDeprecated: Boolean;
-  deprecationReason?: Maybe<String>;
-}
-
-export interface GqlEnumValueUpdateInput {
-  name?: Maybe<String>;
-  description?: Maybe<String>;
-  isDeprecated?: Maybe<Boolean>;
-  deprecationReason?: Maybe<String>;
-}
-
-export interface GqlEnumValueUpdateManyMutationInput {
-  name?: Maybe<String>;
-  description?: Maybe<String>;
-  isDeprecated?: Maybe<Boolean>;
-  deprecationReason?: Maybe<String>;
-}
-
-export interface GqlFieldCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  description?: Maybe<String>;
-  typeName?: Maybe<String>;
-  kinds?: Maybe<GqlFieldCreatekindsInput>;
-  args?: Maybe<GqlInputValueCreateManyInput>;
-  isDeprecated: Boolean;
-  deprecationReason?: Maybe<String>;
-}
-
-export interface GqlFieldCreatekindsInput {
-  set?: Maybe<GqlTypeKind[] | GqlTypeKind>;
-}
-
-export interface GqlFieldUpdateInput {
-  name?: Maybe<String>;
-  description?: Maybe<String>;
-  typeName?: Maybe<String>;
-  kinds?: Maybe<GqlFieldUpdatekindsInput>;
-  args?: Maybe<GqlInputValueUpdateManyInput>;
-  isDeprecated?: Maybe<Boolean>;
-  deprecationReason?: Maybe<String>;
-}
-
-export interface GqlFieldUpdatekindsInput {
-  set?: Maybe<GqlTypeKind[] | GqlTypeKind>;
-}
-
-export interface GqlFieldUpdateManyMutationInput {
-  name?: Maybe<String>;
-  description?: Maybe<String>;
-  typeName?: Maybe<String>;
-  kinds?: Maybe<GqlFieldUpdatekindsInput>;
-  isDeprecated?: Maybe<Boolean>;
-  deprecationReason?: Maybe<String>;
-}
-
-export interface GqlInputValueUpdateInput {
-  name?: Maybe<String>;
-  kinds?: Maybe<GqlInputValueUpdatekindsInput>;
-  typeName?: Maybe<String>;
-  description?: Maybe<String>;
-  defaultValue?: Maybe<String>;
-}
-
-export interface GqlInputValueUpdateManyMutationInput {
-  name?: Maybe<String>;
-  kinds?: Maybe<GqlInputValueUpdatekindsInput>;
-  typeName?: Maybe<String>;
-  description?: Maybe<String>;
-  defaultValue?: Maybe<String>;
-}
-
-export interface GqlIntrospectionSchemaCreateInput {
-  id?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  types?: Maybe<GqlTypeCreateManyWithoutSchemaInput>;
-  directives?: Maybe<GqlDirectiveCreateManyInput>;
-}
-
-export interface GqlTypeCreateManyWithoutSchemaInput {
-  create?: Maybe<
-    GqlTypeCreateWithoutSchemaInput[] | GqlTypeCreateWithoutSchemaInput
-  >;
-  connect?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
-}
-
-export interface GqlTypeCreateWithoutSchemaInput {
-  id?: Maybe<ID_Input>;
-  kind: GqlTypeKind;
-  name?: Maybe<String>;
-  description?: Maybe<String>;
-  fields?: Maybe<GqlFieldCreateManyInput>;
-  interfaces?: Maybe<GqlBaseTypeCreateManyInput>;
-  possibleTypes?: Maybe<GqlBaseTypeCreateManyInput>;
-  enumValues?: Maybe<GqlEnumValueCreateManyInput>;
-  inputFields?: Maybe<GqlInputValueCreateManyInput>;
-}
-
-export interface GqlFieldCreateManyInput {
-  create?: Maybe<GqlFieldCreateInput[] | GqlFieldCreateInput>;
-  connect?: Maybe<GqlFieldWhereUniqueInput[] | GqlFieldWhereUniqueInput>;
-}
-
-export interface GqlBaseTypeCreateManyInput {
-  create?: Maybe<GqlBaseTypeCreateInput[] | GqlBaseTypeCreateInput>;
-  connect?: Maybe<GqlBaseTypeWhereUniqueInput[] | GqlBaseTypeWhereUniqueInput>;
-}
-
-export interface GqlEnumValueCreateManyInput {
-  create?: Maybe<GqlEnumValueCreateInput[] | GqlEnumValueCreateInput>;
-  connect?: Maybe<
-    GqlEnumValueWhereUniqueInput[] | GqlEnumValueWhereUniqueInput
-  >;
-}
-
-export interface GqlDirectiveCreateManyInput {
-  create?: Maybe<GqlDirectiveCreateInput[] | GqlDirectiveCreateInput>;
-  connect?: Maybe<
-    GqlDirectiveWhereUniqueInput[] | GqlDirectiveWhereUniqueInput
-  >;
-}
-
-export interface GqlIntrospectionSchemaUpdateInput {
-  name?: Maybe<String>;
-  types?: Maybe<GqlTypeUpdateManyWithoutSchemaInput>;
-  directives?: Maybe<GqlDirectiveUpdateManyInput>;
-}
-
-export interface GqlTypeUpdateManyWithoutSchemaInput {
-  create?: Maybe<
-    GqlTypeCreateWithoutSchemaInput[] | GqlTypeCreateWithoutSchemaInput
-  >;
-  delete?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
-  connect?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
-  set?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
-  disconnect?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
-  update?: Maybe<
-    | GqlTypeUpdateWithWhereUniqueWithoutSchemaInput[]
-    | GqlTypeUpdateWithWhereUniqueWithoutSchemaInput
-  >;
-  upsert?: Maybe<
-    | GqlTypeUpsertWithWhereUniqueWithoutSchemaInput[]
-    | GqlTypeUpsertWithWhereUniqueWithoutSchemaInput
-  >;
-  deleteMany?: Maybe<GqlTypeScalarWhereInput[] | GqlTypeScalarWhereInput>;
-  updateMany?: Maybe<
-    | GqlTypeUpdateManyWithWhereNestedInput[]
-    | GqlTypeUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface GqlTypeUpdateWithWhereUniqueWithoutSchemaInput {
-  where: GqlTypeWhereUniqueInput;
-  data: GqlTypeUpdateWithoutSchemaDataInput;
-}
-
-export interface GqlTypeUpdateWithoutSchemaDataInput {
-  kind?: Maybe<GqlTypeKind>;
-  name?: Maybe<String>;
-  description?: Maybe<String>;
-  fields?: Maybe<GqlFieldUpdateManyInput>;
-  interfaces?: Maybe<GqlBaseTypeUpdateManyInput>;
-  possibleTypes?: Maybe<GqlBaseTypeUpdateManyInput>;
-  enumValues?: Maybe<GqlEnumValueUpdateManyInput>;
-  inputFields?: Maybe<GqlInputValueUpdateManyInput>;
+export interface GqlIntrospectionSchemaUpsertWithoutTypesInput {
+  update: GqlIntrospectionSchemaUpdateWithoutTypesDataInput;
+  create: GqlIntrospectionSchemaCreateWithoutTypesInput;
 }
 
 export interface GqlFieldUpdateManyInput {
@@ -1747,6 +2068,10 @@ export interface GqlFieldUpdateDataInput {
   args?: Maybe<GqlInputValueUpdateManyInput>;
   isDeprecated?: Maybe<Boolean>;
   deprecationReason?: Maybe<String>;
+}
+
+export interface GqlFieldUpdatekindsInput {
+  set?: Maybe<GqlTypeKind[] | GqlTypeKind>;
 }
 
 export interface GqlFieldUpsertWithWhereUniqueNestedInput {
@@ -2057,271 +2382,15 @@ export interface GqlEnumValueUpdateManyDataInput {
   deprecationReason?: Maybe<String>;
 }
 
-export interface GqlTypeUpsertWithWhereUniqueWithoutSchemaInput {
-  where: GqlTypeWhereUniqueInput;
-  update: GqlTypeUpdateWithoutSchemaDataInput;
-  create: GqlTypeCreateWithoutSchemaInput;
+export interface GqlTypeUpsertWithoutCommentsInput {
+  update: GqlTypeUpdateWithoutCommentsDataInput;
+  create: GqlTypeCreateWithoutCommentsInput;
 }
 
-export interface GqlTypeScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  kind?: Maybe<GqlTypeKind>;
-  kind_not?: Maybe<GqlTypeKind>;
-  kind_in?: Maybe<GqlTypeKind[] | GqlTypeKind>;
-  kind_not_in?: Maybe<GqlTypeKind[] | GqlTypeKind>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  description?: Maybe<String>;
-  description_not?: Maybe<String>;
-  description_in?: Maybe<String[] | String>;
-  description_not_in?: Maybe<String[] | String>;
-  description_lt?: Maybe<String>;
-  description_lte?: Maybe<String>;
-  description_gt?: Maybe<String>;
-  description_gte?: Maybe<String>;
-  description_contains?: Maybe<String>;
-  description_not_contains?: Maybe<String>;
-  description_starts_with?: Maybe<String>;
-  description_not_starts_with?: Maybe<String>;
-  description_ends_with?: Maybe<String>;
-  description_not_ends_with?: Maybe<String>;
-  AND?: Maybe<GqlTypeScalarWhereInput[] | GqlTypeScalarWhereInput>;
-  OR?: Maybe<GqlTypeScalarWhereInput[] | GqlTypeScalarWhereInput>;
-  NOT?: Maybe<GqlTypeScalarWhereInput[] | GqlTypeScalarWhereInput>;
-}
-
-export interface GqlTypeUpdateManyWithWhereNestedInput {
-  where: GqlTypeScalarWhereInput;
-  data: GqlTypeUpdateManyDataInput;
-}
-
-export interface GqlTypeUpdateManyDataInput {
-  kind?: Maybe<GqlTypeKind>;
-  name?: Maybe<String>;
-  description?: Maybe<String>;
-}
-
-export interface GqlDirectiveUpdateManyInput {
-  create?: Maybe<GqlDirectiveCreateInput[] | GqlDirectiveCreateInput>;
-  update?: Maybe<
-    | GqlDirectiveUpdateWithWhereUniqueNestedInput[]
-    | GqlDirectiveUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | GqlDirectiveUpsertWithWhereUniqueNestedInput[]
-    | GqlDirectiveUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<GqlDirectiveWhereUniqueInput[] | GqlDirectiveWhereUniqueInput>;
-  connect?: Maybe<
-    GqlDirectiveWhereUniqueInput[] | GqlDirectiveWhereUniqueInput
-  >;
-  set?: Maybe<GqlDirectiveWhereUniqueInput[] | GqlDirectiveWhereUniqueInput>;
-  disconnect?: Maybe<
-    GqlDirectiveWhereUniqueInput[] | GqlDirectiveWhereUniqueInput
-  >;
-  deleteMany?: Maybe<
-    GqlDirectiveScalarWhereInput[] | GqlDirectiveScalarWhereInput
-  >;
-  updateMany?: Maybe<
-    | GqlDirectiveUpdateManyWithWhereNestedInput[]
-    | GqlDirectiveUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface GqlDirectiveUpdateWithWhereUniqueNestedInput {
-  where: GqlDirectiveWhereUniqueInput;
-  data: GqlDirectiveUpdateDataInput;
-}
-
-export interface GqlDirectiveUpdateDataInput {
-  name?: Maybe<String>;
-  description?: Maybe<String>;
-  locations?: Maybe<GqlDirectiveUpdatelocationsInput>;
-  args?: Maybe<GqlInputValueUpdateManyInput>;
-}
-
-export interface GqlDirectiveUpsertWithWhereUniqueNestedInput {
-  where: GqlDirectiveWhereUniqueInput;
-  update: GqlDirectiveUpdateDataInput;
-  create: GqlDirectiveCreateInput;
-}
-
-export interface GqlDirectiveScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  description?: Maybe<String>;
-  description_not?: Maybe<String>;
-  description_in?: Maybe<String[] | String>;
-  description_not_in?: Maybe<String[] | String>;
-  description_lt?: Maybe<String>;
-  description_lte?: Maybe<String>;
-  description_gt?: Maybe<String>;
-  description_gte?: Maybe<String>;
-  description_contains?: Maybe<String>;
-  description_not_contains?: Maybe<String>;
-  description_starts_with?: Maybe<String>;
-  description_not_starts_with?: Maybe<String>;
-  description_ends_with?: Maybe<String>;
-  description_not_ends_with?: Maybe<String>;
-  AND?: Maybe<GqlDirectiveScalarWhereInput[] | GqlDirectiveScalarWhereInput>;
-  OR?: Maybe<GqlDirectiveScalarWhereInput[] | GqlDirectiveScalarWhereInput>;
-  NOT?: Maybe<GqlDirectiveScalarWhereInput[] | GqlDirectiveScalarWhereInput>;
-}
-
-export interface GqlDirectiveUpdateManyWithWhereNestedInput {
-  where: GqlDirectiveScalarWhereInput;
-  data: GqlDirectiveUpdateManyDataInput;
-}
-
-export interface GqlDirectiveUpdateManyDataInput {
-  name?: Maybe<String>;
-  description?: Maybe<String>;
-  locations?: Maybe<GqlDirectiveUpdatelocationsInput>;
-}
-
-export interface GqlIntrospectionSchemaUpdateManyMutationInput {
-  name?: Maybe<String>;
-}
-
-export interface GqlSchemaCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  owner?: Maybe<UserCreateOneInput>;
-  members?: Maybe<UserCreateManyWithoutSchemasInput>;
-  apiKey: String;
-  introspectionSchema?: Maybe<GqlIntrospectionSchemaCreateOneInput>;
-  endpointUrl?: Maybe<String>;
-}
-
-export interface UserCreateOneInput {
-  create?: Maybe<UserCreateInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserCreateInput {
-  id?: Maybe<ID_Input>;
-  sub: String;
-  email: String;
-  username: String;
-  profile?: Maybe<UserProfileCreateOneInput>;
-  schemas?: Maybe<GqlSchemaCreateManyWithoutMembersInput>;
-}
-
-export interface UserProfileCreateOneInput {
-  create?: Maybe<UserProfileCreateInput>;
-  connect?: Maybe<UserProfileWhereUniqueInput>;
-}
-
-export interface UserProfileCreateInput {
-  id?: Maybe<ID_Input>;
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  fullName?: Maybe<String>;
-  picture?: Maybe<String>;
-}
-
-export interface GqlSchemaCreateManyWithoutMembersInput {
-  create?: Maybe<
-    GqlSchemaCreateWithoutMembersInput[] | GqlSchemaCreateWithoutMembersInput
-  >;
-  connect?: Maybe<GqlSchemaWhereUniqueInput[] | GqlSchemaWhereUniqueInput>;
-}
-
-export interface GqlSchemaCreateWithoutMembersInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  owner?: Maybe<UserCreateOneInput>;
-  apiKey: String;
-  introspectionSchema?: Maybe<GqlIntrospectionSchemaCreateOneInput>;
-  endpointUrl?: Maybe<String>;
-}
-
-export interface GqlIntrospectionSchemaCreateOneInput {
-  create?: Maybe<GqlIntrospectionSchemaCreateInput>;
-  connect?: Maybe<GqlIntrospectionSchemaWhereUniqueInput>;
-}
-
-export interface UserCreateManyWithoutSchemasInput {
-  create?: Maybe<
-    UserCreateWithoutSchemasInput[] | UserCreateWithoutSchemasInput
-  >;
-  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-}
-
-export interface UserCreateWithoutSchemasInput {
-  id?: Maybe<ID_Input>;
-  sub: String;
-  email: String;
-  username: String;
-  profile?: Maybe<UserProfileCreateOneInput>;
-}
-
-export interface GqlSchemaUpdateInput {
-  name?: Maybe<String>;
-  owner?: Maybe<UserUpdateOneInput>;
-  members?: Maybe<UserUpdateManyWithoutSchemasInput>;
-  apiKey?: Maybe<String>;
-  introspectionSchema?: Maybe<GqlIntrospectionSchemaUpdateOneInput>;
-  endpointUrl?: Maybe<String>;
-}
-
-export interface UserUpdateOneInput {
+export interface UserUpdateOneRequiredInput {
   create?: Maybe<UserCreateInput>;
   update?: Maybe<UserUpdateDataInput>;
   upsert?: Maybe<UserUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
@@ -2390,6 +2459,20 @@ export interface GqlSchemaUpdateWithoutMembersDataInput {
   endpointUrl?: Maybe<String>;
 }
 
+export interface UserUpdateOneInput {
+  create?: Maybe<UserCreateInput>;
+  update?: Maybe<UserUpdateDataInput>;
+  upsert?: Maybe<UserUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
 export interface GqlIntrospectionSchemaUpdateOneInput {
   create?: Maybe<GqlIntrospectionSchemaCreateInput>;
   update?: Maybe<GqlIntrospectionSchemaUpdateDataInput>;
@@ -2403,6 +2486,178 @@ export interface GqlIntrospectionSchemaUpdateDataInput {
   name?: Maybe<String>;
   types?: Maybe<GqlTypeUpdateManyWithoutSchemaInput>;
   directives?: Maybe<GqlDirectiveUpdateManyInput>;
+}
+
+export interface GqlTypeUpdateManyWithoutSchemaInput {
+  create?: Maybe<
+    GqlTypeCreateWithoutSchemaInput[] | GqlTypeCreateWithoutSchemaInput
+  >;
+  delete?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
+  connect?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
+  set?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
+  disconnect?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
+  update?: Maybe<
+    | GqlTypeUpdateWithWhereUniqueWithoutSchemaInput[]
+    | GqlTypeUpdateWithWhereUniqueWithoutSchemaInput
+  >;
+  upsert?: Maybe<
+    | GqlTypeUpsertWithWhereUniqueWithoutSchemaInput[]
+    | GqlTypeUpsertWithWhereUniqueWithoutSchemaInput
+  >;
+  deleteMany?: Maybe<GqlTypeScalarWhereInput[] | GqlTypeScalarWhereInput>;
+  updateMany?: Maybe<
+    | GqlTypeUpdateManyWithWhereNestedInput[]
+    | GqlTypeUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface GqlTypeUpdateWithWhereUniqueWithoutSchemaInput {
+  where: GqlTypeWhereUniqueInput;
+  data: GqlTypeUpdateWithoutSchemaDataInput;
+}
+
+export interface GqlTypeUpdateWithoutSchemaDataInput {
+  kind?: Maybe<GqlTypeKind>;
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  fields?: Maybe<GqlFieldUpdateManyInput>;
+  interfaces?: Maybe<GqlBaseTypeUpdateManyInput>;
+  possibleTypes?: Maybe<GqlBaseTypeUpdateManyInput>;
+  enumValues?: Maybe<GqlEnumValueUpdateManyInput>;
+  inputFields?: Maybe<GqlInputValueUpdateManyInput>;
+  comments?: Maybe<CommentUpdateManyWithoutGqlTypeInput>;
+}
+
+export interface CommentUpdateManyWithoutGqlTypeInput {
+  create?: Maybe<
+    CommentCreateWithoutGqlTypeInput[] | CommentCreateWithoutGqlTypeInput
+  >;
+  delete?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  set?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  disconnect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  update?: Maybe<
+    | CommentUpdateWithWhereUniqueWithoutGqlTypeInput[]
+    | CommentUpdateWithWhereUniqueWithoutGqlTypeInput
+  >;
+  upsert?: Maybe<
+    | CommentUpsertWithWhereUniqueWithoutGqlTypeInput[]
+    | CommentUpsertWithWhereUniqueWithoutGqlTypeInput
+  >;
+  deleteMany?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+}
+
+export interface CommentUpdateWithWhereUniqueWithoutGqlTypeInput {
+  where: CommentWhereUniqueInput;
+  data: CommentUpdateWithoutGqlTypeDataInput;
+}
+
+export interface CommentUpdateWithoutGqlTypeDataInput {
+  content?: Maybe<CommentContentUpdateOneRequiredInput>;
+  createdBy?: Maybe<UserUpdateOneRequiredInput>;
+}
+
+export interface CommentUpsertWithWhereUniqueWithoutGqlTypeInput {
+  where: CommentWhereUniqueInput;
+  update: CommentUpdateWithoutGqlTypeDataInput;
+  create: CommentCreateWithoutGqlTypeInput;
+}
+
+export interface CommentScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  OR?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  NOT?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+}
+
+export interface GqlTypeUpsertWithWhereUniqueWithoutSchemaInput {
+  where: GqlTypeWhereUniqueInput;
+  update: GqlTypeUpdateWithoutSchemaDataInput;
+  create: GqlTypeCreateWithoutSchemaInput;
+}
+
+export interface GqlTypeScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  kind?: Maybe<GqlTypeKind>;
+  kind_not?: Maybe<GqlTypeKind>;
+  kind_in?: Maybe<GqlTypeKind[] | GqlTypeKind>;
+  kind_not_in?: Maybe<GqlTypeKind[] | GqlTypeKind>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  AND?: Maybe<GqlTypeScalarWhereInput[] | GqlTypeScalarWhereInput>;
+  OR?: Maybe<GqlTypeScalarWhereInput[] | GqlTypeScalarWhereInput>;
+  NOT?: Maybe<GqlTypeScalarWhereInput[] | GqlTypeScalarWhereInput>;
+}
+
+export interface GqlTypeUpdateManyWithWhereNestedInput {
+  where: GqlTypeScalarWhereInput;
+  data: GqlTypeUpdateManyDataInput;
+}
+
+export interface GqlTypeUpdateManyDataInput {
+  kind?: Maybe<GqlTypeKind>;
+  name?: Maybe<String>;
+  description?: Maybe<String>;
 }
 
 export interface GqlIntrospectionSchemaUpsertNestedInput {
@@ -2505,9 +2760,128 @@ export interface GqlSchemaUpdateManyDataInput {
   endpointUrl?: Maybe<String>;
 }
 
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
+export interface CommentContentUpdateInput {
+  message?: Maybe<String>;
+}
+
+export interface CommentContentUpdateManyMutationInput {
+  message?: Maybe<String>;
+}
+
+export interface GqlBaseTypeUpdateInput {
+  kind?: Maybe<GqlTypeKind>;
+  name?: Maybe<String>;
+}
+
+export interface GqlBaseTypeUpdateManyMutationInput {
+  kind?: Maybe<GqlTypeKind>;
+  name?: Maybe<String>;
+}
+
+export interface GqlDirectiveUpdateInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  locations?: Maybe<GqlDirectiveUpdatelocationsInput>;
+  args?: Maybe<GqlInputValueUpdateManyInput>;
+}
+
+export interface GqlDirectiveUpdateManyMutationInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  locations?: Maybe<GqlDirectiveUpdatelocationsInput>;
+}
+
+export interface GqlEnumValueUpdateInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  isDeprecated?: Maybe<Boolean>;
+  deprecationReason?: Maybe<String>;
+}
+
+export interface GqlEnumValueUpdateManyMutationInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  isDeprecated?: Maybe<Boolean>;
+  deprecationReason?: Maybe<String>;
+}
+
+export interface GqlFieldUpdateInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  typeName?: Maybe<String>;
+  kinds?: Maybe<GqlFieldUpdatekindsInput>;
+  args?: Maybe<GqlInputValueUpdateManyInput>;
+  isDeprecated?: Maybe<Boolean>;
+  deprecationReason?: Maybe<String>;
+}
+
+export interface GqlFieldUpdateManyMutationInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  typeName?: Maybe<String>;
+  kinds?: Maybe<GqlFieldUpdatekindsInput>;
+  isDeprecated?: Maybe<Boolean>;
+  deprecationReason?: Maybe<String>;
+}
+
+export interface GqlInputValueUpdateInput {
+  name?: Maybe<String>;
+  kinds?: Maybe<GqlInputValueUpdatekindsInput>;
+  typeName?: Maybe<String>;
+  description?: Maybe<String>;
+  defaultValue?: Maybe<String>;
+}
+
+export interface GqlInputValueUpdateManyMutationInput {
+  name?: Maybe<String>;
+  kinds?: Maybe<GqlInputValueUpdatekindsInput>;
+  typeName?: Maybe<String>;
+  description?: Maybe<String>;
+  defaultValue?: Maybe<String>;
+}
+
+export interface GqlIntrospectionSchemaUpdateInput {
+  name?: Maybe<String>;
+  types?: Maybe<GqlTypeUpdateManyWithoutSchemaInput>;
+  directives?: Maybe<GqlDirectiveUpdateManyInput>;
+}
+
+export interface GqlIntrospectionSchemaUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface GqlSchemaCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  owner?: Maybe<UserCreateOneInput>;
+  members?: Maybe<UserCreateManyWithoutSchemasInput>;
+  apiKey: String;
+  introspectionSchema?: Maybe<GqlIntrospectionSchemaCreateOneInput>;
+  endpointUrl?: Maybe<String>;
+}
+
+export interface UserCreateManyWithoutSchemasInput {
+  create?: Maybe<
+    UserCreateWithoutSchemasInput[] | UserCreateWithoutSchemasInput
+  >;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutSchemasInput {
+  id?: Maybe<ID_Input>;
+  sub: String;
+  email: String;
+  username: String;
+  profile?: Maybe<UserProfileCreateOneInput>;
+}
+
+export interface GqlSchemaUpdateInput {
+  name?: Maybe<String>;
+  owner?: Maybe<UserUpdateOneInput>;
+  members?: Maybe<UserUpdateManyWithoutSchemasInput>;
+  apiKey?: Maybe<String>;
+  introspectionSchema?: Maybe<GqlIntrospectionSchemaUpdateOneInput>;
+  endpointUrl?: Maybe<String>;
 }
 
 export interface UserUpdateManyWithoutSchemasInput {
@@ -2656,17 +3030,7 @@ export interface GqlTypeCreateInput {
   possibleTypes?: Maybe<GqlBaseTypeCreateManyInput>;
   enumValues?: Maybe<GqlEnumValueCreateManyInput>;
   inputFields?: Maybe<GqlInputValueCreateManyInput>;
-}
-
-export interface GqlIntrospectionSchemaCreateOneWithoutTypesInput {
-  create?: Maybe<GqlIntrospectionSchemaCreateWithoutTypesInput>;
-  connect?: Maybe<GqlIntrospectionSchemaWhereUniqueInput>;
-}
-
-export interface GqlIntrospectionSchemaCreateWithoutTypesInput {
-  id?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  directives?: Maybe<GqlDirectiveCreateManyInput>;
+  comments?: Maybe<CommentCreateManyWithoutGqlTypeInput>;
 }
 
 export interface GqlTypeUpdateInput {
@@ -2679,23 +3043,7 @@ export interface GqlTypeUpdateInput {
   possibleTypes?: Maybe<GqlBaseTypeUpdateManyInput>;
   enumValues?: Maybe<GqlEnumValueUpdateManyInput>;
   inputFields?: Maybe<GqlInputValueUpdateManyInput>;
-}
-
-export interface GqlIntrospectionSchemaUpdateOneRequiredWithoutTypesInput {
-  create?: Maybe<GqlIntrospectionSchemaCreateWithoutTypesInput>;
-  update?: Maybe<GqlIntrospectionSchemaUpdateWithoutTypesDataInput>;
-  upsert?: Maybe<GqlIntrospectionSchemaUpsertWithoutTypesInput>;
-  connect?: Maybe<GqlIntrospectionSchemaWhereUniqueInput>;
-}
-
-export interface GqlIntrospectionSchemaUpdateWithoutTypesDataInput {
-  name?: Maybe<String>;
-  directives?: Maybe<GqlDirectiveUpdateManyInput>;
-}
-
-export interface GqlIntrospectionSchemaUpsertWithoutTypesInput {
-  update: GqlIntrospectionSchemaUpdateWithoutTypesDataInput;
-  create: GqlIntrospectionSchemaCreateWithoutTypesInput;
+  comments?: Maybe<CommentUpdateManyWithoutGqlTypeInput>;
 }
 
 export interface GqlTypeUpdateManyMutationInput {
@@ -2730,6 +3078,37 @@ export interface UserProfileUpdateManyMutationInput {
   lastName?: Maybe<String>;
   fullName?: Maybe<String>;
   picture?: Maybe<String>;
+}
+
+export interface CommentSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<CommentWhereInput>;
+  AND?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
+  OR?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
+  NOT?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
+}
+
+export interface CommentContentSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<CommentContentWhereInput>;
+  AND?: Maybe<
+    | CommentContentSubscriptionWhereInput[]
+    | CommentContentSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | CommentContentSubscriptionWhereInput[]
+    | CommentContentSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | CommentContentSubscriptionWhereInput[]
+    | CommentContentSubscriptionWhereInput
+  >;
 }
 
 export interface GqlBaseTypeSubscriptionWhereInput {
@@ -2895,111 +3274,340 @@ export interface NodeNode {
   id: ID_Output;
 }
 
-export interface GqlBaseType {
+export interface Comment {
   id: ID_Output;
-  kind: GqlTypeKind;
-  name: String;
+  createdAt: DateTimeOutput;
 }
 
-export interface GqlBaseTypePromise extends Promise<GqlBaseType>, Fragmentable {
+export interface CommentPromise extends Promise<Comment>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  content: <T = CommentContentPromise>() => T;
+  gqlType: <T = GqlTypePromise>() => T;
+  createdBy: <T = UserPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface CommentSubscription
+  extends Promise<AsyncIterator<Comment>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  content: <T = CommentContentSubscription>() => T;
+  gqlType: <T = GqlTypeSubscription>() => T;
+  createdBy: <T = UserSubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface CommentNullablePromise
+  extends Promise<Comment | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  content: <T = CommentContentPromise>() => T;
+  gqlType: <T = GqlTypePromise>() => T;
+  createdBy: <T = UserPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface CommentContent {
+  id: ID_Output;
+  message: String;
+}
+
+export interface CommentContentPromise
+  extends Promise<CommentContent>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  message: () => Promise<String>;
+}
+
+export interface CommentContentSubscription
+  extends Promise<AsyncIterator<CommentContent>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  message: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CommentContentNullablePromise
+  extends Promise<CommentContent | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  message: () => Promise<String>;
+}
+
+export interface GqlType {
+  id: ID_Output;
+  kind: GqlTypeKind;
+  name?: String;
+  description?: String;
+}
+
+export interface GqlTypePromise extends Promise<GqlType>, Fragmentable {
   id: () => Promise<ID_Output>;
   kind: () => Promise<GqlTypeKind>;
   name: () => Promise<String>;
+  description: () => Promise<String>;
+  schema: <T = GqlIntrospectionSchemaPromise>() => T;
+  fields: <T = FragmentableArray<GqlField>>(args?: {
+    where?: GqlFieldWhereInput;
+    orderBy?: GqlFieldOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  interfaces: <T = FragmentableArray<GqlBaseType>>(args?: {
+    where?: GqlBaseTypeWhereInput;
+    orderBy?: GqlBaseTypeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  possibleTypes: <T = FragmentableArray<GqlBaseType>>(args?: {
+    where?: GqlBaseTypeWhereInput;
+    orderBy?: GqlBaseTypeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  enumValues: <T = FragmentableArray<GqlEnumValue>>(args?: {
+    where?: GqlEnumValueWhereInput;
+    orderBy?: GqlEnumValueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  inputFields: <T = FragmentableArray<GqlInputValue>>(args?: {
+    where?: GqlInputValueWhereInput;
+    orderBy?: GqlInputValueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface GqlBaseTypeSubscription
-  extends Promise<AsyncIterator<GqlBaseType>>,
+export interface GqlTypeSubscription
+  extends Promise<AsyncIterator<GqlType>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   kind: () => Promise<AsyncIterator<GqlTypeKind>>;
   name: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  schema: <T = GqlIntrospectionSchemaSubscription>() => T;
+  fields: <T = Promise<AsyncIterator<GqlFieldSubscription>>>(args?: {
+    where?: GqlFieldWhereInput;
+    orderBy?: GqlFieldOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  interfaces: <T = Promise<AsyncIterator<GqlBaseTypeSubscription>>>(args?: {
+    where?: GqlBaseTypeWhereInput;
+    orderBy?: GqlBaseTypeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  possibleTypes: <T = Promise<AsyncIterator<GqlBaseTypeSubscription>>>(args?: {
+    where?: GqlBaseTypeWhereInput;
+    orderBy?: GqlBaseTypeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  enumValues: <T = Promise<AsyncIterator<GqlEnumValueSubscription>>>(args?: {
+    where?: GqlEnumValueWhereInput;
+    orderBy?: GqlEnumValueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  inputFields: <T = Promise<AsyncIterator<GqlInputValueSubscription>>>(args?: {
+    where?: GqlInputValueWhereInput;
+    orderBy?: GqlInputValueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  comments: <T = Promise<AsyncIterator<CommentSubscription>>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface GqlBaseTypeNullablePromise
-  extends Promise<GqlBaseType | null>,
+export interface GqlTypeNullablePromise
+  extends Promise<GqlType | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   kind: () => Promise<GqlTypeKind>;
   name: () => Promise<String>;
+  description: () => Promise<String>;
+  schema: <T = GqlIntrospectionSchemaPromise>() => T;
+  fields: <T = FragmentableArray<GqlField>>(args?: {
+    where?: GqlFieldWhereInput;
+    orderBy?: GqlFieldOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  interfaces: <T = FragmentableArray<GqlBaseType>>(args?: {
+    where?: GqlBaseTypeWhereInput;
+    orderBy?: GqlBaseTypeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  possibleTypes: <T = FragmentableArray<GqlBaseType>>(args?: {
+    where?: GqlBaseTypeWhereInput;
+    orderBy?: GqlBaseTypeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  enumValues: <T = FragmentableArray<GqlEnumValue>>(args?: {
+    where?: GqlEnumValueWhereInput;
+    orderBy?: GqlEnumValueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  inputFields: <T = FragmentableArray<GqlInputValue>>(args?: {
+    where?: GqlInputValueWhereInput;
+    orderBy?: GqlInputValueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface GqlBaseTypeConnection {
-  pageInfo: PageInfo;
-  edges: GqlBaseTypeEdge[];
+export interface GqlIntrospectionSchema {
+  id: ID_Output;
+  name: String;
 }
 
-export interface GqlBaseTypeConnectionPromise
-  extends Promise<GqlBaseTypeConnection>,
+export interface GqlIntrospectionSchemaPromise
+  extends Promise<GqlIntrospectionSchema>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<GqlBaseTypeEdge>>() => T;
-  aggregate: <T = AggregateGqlBaseTypePromise>() => T;
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  types: <T = FragmentableArray<GqlType>>(args?: {
+    where?: GqlTypeWhereInput;
+    orderBy?: GqlTypeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  directives: <T = FragmentableArray<GqlDirective>>(args?: {
+    where?: GqlDirectiveWhereInput;
+    orderBy?: GqlDirectiveOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface GqlBaseTypeConnectionSubscription
-  extends Promise<AsyncIterator<GqlBaseTypeConnection>>,
+export interface GqlIntrospectionSchemaSubscription
+  extends Promise<AsyncIterator<GqlIntrospectionSchema>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<GqlBaseTypeEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateGqlBaseTypeSubscription>() => T;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  types: <T = Promise<AsyncIterator<GqlTypeSubscription>>>(args?: {
+    where?: GqlTypeWhereInput;
+    orderBy?: GqlTypeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  directives: <T = Promise<AsyncIterator<GqlDirectiveSubscription>>>(args?: {
+    where?: GqlDirectiveWhereInput;
+    orderBy?: GqlDirectiveOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
+export interface GqlIntrospectionSchemaNullablePromise
+  extends Promise<GqlIntrospectionSchema | null>,
     Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface GqlBaseTypeEdge {
-  node: GqlBaseType;
-  cursor: String;
-}
-
-export interface GqlBaseTypeEdgePromise
-  extends Promise<GqlBaseTypeEdge>,
-    Fragmentable {
-  node: <T = GqlBaseTypePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface GqlBaseTypeEdgeSubscription
-  extends Promise<AsyncIterator<GqlBaseTypeEdge>>,
-    Fragmentable {
-  node: <T = GqlBaseTypeSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateGqlBaseType {
-  count: Int;
-}
-
-export interface AggregateGqlBaseTypePromise
-  extends Promise<AggregateGqlBaseType>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateGqlBaseTypeSubscription
-  extends Promise<AsyncIterator<AggregateGqlBaseType>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  types: <T = FragmentableArray<GqlType>>(args?: {
+    where?: GqlTypeWhereInput;
+    orderBy?: GqlTypeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  directives: <T = FragmentableArray<GqlDirective>>(args?: {
+    where?: GqlDirectiveWhereInput;
+    orderBy?: GqlDirectiveOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface GqlDirective {
@@ -3105,156 +3713,6 @@ export interface GqlInputValueNullablePromise
   defaultValue: () => Promise<String>;
 }
 
-export interface GqlDirectiveConnection {
-  pageInfo: PageInfo;
-  edges: GqlDirectiveEdge[];
-}
-
-export interface GqlDirectiveConnectionPromise
-  extends Promise<GqlDirectiveConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<GqlDirectiveEdge>>() => T;
-  aggregate: <T = AggregateGqlDirectivePromise>() => T;
-}
-
-export interface GqlDirectiveConnectionSubscription
-  extends Promise<AsyncIterator<GqlDirectiveConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<GqlDirectiveEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateGqlDirectiveSubscription>() => T;
-}
-
-export interface GqlDirectiveEdge {
-  node: GqlDirective;
-  cursor: String;
-}
-
-export interface GqlDirectiveEdgePromise
-  extends Promise<GqlDirectiveEdge>,
-    Fragmentable {
-  node: <T = GqlDirectivePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface GqlDirectiveEdgeSubscription
-  extends Promise<AsyncIterator<GqlDirectiveEdge>>,
-    Fragmentable {
-  node: <T = GqlDirectiveSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateGqlDirective {
-  count: Int;
-}
-
-export interface AggregateGqlDirectivePromise
-  extends Promise<AggregateGqlDirective>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateGqlDirectiveSubscription
-  extends Promise<AsyncIterator<AggregateGqlDirective>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface GqlEnumValue {
-  id: ID_Output;
-  name: String;
-  description?: String;
-  isDeprecated: Boolean;
-  deprecationReason?: String;
-}
-
-export interface GqlEnumValuePromise
-  extends Promise<GqlEnumValue>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  description: () => Promise<String>;
-  isDeprecated: () => Promise<Boolean>;
-  deprecationReason: () => Promise<String>;
-}
-
-export interface GqlEnumValueSubscription
-  extends Promise<AsyncIterator<GqlEnumValue>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
-  isDeprecated: () => Promise<AsyncIterator<Boolean>>;
-  deprecationReason: () => Promise<AsyncIterator<String>>;
-}
-
-export interface GqlEnumValueNullablePromise
-  extends Promise<GqlEnumValue | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  description: () => Promise<String>;
-  isDeprecated: () => Promise<Boolean>;
-  deprecationReason: () => Promise<String>;
-}
-
-export interface GqlEnumValueConnection {
-  pageInfo: PageInfo;
-  edges: GqlEnumValueEdge[];
-}
-
-export interface GqlEnumValueConnectionPromise
-  extends Promise<GqlEnumValueConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<GqlEnumValueEdge>>() => T;
-  aggregate: <T = AggregateGqlEnumValuePromise>() => T;
-}
-
-export interface GqlEnumValueConnectionSubscription
-  extends Promise<AsyncIterator<GqlEnumValueConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<GqlEnumValueEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateGqlEnumValueSubscription>() => T;
-}
-
-export interface GqlEnumValueEdge {
-  node: GqlEnumValue;
-  cursor: String;
-}
-
-export interface GqlEnumValueEdgePromise
-  extends Promise<GqlEnumValueEdge>,
-    Fragmentable {
-  node: <T = GqlEnumValuePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface GqlEnumValueEdgeSubscription
-  extends Promise<AsyncIterator<GqlEnumValueEdge>>,
-    Fragmentable {
-  node: <T = GqlEnumValueSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateGqlEnumValue {
-  count: Int;
-}
-
-export interface AggregateGqlEnumValuePromise
-  extends Promise<AggregateGqlEnumValue>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateGqlEnumValueSubscription
-  extends Promise<AsyncIterator<AggregateGqlEnumValue>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
 export interface GqlField {
   id: ID_Output;
   name: String;
@@ -3324,6 +3782,552 @@ export interface GqlFieldNullablePromise
   }) => T;
   isDeprecated: () => Promise<Boolean>;
   deprecationReason: () => Promise<String>;
+}
+
+export interface GqlBaseType {
+  id: ID_Output;
+  kind: GqlTypeKind;
+  name: String;
+}
+
+export interface GqlBaseTypePromise extends Promise<GqlBaseType>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  kind: () => Promise<GqlTypeKind>;
+  name: () => Promise<String>;
+}
+
+export interface GqlBaseTypeSubscription
+  extends Promise<AsyncIterator<GqlBaseType>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  kind: () => Promise<AsyncIterator<GqlTypeKind>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface GqlBaseTypeNullablePromise
+  extends Promise<GqlBaseType | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  kind: () => Promise<GqlTypeKind>;
+  name: () => Promise<String>;
+}
+
+export interface GqlEnumValue {
+  id: ID_Output;
+  name: String;
+  description?: String;
+  isDeprecated: Boolean;
+  deprecationReason?: String;
+}
+
+export interface GqlEnumValuePromise
+  extends Promise<GqlEnumValue>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  description: () => Promise<String>;
+  isDeprecated: () => Promise<Boolean>;
+  deprecationReason: () => Promise<String>;
+}
+
+export interface GqlEnumValueSubscription
+  extends Promise<AsyncIterator<GqlEnumValue>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  isDeprecated: () => Promise<AsyncIterator<Boolean>>;
+  deprecationReason: () => Promise<AsyncIterator<String>>;
+}
+
+export interface GqlEnumValueNullablePromise
+  extends Promise<GqlEnumValue | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  description: () => Promise<String>;
+  isDeprecated: () => Promise<Boolean>;
+  deprecationReason: () => Promise<String>;
+}
+
+export interface User {
+  id: ID_Output;
+  sub: String;
+  email: String;
+  username: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  sub: () => Promise<String>;
+  email: () => Promise<String>;
+  username: () => Promise<String>;
+  profile: <T = UserProfilePromise>() => T;
+  schemas: <T = FragmentableArray<GqlSchema>>(args?: {
+    where?: GqlSchemaWhereInput;
+    orderBy?: GqlSchemaOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  sub: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  username: () => Promise<AsyncIterator<String>>;
+  profile: <T = UserProfileSubscription>() => T;
+  schemas: <T = Promise<AsyncIterator<GqlSchemaSubscription>>>(args?: {
+    where?: GqlSchemaWhereInput;
+    orderBy?: GqlSchemaOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  sub: () => Promise<String>;
+  email: () => Promise<String>;
+  username: () => Promise<String>;
+  profile: <T = UserProfilePromise>() => T;
+  schemas: <T = FragmentableArray<GqlSchema>>(args?: {
+    where?: GqlSchemaWhereInput;
+    orderBy?: GqlSchemaOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface UserProfile {
+  id: ID_Output;
+  firstName?: String;
+  lastName?: String;
+  fullName?: String;
+  picture?: String;
+}
+
+export interface UserProfilePromise extends Promise<UserProfile>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  fullName: () => Promise<String>;
+  picture: () => Promise<String>;
+}
+
+export interface UserProfileSubscription
+  extends Promise<AsyncIterator<UserProfile>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  fullName: () => Promise<AsyncIterator<String>>;
+  picture: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserProfileNullablePromise
+  extends Promise<UserProfile | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  fullName: () => Promise<String>;
+  picture: () => Promise<String>;
+}
+
+export interface GqlSchema {
+  id: ID_Output;
+  name: String;
+  apiKey: String;
+  endpointUrl?: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface GqlSchemaPromise extends Promise<GqlSchema>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  owner: <T = UserPromise>() => T;
+  members: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  apiKey: () => Promise<String>;
+  introspectionSchema: <T = GqlIntrospectionSchemaPromise>() => T;
+  endpointUrl: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface GqlSchemaSubscription
+  extends Promise<AsyncIterator<GqlSchema>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  owner: <T = UserSubscription>() => T;
+  members: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  apiKey: () => Promise<AsyncIterator<String>>;
+  introspectionSchema: <T = GqlIntrospectionSchemaSubscription>() => T;
+  endpointUrl: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface GqlSchemaNullablePromise
+  extends Promise<GqlSchema | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  owner: <T = UserPromise>() => T;
+  members: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  apiKey: () => Promise<String>;
+  introspectionSchema: <T = GqlIntrospectionSchemaPromise>() => T;
+  endpointUrl: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface CommentConnection {
+  pageInfo: PageInfo;
+  edges: CommentEdge[];
+}
+
+export interface CommentConnectionPromise
+  extends Promise<CommentConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CommentEdge>>() => T;
+  aggregate: <T = AggregateCommentPromise>() => T;
+}
+
+export interface CommentConnectionSubscription
+  extends Promise<AsyncIterator<CommentConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CommentEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCommentSubscription>() => T;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CommentEdge {
+  node: Comment;
+  cursor: String;
+}
+
+export interface CommentEdgePromise extends Promise<CommentEdge>, Fragmentable {
+  node: <T = CommentPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CommentEdgeSubscription
+  extends Promise<AsyncIterator<CommentEdge>>,
+    Fragmentable {
+  node: <T = CommentSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateComment {
+  count: Int;
+}
+
+export interface AggregateCommentPromise
+  extends Promise<AggregateComment>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCommentSubscription
+  extends Promise<AsyncIterator<AggregateComment>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CommentContentConnection {
+  pageInfo: PageInfo;
+  edges: CommentContentEdge[];
+}
+
+export interface CommentContentConnectionPromise
+  extends Promise<CommentContentConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CommentContentEdge>>() => T;
+  aggregate: <T = AggregateCommentContentPromise>() => T;
+}
+
+export interface CommentContentConnectionSubscription
+  extends Promise<AsyncIterator<CommentContentConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CommentContentEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCommentContentSubscription>() => T;
+}
+
+export interface CommentContentEdge {
+  node: CommentContent;
+  cursor: String;
+}
+
+export interface CommentContentEdgePromise
+  extends Promise<CommentContentEdge>,
+    Fragmentable {
+  node: <T = CommentContentPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CommentContentEdgeSubscription
+  extends Promise<AsyncIterator<CommentContentEdge>>,
+    Fragmentable {
+  node: <T = CommentContentSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateCommentContent {
+  count: Int;
+}
+
+export interface AggregateCommentContentPromise
+  extends Promise<AggregateCommentContent>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCommentContentSubscription
+  extends Promise<AsyncIterator<AggregateCommentContent>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface GqlBaseTypeConnection {
+  pageInfo: PageInfo;
+  edges: GqlBaseTypeEdge[];
+}
+
+export interface GqlBaseTypeConnectionPromise
+  extends Promise<GqlBaseTypeConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<GqlBaseTypeEdge>>() => T;
+  aggregate: <T = AggregateGqlBaseTypePromise>() => T;
+}
+
+export interface GqlBaseTypeConnectionSubscription
+  extends Promise<AsyncIterator<GqlBaseTypeConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<GqlBaseTypeEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateGqlBaseTypeSubscription>() => T;
+}
+
+export interface GqlBaseTypeEdge {
+  node: GqlBaseType;
+  cursor: String;
+}
+
+export interface GqlBaseTypeEdgePromise
+  extends Promise<GqlBaseTypeEdge>,
+    Fragmentable {
+  node: <T = GqlBaseTypePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface GqlBaseTypeEdgeSubscription
+  extends Promise<AsyncIterator<GqlBaseTypeEdge>>,
+    Fragmentable {
+  node: <T = GqlBaseTypeSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateGqlBaseType {
+  count: Int;
+}
+
+export interface AggregateGqlBaseTypePromise
+  extends Promise<AggregateGqlBaseType>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateGqlBaseTypeSubscription
+  extends Promise<AsyncIterator<AggregateGqlBaseType>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface GqlDirectiveConnection {
+  pageInfo: PageInfo;
+  edges: GqlDirectiveEdge[];
+}
+
+export interface GqlDirectiveConnectionPromise
+  extends Promise<GqlDirectiveConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<GqlDirectiveEdge>>() => T;
+  aggregate: <T = AggregateGqlDirectivePromise>() => T;
+}
+
+export interface GqlDirectiveConnectionSubscription
+  extends Promise<AsyncIterator<GqlDirectiveConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<GqlDirectiveEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateGqlDirectiveSubscription>() => T;
+}
+
+export interface GqlDirectiveEdge {
+  node: GqlDirective;
+  cursor: String;
+}
+
+export interface GqlDirectiveEdgePromise
+  extends Promise<GqlDirectiveEdge>,
+    Fragmentable {
+  node: <T = GqlDirectivePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface GqlDirectiveEdgeSubscription
+  extends Promise<AsyncIterator<GqlDirectiveEdge>>,
+    Fragmentable {
+  node: <T = GqlDirectiveSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateGqlDirective {
+  count: Int;
+}
+
+export interface AggregateGqlDirectivePromise
+  extends Promise<AggregateGqlDirective>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateGqlDirectiveSubscription
+  extends Promise<AsyncIterator<AggregateGqlDirective>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface GqlEnumValueConnection {
+  pageInfo: PageInfo;
+  edges: GqlEnumValueEdge[];
+}
+
+export interface GqlEnumValueConnectionPromise
+  extends Promise<GqlEnumValueConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<GqlEnumValueEdge>>() => T;
+  aggregate: <T = AggregateGqlEnumValuePromise>() => T;
+}
+
+export interface GqlEnumValueConnectionSubscription
+  extends Promise<AsyncIterator<GqlEnumValueConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<GqlEnumValueEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateGqlEnumValueSubscription>() => T;
+}
+
+export interface GqlEnumValueEdge {
+  node: GqlEnumValue;
+  cursor: String;
+}
+
+export interface GqlEnumValueEdgePromise
+  extends Promise<GqlEnumValueEdge>,
+    Fragmentable {
+  node: <T = GqlEnumValuePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface GqlEnumValueEdgeSubscription
+  extends Promise<AsyncIterator<GqlEnumValueEdge>>,
+    Fragmentable {
+  node: <T = GqlEnumValueSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateGqlEnumValue {
+  count: Int;
+}
+
+export interface AggregateGqlEnumValuePromise
+  extends Promise<AggregateGqlEnumValue>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateGqlEnumValueSubscription
+  extends Promise<AsyncIterator<AggregateGqlEnumValue>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface GqlFieldConnection {
@@ -3438,256 +4442,6 @@ export interface AggregateGqlInputValueSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface GqlIntrospectionSchema {
-  id: ID_Output;
-  name: String;
-}
-
-export interface GqlIntrospectionSchemaPromise
-  extends Promise<GqlIntrospectionSchema>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  types: <T = FragmentableArray<GqlType>>(args?: {
-    where?: GqlTypeWhereInput;
-    orderBy?: GqlTypeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  directives: <T = FragmentableArray<GqlDirective>>(args?: {
-    where?: GqlDirectiveWhereInput;
-    orderBy?: GqlDirectiveOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface GqlIntrospectionSchemaSubscription
-  extends Promise<AsyncIterator<GqlIntrospectionSchema>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  types: <T = Promise<AsyncIterator<GqlTypeSubscription>>>(args?: {
-    where?: GqlTypeWhereInput;
-    orderBy?: GqlTypeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  directives: <T = Promise<AsyncIterator<GqlDirectiveSubscription>>>(args?: {
-    where?: GqlDirectiveWhereInput;
-    orderBy?: GqlDirectiveOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface GqlIntrospectionSchemaNullablePromise
-  extends Promise<GqlIntrospectionSchema | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  types: <T = FragmentableArray<GqlType>>(args?: {
-    where?: GqlTypeWhereInput;
-    orderBy?: GqlTypeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  directives: <T = FragmentableArray<GqlDirective>>(args?: {
-    where?: GqlDirectiveWhereInput;
-    orderBy?: GqlDirectiveOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface GqlType {
-  id: ID_Output;
-  kind: GqlTypeKind;
-  name?: String;
-  description?: String;
-}
-
-export interface GqlTypePromise extends Promise<GqlType>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  kind: () => Promise<GqlTypeKind>;
-  name: () => Promise<String>;
-  description: () => Promise<String>;
-  schema: <T = GqlIntrospectionSchemaPromise>() => T;
-  fields: <T = FragmentableArray<GqlField>>(args?: {
-    where?: GqlFieldWhereInput;
-    orderBy?: GqlFieldOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  interfaces: <T = FragmentableArray<GqlBaseType>>(args?: {
-    where?: GqlBaseTypeWhereInput;
-    orderBy?: GqlBaseTypeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  possibleTypes: <T = FragmentableArray<GqlBaseType>>(args?: {
-    where?: GqlBaseTypeWhereInput;
-    orderBy?: GqlBaseTypeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  enumValues: <T = FragmentableArray<GqlEnumValue>>(args?: {
-    where?: GqlEnumValueWhereInput;
-    orderBy?: GqlEnumValueOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  inputFields: <T = FragmentableArray<GqlInputValue>>(args?: {
-    where?: GqlInputValueWhereInput;
-    orderBy?: GqlInputValueOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface GqlTypeSubscription
-  extends Promise<AsyncIterator<GqlType>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  kind: () => Promise<AsyncIterator<GqlTypeKind>>;
-  name: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
-  schema: <T = GqlIntrospectionSchemaSubscription>() => T;
-  fields: <T = Promise<AsyncIterator<GqlFieldSubscription>>>(args?: {
-    where?: GqlFieldWhereInput;
-    orderBy?: GqlFieldOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  interfaces: <T = Promise<AsyncIterator<GqlBaseTypeSubscription>>>(args?: {
-    where?: GqlBaseTypeWhereInput;
-    orderBy?: GqlBaseTypeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  possibleTypes: <T = Promise<AsyncIterator<GqlBaseTypeSubscription>>>(args?: {
-    where?: GqlBaseTypeWhereInput;
-    orderBy?: GqlBaseTypeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  enumValues: <T = Promise<AsyncIterator<GqlEnumValueSubscription>>>(args?: {
-    where?: GqlEnumValueWhereInput;
-    orderBy?: GqlEnumValueOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  inputFields: <T = Promise<AsyncIterator<GqlInputValueSubscription>>>(args?: {
-    where?: GqlInputValueWhereInput;
-    orderBy?: GqlInputValueOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface GqlTypeNullablePromise
-  extends Promise<GqlType | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  kind: () => Promise<GqlTypeKind>;
-  name: () => Promise<String>;
-  description: () => Promise<String>;
-  schema: <T = GqlIntrospectionSchemaPromise>() => T;
-  fields: <T = FragmentableArray<GqlField>>(args?: {
-    where?: GqlFieldWhereInput;
-    orderBy?: GqlFieldOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  interfaces: <T = FragmentableArray<GqlBaseType>>(args?: {
-    where?: GqlBaseTypeWhereInput;
-    orderBy?: GqlBaseTypeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  possibleTypes: <T = FragmentableArray<GqlBaseType>>(args?: {
-    where?: GqlBaseTypeWhereInput;
-    orderBy?: GqlBaseTypeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  enumValues: <T = FragmentableArray<GqlEnumValue>>(args?: {
-    where?: GqlEnumValueWhereInput;
-    orderBy?: GqlEnumValueOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  inputFields: <T = FragmentableArray<GqlInputValue>>(args?: {
-    where?: GqlInputValueWhereInput;
-    orderBy?: GqlInputValueOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
 export interface GqlIntrospectionSchemaConnection {
   pageInfo: PageInfo;
   edges: GqlIntrospectionSchemaEdge[];
@@ -3744,185 +4498,6 @@ export interface AggregateGqlIntrospectionSchemaSubscription
   extends Promise<AsyncIterator<AggregateGqlIntrospectionSchema>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface GqlSchema {
-  id: ID_Output;
-  name: String;
-  apiKey: String;
-  endpointUrl?: String;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-}
-
-export interface GqlSchemaPromise extends Promise<GqlSchema>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  owner: <T = UserPromise>() => T;
-  members: <T = FragmentableArray<User>>(args?: {
-    where?: UserWhereInput;
-    orderBy?: UserOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  apiKey: () => Promise<String>;
-  introspectionSchema: <T = GqlIntrospectionSchemaPromise>() => T;
-  endpointUrl: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface GqlSchemaSubscription
-  extends Promise<AsyncIterator<GqlSchema>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  owner: <T = UserSubscription>() => T;
-  members: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
-    where?: UserWhereInput;
-    orderBy?: UserOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  apiKey: () => Promise<AsyncIterator<String>>;
-  introspectionSchema: <T = GqlIntrospectionSchemaSubscription>() => T;
-  endpointUrl: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface GqlSchemaNullablePromise
-  extends Promise<GqlSchema | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  owner: <T = UserPromise>() => T;
-  members: <T = FragmentableArray<User>>(args?: {
-    where?: UserWhereInput;
-    orderBy?: UserOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  apiKey: () => Promise<String>;
-  introspectionSchema: <T = GqlIntrospectionSchemaPromise>() => T;
-  endpointUrl: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface User {
-  id: ID_Output;
-  sub: String;
-  email: String;
-  username: String;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  sub: () => Promise<String>;
-  email: () => Promise<String>;
-  username: () => Promise<String>;
-  profile: <T = UserProfilePromise>() => T;
-  schemas: <T = FragmentableArray<GqlSchema>>(args?: {
-    where?: GqlSchemaWhereInput;
-    orderBy?: GqlSchemaOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  sub: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  username: () => Promise<AsyncIterator<String>>;
-  profile: <T = UserProfileSubscription>() => T;
-  schemas: <T = Promise<AsyncIterator<GqlSchemaSubscription>>>(args?: {
-    where?: GqlSchemaWhereInput;
-    orderBy?: GqlSchemaOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface UserNullablePromise
-  extends Promise<User | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  sub: () => Promise<String>;
-  email: () => Promise<String>;
-  username: () => Promise<String>;
-  profile: <T = UserProfilePromise>() => T;
-  schemas: <T = FragmentableArray<GqlSchema>>(args?: {
-    where?: GqlSchemaWhereInput;
-    orderBy?: GqlSchemaOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface UserProfile {
-  id: ID_Output;
-  firstName?: String;
-  lastName?: String;
-  fullName?: String;
-  picture?: String;
-}
-
-export interface UserProfilePromise extends Promise<UserProfile>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  firstName: () => Promise<String>;
-  lastName: () => Promise<String>;
-  fullName: () => Promise<String>;
-  picture: () => Promise<String>;
-}
-
-export interface UserProfileSubscription
-  extends Promise<AsyncIterator<UserProfile>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  firstName: () => Promise<AsyncIterator<String>>;
-  lastName: () => Promise<AsyncIterator<String>>;
-  fullName: () => Promise<AsyncIterator<String>>;
-  picture: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserProfileNullablePromise
-  extends Promise<UserProfile | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  firstName: () => Promise<String>;
-  lastName: () => Promise<String>;
-  fullName: () => Promise<String>;
-  picture: () => Promise<String>;
 }
 
 export interface GqlSchemaConnection {
@@ -4159,6 +4734,94 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface CommentSubscriptionPayload {
+  mutation: MutationType;
+  node: Comment;
+  updatedFields: String[];
+  previousValues: CommentPreviousValues;
+}
+
+export interface CommentSubscriptionPayloadPromise
+  extends Promise<CommentSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CommentPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CommentPreviousValuesPromise>() => T;
+}
+
+export interface CommentSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CommentSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CommentSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CommentPreviousValuesSubscription>() => T;
+}
+
+export interface CommentPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+}
+
+export interface CommentPreviousValuesPromise
+  extends Promise<CommentPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface CommentPreviousValuesSubscription
+  extends Promise<AsyncIterator<CommentPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface CommentContentSubscriptionPayload {
+  mutation: MutationType;
+  node: CommentContent;
+  updatedFields: String[];
+  previousValues: CommentContentPreviousValues;
+}
+
+export interface CommentContentSubscriptionPayloadPromise
+  extends Promise<CommentContentSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CommentContentPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CommentContentPreviousValuesPromise>() => T;
+}
+
+export interface CommentContentSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CommentContentSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CommentContentSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CommentContentPreviousValuesSubscription>() => T;
+}
+
+export interface CommentContentPreviousValues {
+  id: ID_Output;
+  message: String;
+}
+
+export interface CommentContentPreviousValuesPromise
+  extends Promise<CommentContentPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  message: () => Promise<String>;
+}
+
+export interface CommentContentPreviousValuesSubscription
+  extends Promise<AsyncIterator<CommentContentPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  message: () => Promise<AsyncIterator<String>>;
 }
 
 export interface GqlBaseTypeSubscriptionPayload {
@@ -4697,11 +5360,6 @@ The `String` scalar type represents textual data, represented as UTF-8 character
 export type String = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
-
-/*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
@@ -4716,6 +5374,11 @@ DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
 
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
+
 export type Long = string;
 
 /**
@@ -4729,6 +5392,14 @@ export const models: Model[] = [
   },
   {
     name: "UserProfile",
+    embedded: false
+  },
+  {
+    name: "Comment",
+    embedded: false
+  },
+  {
+    name: "CommentContent",
     embedded: false
   },
   {
