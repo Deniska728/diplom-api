@@ -1,11 +1,9 @@
 export default {
-  resolve: (payload) => {
-    return {
-      mutation: payload.mutation,
-      comment: payload.node,
-      previousValues: payload.previousValues,
-    };
-  },
+  resolve: (payload) => ({
+    mutation: payload.mutation,
+    comment: payload.node,
+    previousValues: payload.previousValues,
+  }),
   subscribe: async (parent, { schemaId, gqlTypeId }, { prisma, user }) => {
     if (!user) throw new Error('Access denied');
 
