@@ -59,6 +59,7 @@ type Comment {
   id: ID!
   content: CommentContent!
   gqlType: GqlType
+  gqlField: GqlField
   createdBy: User!
   createdAt: DateTime!
 }
@@ -191,7 +192,13 @@ input CommentCreateInput {
   id: ID
   content: CommentContentCreateOneInput!
   gqlType: GqlTypeCreateOneWithoutCommentsInput
+  gqlField: GqlFieldCreateOneWithoutCommentsInput
   createdBy: UserCreateOneInput!
+}
+
+input CommentCreateManyWithoutGqlFieldInput {
+  create: [CommentCreateWithoutGqlFieldInput!]
+  connect: [CommentWhereUniqueInput!]
 }
 
 input CommentCreateManyWithoutGqlTypeInput {
@@ -199,9 +206,17 @@ input CommentCreateManyWithoutGqlTypeInput {
   connect: [CommentWhereUniqueInput!]
 }
 
+input CommentCreateWithoutGqlFieldInput {
+  id: ID
+  content: CommentContentCreateOneInput!
+  gqlType: GqlTypeCreateOneWithoutCommentsInput
+  createdBy: UserCreateOneInput!
+}
+
 input CommentCreateWithoutGqlTypeInput {
   id: ID
   content: CommentContentCreateOneInput!
+  gqlField: GqlFieldCreateOneWithoutCommentsInput
   createdBy: UserCreateOneInput!
 }
 
@@ -271,7 +286,19 @@ input CommentSubscriptionWhereInput {
 input CommentUpdateInput {
   content: CommentContentUpdateOneRequiredInput
   gqlType: GqlTypeUpdateOneWithoutCommentsInput
+  gqlField: GqlFieldUpdateOneWithoutCommentsInput
   createdBy: UserUpdateOneRequiredInput
+}
+
+input CommentUpdateManyWithoutGqlFieldInput {
+  create: [CommentCreateWithoutGqlFieldInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutGqlFieldInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutGqlFieldInput!]
+  deleteMany: [CommentScalarWhereInput!]
 }
 
 input CommentUpdateManyWithoutGqlTypeInput {
@@ -285,14 +312,32 @@ input CommentUpdateManyWithoutGqlTypeInput {
   deleteMany: [CommentScalarWhereInput!]
 }
 
+input CommentUpdateWithoutGqlFieldDataInput {
+  content: CommentContentUpdateOneRequiredInput
+  gqlType: GqlTypeUpdateOneWithoutCommentsInput
+  createdBy: UserUpdateOneRequiredInput
+}
+
 input CommentUpdateWithoutGqlTypeDataInput {
   content: CommentContentUpdateOneRequiredInput
+  gqlField: GqlFieldUpdateOneWithoutCommentsInput
   createdBy: UserUpdateOneRequiredInput
+}
+
+input CommentUpdateWithWhereUniqueWithoutGqlFieldInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutGqlFieldDataInput!
 }
 
 input CommentUpdateWithWhereUniqueWithoutGqlTypeInput {
   where: CommentWhereUniqueInput!
   data: CommentUpdateWithoutGqlTypeDataInput!
+}
+
+input CommentUpsertWithWhereUniqueWithoutGqlFieldInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutGqlFieldDataInput!
+  create: CommentCreateWithoutGqlFieldInput!
 }
 
 input CommentUpsertWithWhereUniqueWithoutGqlTypeInput {
@@ -318,6 +363,7 @@ input CommentWhereInput {
   id_not_ends_with: ID
   content: CommentContentWhereInput
   gqlType: GqlTypeWhereInput
+  gqlField: GqlFieldWhereInput
   createdBy: UserWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
@@ -1047,6 +1093,7 @@ type GqlField {
   args(where: GqlInputValueWhereInput, orderBy: GqlInputValueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlInputValue!]
   isDeprecated: Boolean!
   deprecationReason: String
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
 }
 
 type GqlFieldConnection {
@@ -1064,6 +1111,7 @@ input GqlFieldCreateInput {
   args: GqlInputValueCreateManyInput
   isDeprecated: Boolean!
   deprecationReason: String
+  comments: CommentCreateManyWithoutGqlFieldInput
 }
 
 input GqlFieldCreatekindsInput {
@@ -1073,6 +1121,22 @@ input GqlFieldCreatekindsInput {
 input GqlFieldCreateManyInput {
   create: [GqlFieldCreateInput!]
   connect: [GqlFieldWhereUniqueInput!]
+}
+
+input GqlFieldCreateOneWithoutCommentsInput {
+  create: GqlFieldCreateWithoutCommentsInput
+  connect: GqlFieldWhereUniqueInput
+}
+
+input GqlFieldCreateWithoutCommentsInput {
+  id: ID
+  name: String!
+  description: String
+  typeName: String
+  kinds: GqlFieldCreatekindsInput
+  args: GqlInputValueCreateManyInput
+  isDeprecated: Boolean!
+  deprecationReason: String
 }
 
 type GqlFieldEdge {
@@ -1209,6 +1273,7 @@ input GqlFieldUpdateDataInput {
   args: GqlInputValueUpdateManyInput
   isDeprecated: Boolean
   deprecationReason: String
+  comments: CommentUpdateManyWithoutGqlFieldInput
 }
 
 input GqlFieldUpdateInput {
@@ -1219,6 +1284,7 @@ input GqlFieldUpdateInput {
   args: GqlInputValueUpdateManyInput
   isDeprecated: Boolean
   deprecationReason: String
+  comments: CommentUpdateManyWithoutGqlFieldInput
 }
 
 input GqlFieldUpdatekindsInput {
@@ -1260,9 +1326,33 @@ input GqlFieldUpdateManyWithWhereNestedInput {
   data: GqlFieldUpdateManyDataInput!
 }
 
+input GqlFieldUpdateOneWithoutCommentsInput {
+  create: GqlFieldCreateWithoutCommentsInput
+  update: GqlFieldUpdateWithoutCommentsDataInput
+  upsert: GqlFieldUpsertWithoutCommentsInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: GqlFieldWhereUniqueInput
+}
+
+input GqlFieldUpdateWithoutCommentsDataInput {
+  name: String
+  description: String
+  typeName: String
+  kinds: GqlFieldUpdatekindsInput
+  args: GqlInputValueUpdateManyInput
+  isDeprecated: Boolean
+  deprecationReason: String
+}
+
 input GqlFieldUpdateWithWhereUniqueNestedInput {
   where: GqlFieldWhereUniqueInput!
   data: GqlFieldUpdateDataInput!
+}
+
+input GqlFieldUpsertWithoutCommentsInput {
+  update: GqlFieldUpdateWithoutCommentsDataInput!
+  create: GqlFieldCreateWithoutCommentsInput!
 }
 
 input GqlFieldUpsertWithWhereUniqueNestedInput {
@@ -1347,6 +1437,9 @@ input GqlFieldWhereInput {
   deprecationReason_not_starts_with: String
   deprecationReason_ends_with: String
   deprecationReason_not_ends_with: String
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
   AND: [GqlFieldWhereInput!]
   OR: [GqlFieldWhereInput!]
   NOT: [GqlFieldWhereInput!]

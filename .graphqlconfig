@@ -5,11 +5,11 @@
       "extensions": {
         "endpoints": {
           "local": {
-            "url": "http://localhost:3002/api",
+            "url": "http://localhost:3002/graphql",
             "subscription": {
-              "url": "ws://localhost:3002/api-subscriptions"
+              "url": "ws://localhost:3002/graphql"
             }
-          },
+          }
         }
       }
     }

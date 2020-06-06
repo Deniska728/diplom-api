@@ -21,6 +21,7 @@ type Comment {
   id: ID! @id
   content: CommentContent!
   gqlType: GqlType @relation(name: "CommentsByGqlType")
+  gqlField: GqlField @relation(name: "CommentsByGqlField")
   createdBy: User!
   createdAt: DateTime! @createdAt
 }
@@ -78,6 +79,7 @@ type GqlField {
   args: [GqlInputValue!]! @relation(name: "FieldInputValues" onDelete: CASCADE)
   isDeprecated: Boolean!
   deprecationReason: String
+  comments: [Comment]! @relation(name: "CommentsByGqlField", onDelete: CASCADE)
 }
 
 type GqlInputValue {

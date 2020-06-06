@@ -154,7 +154,7 @@ type Query {
   schemas: [Schema]
   comments(
     schemaId: ID!
-    gqlTypeId: ID!
+    id: ID!
   ): [Comment]!
   info: String!
 }
@@ -178,7 +178,8 @@ type Mutation {
   ): ID
   createComment(
     schemaId: ID!
-    gqlTypeId: ID!
+    gqlTypeId: ID
+    gqlFieldId: ID
     content: String!
   ): Comment!
   deleteComment(
@@ -189,6 +190,6 @@ type Mutation {
 type Subscription {
   comment(
     schemaId: ID!
-    gqlTypeId: ID!
+    id: ID!
   ): CommentSubscriptionResponse
 }

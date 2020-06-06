@@ -1,4 +1,4 @@
-export default async (root, { schemaId, gqlTypeId }, { prisma, user }) => {
+export default async (root, { schemaId, id }, { prisma, user }) => {
   if (!user) throw new Error('Access denied');
 
   const schemaQuery = {
@@ -15,9 +15,16 @@ export default async (root, { schemaId, gqlTypeId }, { prisma, user }) => {
 
   const query = {
     where: {
-      gqlType: {
-        id: gqlTypeId,
-      },
+      OR: [
+        {
+          gqlType: {
+            id,
+          },
+          gqlField: {
+            id,
+          },
+        },
+      ],
     },
     orderBy: 'createdAt_DESC',
   };

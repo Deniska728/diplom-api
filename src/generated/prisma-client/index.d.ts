@@ -644,6 +644,12 @@ export type GqlFieldOrderByInput =
   | "deprecationReason_ASC"
   | "deprecationReason_DESC";
 
+export type CommentOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC";
+
 export type GqlBaseTypeOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -663,12 +669,6 @@ export type GqlEnumValueOrderByInput =
   | "isDeprecated_DESC"
   | "deprecationReason_ASC"
   | "deprecationReason_DESC";
-
-export type CommentOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC";
 
 export type GqlSchemaOrderByInput =
   | "id_ASC"
@@ -1048,111 +1048,12 @@ export interface GqlFieldWhereInput {
   deprecationReason_not_starts_with?: Maybe<String>;
   deprecationReason_ends_with?: Maybe<String>;
   deprecationReason_not_ends_with?: Maybe<String>;
+  comments_every?: Maybe<CommentWhereInput>;
+  comments_some?: Maybe<CommentWhereInput>;
+  comments_none?: Maybe<CommentWhereInput>;
   AND?: Maybe<GqlFieldWhereInput[] | GqlFieldWhereInput>;
   OR?: Maybe<GqlFieldWhereInput[] | GqlFieldWhereInput>;
   NOT?: Maybe<GqlFieldWhereInput[] | GqlFieldWhereInput>;
-}
-
-export interface GqlBaseTypeWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  kind?: Maybe<GqlTypeKind>;
-  kind_not?: Maybe<GqlTypeKind>;
-  kind_in?: Maybe<GqlTypeKind[] | GqlTypeKind>;
-  kind_not_in?: Maybe<GqlTypeKind[] | GqlTypeKind>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  AND?: Maybe<GqlBaseTypeWhereInput[] | GqlBaseTypeWhereInput>;
-  OR?: Maybe<GqlBaseTypeWhereInput[] | GqlBaseTypeWhereInput>;
-  NOT?: Maybe<GqlBaseTypeWhereInput[] | GqlBaseTypeWhereInput>;
-}
-
-export interface GqlEnumValueWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  description?: Maybe<String>;
-  description_not?: Maybe<String>;
-  description_in?: Maybe<String[] | String>;
-  description_not_in?: Maybe<String[] | String>;
-  description_lt?: Maybe<String>;
-  description_lte?: Maybe<String>;
-  description_gt?: Maybe<String>;
-  description_gte?: Maybe<String>;
-  description_contains?: Maybe<String>;
-  description_not_contains?: Maybe<String>;
-  description_starts_with?: Maybe<String>;
-  description_not_starts_with?: Maybe<String>;
-  description_ends_with?: Maybe<String>;
-  description_not_ends_with?: Maybe<String>;
-  isDeprecated?: Maybe<Boolean>;
-  isDeprecated_not?: Maybe<Boolean>;
-  deprecationReason?: Maybe<String>;
-  deprecationReason_not?: Maybe<String>;
-  deprecationReason_in?: Maybe<String[] | String>;
-  deprecationReason_not_in?: Maybe<String[] | String>;
-  deprecationReason_lt?: Maybe<String>;
-  deprecationReason_lte?: Maybe<String>;
-  deprecationReason_gt?: Maybe<String>;
-  deprecationReason_gte?: Maybe<String>;
-  deprecationReason_contains?: Maybe<String>;
-  deprecationReason_not_contains?: Maybe<String>;
-  deprecationReason_starts_with?: Maybe<String>;
-  deprecationReason_not_starts_with?: Maybe<String>;
-  deprecationReason_ends_with?: Maybe<String>;
-  deprecationReason_not_ends_with?: Maybe<String>;
-  AND?: Maybe<GqlEnumValueWhereInput[] | GqlEnumValueWhereInput>;
-  OR?: Maybe<GqlEnumValueWhereInput[] | GqlEnumValueWhereInput>;
-  NOT?: Maybe<GqlEnumValueWhereInput[] | GqlEnumValueWhereInput>;
 }
 
 export interface CommentWhereInput {
@@ -1172,6 +1073,7 @@ export interface CommentWhereInput {
   id_not_ends_with?: Maybe<ID_Input>;
   content?: Maybe<CommentContentWhereInput>;
   gqlType?: Maybe<GqlTypeWhereInput>;
+  gqlField?: Maybe<GqlFieldWhereInput>;
   createdBy?: Maybe<UserWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
@@ -1461,6 +1363,108 @@ export interface GqlSchemaWhereInput {
   NOT?: Maybe<GqlSchemaWhereInput[] | GqlSchemaWhereInput>;
 }
 
+export interface GqlBaseTypeWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  kind?: Maybe<GqlTypeKind>;
+  kind_not?: Maybe<GqlTypeKind>;
+  kind_in?: Maybe<GqlTypeKind[] | GqlTypeKind>;
+  kind_not_in?: Maybe<GqlTypeKind[] | GqlTypeKind>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  AND?: Maybe<GqlBaseTypeWhereInput[] | GqlBaseTypeWhereInput>;
+  OR?: Maybe<GqlBaseTypeWhereInput[] | GqlBaseTypeWhereInput>;
+  NOT?: Maybe<GqlBaseTypeWhereInput[] | GqlBaseTypeWhereInput>;
+}
+
+export interface GqlEnumValueWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  isDeprecated?: Maybe<Boolean>;
+  isDeprecated_not?: Maybe<Boolean>;
+  deprecationReason?: Maybe<String>;
+  deprecationReason_not?: Maybe<String>;
+  deprecationReason_in?: Maybe<String[] | String>;
+  deprecationReason_not_in?: Maybe<String[] | String>;
+  deprecationReason_lt?: Maybe<String>;
+  deprecationReason_lte?: Maybe<String>;
+  deprecationReason_gt?: Maybe<String>;
+  deprecationReason_gte?: Maybe<String>;
+  deprecationReason_contains?: Maybe<String>;
+  deprecationReason_not_contains?: Maybe<String>;
+  deprecationReason_starts_with?: Maybe<String>;
+  deprecationReason_not_starts_with?: Maybe<String>;
+  deprecationReason_ends_with?: Maybe<String>;
+  deprecationReason_not_ends_with?: Maybe<String>;
+  AND?: Maybe<GqlEnumValueWhereInput[] | GqlEnumValueWhereInput>;
+  OR?: Maybe<GqlEnumValueWhereInput[] | GqlEnumValueWhereInput>;
+  NOT?: Maybe<GqlEnumValueWhereInput[] | GqlEnumValueWhereInput>;
+}
+
 export type CommentContentWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
@@ -1510,6 +1514,7 @@ export interface CommentCreateInput {
   id?: Maybe<ID_Input>;
   content: CommentContentCreateOneInput;
   gqlType?: Maybe<GqlTypeCreateOneWithoutCommentsInput>;
+  gqlField?: Maybe<GqlFieldCreateOneWithoutCommentsInput>;
   createdBy: UserCreateOneInput;
 }
 
@@ -1605,36 +1610,25 @@ export interface GqlFieldCreateInput {
   args?: Maybe<GqlInputValueCreateManyInput>;
   isDeprecated: Boolean;
   deprecationReason?: Maybe<String>;
+  comments?: Maybe<CommentCreateManyWithoutGqlFieldInput>;
 }
 
 export interface GqlFieldCreatekindsInput {
   set?: Maybe<GqlTypeKind[] | GqlTypeKind>;
 }
 
-export interface GqlBaseTypeCreateManyInput {
-  create?: Maybe<GqlBaseTypeCreateInput[] | GqlBaseTypeCreateInput>;
-  connect?: Maybe<GqlBaseTypeWhereUniqueInput[] | GqlBaseTypeWhereUniqueInput>;
-}
-
-export interface GqlBaseTypeCreateInput {
-  id?: Maybe<ID_Input>;
-  kind: GqlTypeKind;
-  name: String;
-}
-
-export interface GqlEnumValueCreateManyInput {
-  create?: Maybe<GqlEnumValueCreateInput[] | GqlEnumValueCreateInput>;
-  connect?: Maybe<
-    GqlEnumValueWhereUniqueInput[] | GqlEnumValueWhereUniqueInput
+export interface CommentCreateManyWithoutGqlFieldInput {
+  create?: Maybe<
+    CommentCreateWithoutGqlFieldInput[] | CommentCreateWithoutGqlFieldInput
   >;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
 }
 
-export interface GqlEnumValueCreateInput {
+export interface CommentCreateWithoutGqlFieldInput {
   id?: Maybe<ID_Input>;
-  name: String;
-  description?: Maybe<String>;
-  isDeprecated: Boolean;
-  deprecationReason?: Maybe<String>;
+  content: CommentContentCreateOneInput;
+  gqlType?: Maybe<GqlTypeCreateOneWithoutCommentsInput>;
+  createdBy: UserCreateOneInput;
 }
 
 export interface UserCreateOneInput {
@@ -1712,6 +1706,32 @@ export interface GqlTypeCreateWithoutSchemaInput {
   comments?: Maybe<CommentCreateManyWithoutGqlTypeInput>;
 }
 
+export interface GqlBaseTypeCreateManyInput {
+  create?: Maybe<GqlBaseTypeCreateInput[] | GqlBaseTypeCreateInput>;
+  connect?: Maybe<GqlBaseTypeWhereUniqueInput[] | GqlBaseTypeWhereUniqueInput>;
+}
+
+export interface GqlBaseTypeCreateInput {
+  id?: Maybe<ID_Input>;
+  kind: GqlTypeKind;
+  name: String;
+}
+
+export interface GqlEnumValueCreateManyInput {
+  create?: Maybe<GqlEnumValueCreateInput[] | GqlEnumValueCreateInput>;
+  connect?: Maybe<
+    GqlEnumValueWhereUniqueInput[] | GqlEnumValueWhereUniqueInput
+  >;
+}
+
+export interface GqlEnumValueCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  description?: Maybe<String>;
+  isDeprecated: Boolean;
+  deprecationReason?: Maybe<String>;
+}
+
 export interface CommentCreateManyWithoutGqlTypeInput {
   create?: Maybe<
     CommentCreateWithoutGqlTypeInput[] | CommentCreateWithoutGqlTypeInput
@@ -1722,12 +1742,30 @@ export interface CommentCreateManyWithoutGqlTypeInput {
 export interface CommentCreateWithoutGqlTypeInput {
   id?: Maybe<ID_Input>;
   content: CommentContentCreateOneInput;
+  gqlField?: Maybe<GqlFieldCreateOneWithoutCommentsInput>;
   createdBy: UserCreateOneInput;
+}
+
+export interface GqlFieldCreateOneWithoutCommentsInput {
+  create?: Maybe<GqlFieldCreateWithoutCommentsInput>;
+  connect?: Maybe<GqlFieldWhereUniqueInput>;
+}
+
+export interface GqlFieldCreateWithoutCommentsInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  description?: Maybe<String>;
+  typeName?: Maybe<String>;
+  kinds?: Maybe<GqlFieldCreatekindsInput>;
+  args?: Maybe<GqlInputValueCreateManyInput>;
+  isDeprecated: Boolean;
+  deprecationReason?: Maybe<String>;
 }
 
 export interface CommentUpdateInput {
   content?: Maybe<CommentContentUpdateOneRequiredInput>;
   gqlType?: Maybe<GqlTypeUpdateOneWithoutCommentsInput>;
+  gqlField?: Maybe<GqlFieldUpdateOneWithoutCommentsInput>;
   createdBy?: Maybe<UserUpdateOneRequiredInput>;
 }
 
@@ -2068,108 +2106,182 @@ export interface GqlFieldUpdateDataInput {
   args?: Maybe<GqlInputValueUpdateManyInput>;
   isDeprecated?: Maybe<Boolean>;
   deprecationReason?: Maybe<String>;
+  comments?: Maybe<CommentUpdateManyWithoutGqlFieldInput>;
 }
 
 export interface GqlFieldUpdatekindsInput {
   set?: Maybe<GqlTypeKind[] | GqlTypeKind>;
 }
 
-export interface GqlFieldUpsertWithWhereUniqueNestedInput {
-  where: GqlFieldWhereUniqueInput;
-  update: GqlFieldUpdateDataInput;
-  create: GqlFieldCreateInput;
+export interface CommentUpdateManyWithoutGqlFieldInput {
+  create?: Maybe<
+    CommentCreateWithoutGqlFieldInput[] | CommentCreateWithoutGqlFieldInput
+  >;
+  delete?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  set?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  disconnect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  update?: Maybe<
+    | CommentUpdateWithWhereUniqueWithoutGqlFieldInput[]
+    | CommentUpdateWithWhereUniqueWithoutGqlFieldInput
+  >;
+  upsert?: Maybe<
+    | CommentUpsertWithWhereUniqueWithoutGqlFieldInput[]
+    | CommentUpsertWithWhereUniqueWithoutGqlFieldInput
+  >;
+  deleteMany?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
 }
 
-export interface GqlFieldScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
+export interface CommentUpdateWithWhereUniqueWithoutGqlFieldInput {
+  where: CommentWhereUniqueInput;
+  data: CommentUpdateWithoutGqlFieldDataInput;
+}
+
+export interface CommentUpdateWithoutGqlFieldDataInput {
+  content?: Maybe<CommentContentUpdateOneRequiredInput>;
+  gqlType?: Maybe<GqlTypeUpdateOneWithoutCommentsInput>;
+  createdBy?: Maybe<UserUpdateOneRequiredInput>;
+}
+
+export interface UserUpdateOneRequiredInput {
+  create?: Maybe<UserCreateInput>;
+  update?: Maybe<UserUpdateDataInput>;
+  upsert?: Maybe<UserUpsertNestedInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateDataInput {
+  sub?: Maybe<String>;
+  email?: Maybe<String>;
+  username?: Maybe<String>;
+  profile?: Maybe<UserProfileUpdateOneInput>;
+  schemas?: Maybe<GqlSchemaUpdateManyWithoutMembersInput>;
+}
+
+export interface UserProfileUpdateOneInput {
+  create?: Maybe<UserProfileCreateInput>;
+  update?: Maybe<UserProfileUpdateDataInput>;
+  upsert?: Maybe<UserProfileUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserProfileWhereUniqueInput>;
+}
+
+export interface UserProfileUpdateDataInput {
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  fullName?: Maybe<String>;
+  picture?: Maybe<String>;
+}
+
+export interface UserProfileUpsertNestedInput {
+  update: UserProfileUpdateDataInput;
+  create: UserProfileCreateInput;
+}
+
+export interface GqlSchemaUpdateManyWithoutMembersInput {
+  create?: Maybe<
+    GqlSchemaCreateWithoutMembersInput[] | GqlSchemaCreateWithoutMembersInput
+  >;
+  delete?: Maybe<GqlSchemaWhereUniqueInput[] | GqlSchemaWhereUniqueInput>;
+  connect?: Maybe<GqlSchemaWhereUniqueInput[] | GqlSchemaWhereUniqueInput>;
+  set?: Maybe<GqlSchemaWhereUniqueInput[] | GqlSchemaWhereUniqueInput>;
+  disconnect?: Maybe<GqlSchemaWhereUniqueInput[] | GqlSchemaWhereUniqueInput>;
+  update?: Maybe<
+    | GqlSchemaUpdateWithWhereUniqueWithoutMembersInput[]
+    | GqlSchemaUpdateWithWhereUniqueWithoutMembersInput
+  >;
+  upsert?: Maybe<
+    | GqlSchemaUpsertWithWhereUniqueWithoutMembersInput[]
+    | GqlSchemaUpsertWithWhereUniqueWithoutMembersInput
+  >;
+  deleteMany?: Maybe<GqlSchemaScalarWhereInput[] | GqlSchemaScalarWhereInput>;
+  updateMany?: Maybe<
+    | GqlSchemaUpdateManyWithWhereNestedInput[]
+    | GqlSchemaUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface GqlSchemaUpdateWithWhereUniqueWithoutMembersInput {
+  where: GqlSchemaWhereUniqueInput;
+  data: GqlSchemaUpdateWithoutMembersDataInput;
+}
+
+export interface GqlSchemaUpdateWithoutMembersDataInput {
   name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  description?: Maybe<String>;
-  description_not?: Maybe<String>;
-  description_in?: Maybe<String[] | String>;
-  description_not_in?: Maybe<String[] | String>;
-  description_lt?: Maybe<String>;
-  description_lte?: Maybe<String>;
-  description_gt?: Maybe<String>;
-  description_gte?: Maybe<String>;
-  description_contains?: Maybe<String>;
-  description_not_contains?: Maybe<String>;
-  description_starts_with?: Maybe<String>;
-  description_not_starts_with?: Maybe<String>;
-  description_ends_with?: Maybe<String>;
-  description_not_ends_with?: Maybe<String>;
-  typeName?: Maybe<String>;
-  typeName_not?: Maybe<String>;
-  typeName_in?: Maybe<String[] | String>;
-  typeName_not_in?: Maybe<String[] | String>;
-  typeName_lt?: Maybe<String>;
-  typeName_lte?: Maybe<String>;
-  typeName_gt?: Maybe<String>;
-  typeName_gte?: Maybe<String>;
-  typeName_contains?: Maybe<String>;
-  typeName_not_contains?: Maybe<String>;
-  typeName_starts_with?: Maybe<String>;
-  typeName_not_starts_with?: Maybe<String>;
-  typeName_ends_with?: Maybe<String>;
-  typeName_not_ends_with?: Maybe<String>;
-  isDeprecated?: Maybe<Boolean>;
-  isDeprecated_not?: Maybe<Boolean>;
-  deprecationReason?: Maybe<String>;
-  deprecationReason_not?: Maybe<String>;
-  deprecationReason_in?: Maybe<String[] | String>;
-  deprecationReason_not_in?: Maybe<String[] | String>;
-  deprecationReason_lt?: Maybe<String>;
-  deprecationReason_lte?: Maybe<String>;
-  deprecationReason_gt?: Maybe<String>;
-  deprecationReason_gte?: Maybe<String>;
-  deprecationReason_contains?: Maybe<String>;
-  deprecationReason_not_contains?: Maybe<String>;
-  deprecationReason_starts_with?: Maybe<String>;
-  deprecationReason_not_starts_with?: Maybe<String>;
-  deprecationReason_ends_with?: Maybe<String>;
-  deprecationReason_not_ends_with?: Maybe<String>;
-  AND?: Maybe<GqlFieldScalarWhereInput[] | GqlFieldScalarWhereInput>;
-  OR?: Maybe<GqlFieldScalarWhereInput[] | GqlFieldScalarWhereInput>;
-  NOT?: Maybe<GqlFieldScalarWhereInput[] | GqlFieldScalarWhereInput>;
+  owner?: Maybe<UserUpdateOneInput>;
+  apiKey?: Maybe<String>;
+  introspectionSchema?: Maybe<GqlIntrospectionSchemaUpdateOneInput>;
+  endpointUrl?: Maybe<String>;
 }
 
-export interface GqlFieldUpdateManyWithWhereNestedInput {
-  where: GqlFieldScalarWhereInput;
-  data: GqlFieldUpdateManyDataInput;
+export interface UserUpdateOneInput {
+  create?: Maybe<UserCreateInput>;
+  update?: Maybe<UserUpdateDataInput>;
+  upsert?: Maybe<UserUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface GqlFieldUpdateManyDataInput {
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface GqlIntrospectionSchemaUpdateOneInput {
+  create?: Maybe<GqlIntrospectionSchemaCreateInput>;
+  update?: Maybe<GqlIntrospectionSchemaUpdateDataInput>;
+  upsert?: Maybe<GqlIntrospectionSchemaUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<GqlIntrospectionSchemaWhereUniqueInput>;
+}
+
+export interface GqlIntrospectionSchemaUpdateDataInput {
+  name?: Maybe<String>;
+  types?: Maybe<GqlTypeUpdateManyWithoutSchemaInput>;
+  directives?: Maybe<GqlDirectiveUpdateManyInput>;
+}
+
+export interface GqlTypeUpdateManyWithoutSchemaInput {
+  create?: Maybe<
+    GqlTypeCreateWithoutSchemaInput[] | GqlTypeCreateWithoutSchemaInput
+  >;
+  delete?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
+  connect?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
+  set?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
+  disconnect?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
+  update?: Maybe<
+    | GqlTypeUpdateWithWhereUniqueWithoutSchemaInput[]
+    | GqlTypeUpdateWithWhereUniqueWithoutSchemaInput
+  >;
+  upsert?: Maybe<
+    | GqlTypeUpsertWithWhereUniqueWithoutSchemaInput[]
+    | GqlTypeUpsertWithWhereUniqueWithoutSchemaInput
+  >;
+  deleteMany?: Maybe<GqlTypeScalarWhereInput[] | GqlTypeScalarWhereInput>;
+  updateMany?: Maybe<
+    | GqlTypeUpdateManyWithWhereNestedInput[]
+    | GqlTypeUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface GqlTypeUpdateWithWhereUniqueWithoutSchemaInput {
+  where: GqlTypeWhereUniqueInput;
+  data: GqlTypeUpdateWithoutSchemaDataInput;
+}
+
+export interface GqlTypeUpdateWithoutSchemaDataInput {
+  kind?: Maybe<GqlTypeKind>;
   name?: Maybe<String>;
   description?: Maybe<String>;
-  typeName?: Maybe<String>;
-  kinds?: Maybe<GqlFieldUpdatekindsInput>;
-  isDeprecated?: Maybe<Boolean>;
-  deprecationReason?: Maybe<String>;
+  fields?: Maybe<GqlFieldUpdateManyInput>;
+  interfaces?: Maybe<GqlBaseTypeUpdateManyInput>;
+  possibleTypes?: Maybe<GqlBaseTypeUpdateManyInput>;
+  enumValues?: Maybe<GqlEnumValueUpdateManyInput>;
+  inputFields?: Maybe<GqlInputValueUpdateManyInput>;
+  comments?: Maybe<CommentUpdateManyWithoutGqlTypeInput>;
 }
 
 export interface GqlBaseTypeUpdateManyInput {
@@ -2382,152 +2494,6 @@ export interface GqlEnumValueUpdateManyDataInput {
   deprecationReason?: Maybe<String>;
 }
 
-export interface GqlTypeUpsertWithoutCommentsInput {
-  update: GqlTypeUpdateWithoutCommentsDataInput;
-  create: GqlTypeCreateWithoutCommentsInput;
-}
-
-export interface UserUpdateOneRequiredInput {
-  create?: Maybe<UserCreateInput>;
-  update?: Maybe<UserUpdateDataInput>;
-  upsert?: Maybe<UserUpsertNestedInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserUpdateDataInput {
-  sub?: Maybe<String>;
-  email?: Maybe<String>;
-  username?: Maybe<String>;
-  profile?: Maybe<UserProfileUpdateOneInput>;
-  schemas?: Maybe<GqlSchemaUpdateManyWithoutMembersInput>;
-}
-
-export interface UserProfileUpdateOneInput {
-  create?: Maybe<UserProfileCreateInput>;
-  update?: Maybe<UserProfileUpdateDataInput>;
-  upsert?: Maybe<UserProfileUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<UserProfileWhereUniqueInput>;
-}
-
-export interface UserProfileUpdateDataInput {
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  fullName?: Maybe<String>;
-  picture?: Maybe<String>;
-}
-
-export interface UserProfileUpsertNestedInput {
-  update: UserProfileUpdateDataInput;
-  create: UserProfileCreateInput;
-}
-
-export interface GqlSchemaUpdateManyWithoutMembersInput {
-  create?: Maybe<
-    GqlSchemaCreateWithoutMembersInput[] | GqlSchemaCreateWithoutMembersInput
-  >;
-  delete?: Maybe<GqlSchemaWhereUniqueInput[] | GqlSchemaWhereUniqueInput>;
-  connect?: Maybe<GqlSchemaWhereUniqueInput[] | GqlSchemaWhereUniqueInput>;
-  set?: Maybe<GqlSchemaWhereUniqueInput[] | GqlSchemaWhereUniqueInput>;
-  disconnect?: Maybe<GqlSchemaWhereUniqueInput[] | GqlSchemaWhereUniqueInput>;
-  update?: Maybe<
-    | GqlSchemaUpdateWithWhereUniqueWithoutMembersInput[]
-    | GqlSchemaUpdateWithWhereUniqueWithoutMembersInput
-  >;
-  upsert?: Maybe<
-    | GqlSchemaUpsertWithWhereUniqueWithoutMembersInput[]
-    | GqlSchemaUpsertWithWhereUniqueWithoutMembersInput
-  >;
-  deleteMany?: Maybe<GqlSchemaScalarWhereInput[] | GqlSchemaScalarWhereInput>;
-  updateMany?: Maybe<
-    | GqlSchemaUpdateManyWithWhereNestedInput[]
-    | GqlSchemaUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface GqlSchemaUpdateWithWhereUniqueWithoutMembersInput {
-  where: GqlSchemaWhereUniqueInput;
-  data: GqlSchemaUpdateWithoutMembersDataInput;
-}
-
-export interface GqlSchemaUpdateWithoutMembersDataInput {
-  name?: Maybe<String>;
-  owner?: Maybe<UserUpdateOneInput>;
-  apiKey?: Maybe<String>;
-  introspectionSchema?: Maybe<GqlIntrospectionSchemaUpdateOneInput>;
-  endpointUrl?: Maybe<String>;
-}
-
-export interface UserUpdateOneInput {
-  create?: Maybe<UserCreateInput>;
-  update?: Maybe<UserUpdateDataInput>;
-  upsert?: Maybe<UserUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
-}
-
-export interface GqlIntrospectionSchemaUpdateOneInput {
-  create?: Maybe<GqlIntrospectionSchemaCreateInput>;
-  update?: Maybe<GqlIntrospectionSchemaUpdateDataInput>;
-  upsert?: Maybe<GqlIntrospectionSchemaUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<GqlIntrospectionSchemaWhereUniqueInput>;
-}
-
-export interface GqlIntrospectionSchemaUpdateDataInput {
-  name?: Maybe<String>;
-  types?: Maybe<GqlTypeUpdateManyWithoutSchemaInput>;
-  directives?: Maybe<GqlDirectiveUpdateManyInput>;
-}
-
-export interface GqlTypeUpdateManyWithoutSchemaInput {
-  create?: Maybe<
-    GqlTypeCreateWithoutSchemaInput[] | GqlTypeCreateWithoutSchemaInput
-  >;
-  delete?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
-  connect?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
-  set?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
-  disconnect?: Maybe<GqlTypeWhereUniqueInput[] | GqlTypeWhereUniqueInput>;
-  update?: Maybe<
-    | GqlTypeUpdateWithWhereUniqueWithoutSchemaInput[]
-    | GqlTypeUpdateWithWhereUniqueWithoutSchemaInput
-  >;
-  upsert?: Maybe<
-    | GqlTypeUpsertWithWhereUniqueWithoutSchemaInput[]
-    | GqlTypeUpsertWithWhereUniqueWithoutSchemaInput
-  >;
-  deleteMany?: Maybe<GqlTypeScalarWhereInput[] | GqlTypeScalarWhereInput>;
-  updateMany?: Maybe<
-    | GqlTypeUpdateManyWithWhereNestedInput[]
-    | GqlTypeUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface GqlTypeUpdateWithWhereUniqueWithoutSchemaInput {
-  where: GqlTypeWhereUniqueInput;
-  data: GqlTypeUpdateWithoutSchemaDataInput;
-}
-
-export interface GqlTypeUpdateWithoutSchemaDataInput {
-  kind?: Maybe<GqlTypeKind>;
-  name?: Maybe<String>;
-  description?: Maybe<String>;
-  fields?: Maybe<GqlFieldUpdateManyInput>;
-  interfaces?: Maybe<GqlBaseTypeUpdateManyInput>;
-  possibleTypes?: Maybe<GqlBaseTypeUpdateManyInput>;
-  enumValues?: Maybe<GqlEnumValueUpdateManyInput>;
-  inputFields?: Maybe<GqlInputValueUpdateManyInput>;
-  comments?: Maybe<CommentUpdateManyWithoutGqlTypeInput>;
-}
-
 export interface CommentUpdateManyWithoutGqlTypeInput {
   create?: Maybe<
     CommentCreateWithoutGqlTypeInput[] | CommentCreateWithoutGqlTypeInput
@@ -2554,7 +2520,32 @@ export interface CommentUpdateWithWhereUniqueWithoutGqlTypeInput {
 
 export interface CommentUpdateWithoutGqlTypeDataInput {
   content?: Maybe<CommentContentUpdateOneRequiredInput>;
+  gqlField?: Maybe<GqlFieldUpdateOneWithoutCommentsInput>;
   createdBy?: Maybe<UserUpdateOneRequiredInput>;
+}
+
+export interface GqlFieldUpdateOneWithoutCommentsInput {
+  create?: Maybe<GqlFieldCreateWithoutCommentsInput>;
+  update?: Maybe<GqlFieldUpdateWithoutCommentsDataInput>;
+  upsert?: Maybe<GqlFieldUpsertWithoutCommentsInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<GqlFieldWhereUniqueInput>;
+}
+
+export interface GqlFieldUpdateWithoutCommentsDataInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  typeName?: Maybe<String>;
+  kinds?: Maybe<GqlFieldUpdatekindsInput>;
+  args?: Maybe<GqlInputValueUpdateManyInput>;
+  isDeprecated?: Maybe<Boolean>;
+  deprecationReason?: Maybe<String>;
+}
+
+export interface GqlFieldUpsertWithoutCommentsInput {
+  update: GqlFieldUpdateWithoutCommentsDataInput;
+  create: GqlFieldCreateWithoutCommentsInput;
 }
 
 export interface CommentUpsertWithWhereUniqueWithoutGqlTypeInput {
@@ -2760,6 +2751,115 @@ export interface GqlSchemaUpdateManyDataInput {
   endpointUrl?: Maybe<String>;
 }
 
+export interface CommentUpsertWithWhereUniqueWithoutGqlFieldInput {
+  where: CommentWhereUniqueInput;
+  update: CommentUpdateWithoutGqlFieldDataInput;
+  create: CommentCreateWithoutGqlFieldInput;
+}
+
+export interface GqlFieldUpsertWithWhereUniqueNestedInput {
+  where: GqlFieldWhereUniqueInput;
+  update: GqlFieldUpdateDataInput;
+  create: GqlFieldCreateInput;
+}
+
+export interface GqlFieldScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  typeName?: Maybe<String>;
+  typeName_not?: Maybe<String>;
+  typeName_in?: Maybe<String[] | String>;
+  typeName_not_in?: Maybe<String[] | String>;
+  typeName_lt?: Maybe<String>;
+  typeName_lte?: Maybe<String>;
+  typeName_gt?: Maybe<String>;
+  typeName_gte?: Maybe<String>;
+  typeName_contains?: Maybe<String>;
+  typeName_not_contains?: Maybe<String>;
+  typeName_starts_with?: Maybe<String>;
+  typeName_not_starts_with?: Maybe<String>;
+  typeName_ends_with?: Maybe<String>;
+  typeName_not_ends_with?: Maybe<String>;
+  isDeprecated?: Maybe<Boolean>;
+  isDeprecated_not?: Maybe<Boolean>;
+  deprecationReason?: Maybe<String>;
+  deprecationReason_not?: Maybe<String>;
+  deprecationReason_in?: Maybe<String[] | String>;
+  deprecationReason_not_in?: Maybe<String[] | String>;
+  deprecationReason_lt?: Maybe<String>;
+  deprecationReason_lte?: Maybe<String>;
+  deprecationReason_gt?: Maybe<String>;
+  deprecationReason_gte?: Maybe<String>;
+  deprecationReason_contains?: Maybe<String>;
+  deprecationReason_not_contains?: Maybe<String>;
+  deprecationReason_starts_with?: Maybe<String>;
+  deprecationReason_not_starts_with?: Maybe<String>;
+  deprecationReason_ends_with?: Maybe<String>;
+  deprecationReason_not_ends_with?: Maybe<String>;
+  AND?: Maybe<GqlFieldScalarWhereInput[] | GqlFieldScalarWhereInput>;
+  OR?: Maybe<GqlFieldScalarWhereInput[] | GqlFieldScalarWhereInput>;
+  NOT?: Maybe<GqlFieldScalarWhereInput[] | GqlFieldScalarWhereInput>;
+}
+
+export interface GqlFieldUpdateManyWithWhereNestedInput {
+  where: GqlFieldScalarWhereInput;
+  data: GqlFieldUpdateManyDataInput;
+}
+
+export interface GqlFieldUpdateManyDataInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  typeName?: Maybe<String>;
+  kinds?: Maybe<GqlFieldUpdatekindsInput>;
+  isDeprecated?: Maybe<Boolean>;
+  deprecationReason?: Maybe<String>;
+}
+
+export interface GqlTypeUpsertWithoutCommentsInput {
+  update: GqlTypeUpdateWithoutCommentsDataInput;
+  create: GqlTypeCreateWithoutCommentsInput;
+}
+
 export interface CommentContentUpdateInput {
   message?: Maybe<String>;
 }
@@ -2813,6 +2913,7 @@ export interface GqlFieldUpdateInput {
   args?: Maybe<GqlInputValueUpdateManyInput>;
   isDeprecated?: Maybe<Boolean>;
   deprecationReason?: Maybe<String>;
+  comments?: Maybe<CommentUpdateManyWithoutGqlFieldInput>;
 }
 
 export interface GqlFieldUpdateManyMutationInput {
@@ -3283,6 +3384,7 @@ export interface CommentPromise extends Promise<Comment>, Fragmentable {
   id: () => Promise<ID_Output>;
   content: <T = CommentContentPromise>() => T;
   gqlType: <T = GqlTypePromise>() => T;
+  gqlField: <T = GqlFieldPromise>() => T;
   createdBy: <T = UserPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
 }
@@ -3293,6 +3395,7 @@ export interface CommentSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   content: <T = CommentContentSubscription>() => T;
   gqlType: <T = GqlTypeSubscription>() => T;
+  gqlField: <T = GqlFieldSubscription>() => T;
   createdBy: <T = UserSubscription>() => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -3303,6 +3406,7 @@ export interface CommentNullablePromise
   id: () => Promise<ID_Output>;
   content: <T = CommentContentPromise>() => T;
   gqlType: <T = GqlTypePromise>() => T;
+  gqlField: <T = GqlFieldPromise>() => T;
   createdBy: <T = UserPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
 }
@@ -3740,6 +3844,15 @@ export interface GqlFieldPromise extends Promise<GqlField>, Fragmentable {
   }) => T;
   isDeprecated: () => Promise<Boolean>;
   deprecationReason: () => Promise<String>;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface GqlFieldSubscription
@@ -3761,6 +3874,15 @@ export interface GqlFieldSubscription
   }) => T;
   isDeprecated: () => Promise<AsyncIterator<Boolean>>;
   deprecationReason: () => Promise<AsyncIterator<String>>;
+  comments: <T = Promise<AsyncIterator<CommentSubscription>>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface GqlFieldNullablePromise
@@ -3782,6 +3904,15 @@ export interface GqlFieldNullablePromise
   }) => T;
   isDeprecated: () => Promise<Boolean>;
   deprecationReason: () => Promise<String>;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface GqlBaseType {

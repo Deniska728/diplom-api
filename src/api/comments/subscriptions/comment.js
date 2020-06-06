@@ -4,7 +4,7 @@ export default {
     comment: payload.node,
     previousValues: payload.previousValues,
   }),
-  subscribe: async (parent, { schemaId, gqlTypeId }, { prisma, user }) => {
+  subscribe: async (parent, { schemaId, id }, { prisma, user }) => {
     if (!user) throw new Error('Access denied');
 
     const schemaQuery = {
@@ -21,7 +21,18 @@ export default {
 
     return prisma.$subscribe.comment({
       node: {
-        gqlType: { id: gqlTypeId },
+        OR: [
+          {
+            gqlType: {
+              id,
+            },
+          },
+          {
+            gqlField: {
+              id,
+            },
+          },
+        ],
       },
     });
   },

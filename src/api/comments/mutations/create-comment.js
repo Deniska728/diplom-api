@@ -1,5 +1,5 @@
 export default async (root, {
-  schemaId, gqlTypeId, content,
+  schemaId, gqlTypeId, gqlFieldId, content,
 }, { prisma, user }) => {
   if (!user) throw new Error('Access denied');
 
@@ -17,8 +17,10 @@ export default async (root, {
   const query = {
     createdBy: { connect: { id: user.id } },
     content: { create: { message: content } },
-    gqlType: { connect: { id: gqlTypeId } },
   };
+
+  if (gqlTypeId) query.gqlType = { connect: { id: gqlTypeId } };
+  if (gqlFieldId) query.gqlField = { connect: { id: gqlFieldId } };
 
   const comment = await prisma.createComment(query);
 
