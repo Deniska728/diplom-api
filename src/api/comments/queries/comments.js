@@ -1,5 +1,7 @@
+import { ApolloError, AuthenticationError } from 'apollo-server-express';
+
 export default async (root, { schemaId, id }, { prisma, user }) => {
-  if (!user) throw new Error('Access denied');
+  if (!user) throw new AuthenticationError('Access denied');
 
   const schemaQuery = {
     where: {
@@ -11,7 +13,7 @@ export default async (root, { schemaId, id }, { prisma, user }) => {
 
   const schemas = await prisma.gqlSchemas(schemaQuery);
   const schema = schemas[0];
-  if (!schema) throw new Error('Schema not found or access denied');
+  if (!schema) throw new ApolloError('Schema not found or access denied');
 
   const query = {
     where: {
@@ -20,13 +22,15 @@ export default async (root, { schemaId, id }, { prisma, user }) => {
           gqlType: {
             id,
           },
+        },
+        {
           gqlField: {
             id,
           },
         },
       ],
     },
-    orderBy: 'createdAt_DESC',
+    orderBy: 'createdAt_ASC',
   };
 
   return prisma.comments(query);

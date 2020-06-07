@@ -1,7 +1,9 @@
+import { ApolloError, AuthenticationError } from 'apollo-server-express';
+
 export default async (root, {
   commentId,
 }, { prisma, user }) => {
-  if (!user) throw new Error('Access denied');
+  if (!user) throw new AuthenticationError('Access denied');
 
   const doesCommentExist = await prisma.$exists.comment({
     id: commentId,
@@ -10,7 +12,7 @@ export default async (root, {
     },
   });
 
-  if (!doesCommentExist) throw new Error('Comment not found or access denied');
+  if (!doesCommentExist) throw new ApolloError('Comment not found or access denied');
 
   return prisma.deleteComment({ id: commentId });
 };

@@ -47,6 +47,7 @@ const server = new ApolloServer({
       const context = {
         prisma,
       };
+
       const authToken = connectionParams.authorization || connectionParams.Authorization;
       if (authToken) {
         context.user = await getUser(authToken, context);

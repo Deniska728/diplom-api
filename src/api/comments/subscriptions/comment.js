@@ -1,3 +1,5 @@
+import { AuthenticationError, ApolloError } from 'apollo-server-express';
+
 export default {
   resolve: (payload) => ({
     mutation: payload.mutation,
@@ -5,7 +7,7 @@ export default {
     previousValues: payload.previousValues,
   }),
   subscribe: async (parent, { schemaId, id }, { prisma, user }) => {
-    if (!user) throw new Error('Access denied');
+    if (!user) throw new AuthenticationError('Access denied');
 
     const schemaQuery = {
       where: {
@@ -17,7 +19,7 @@ export default {
 
     const schemas = await prisma.gqlSchemas(schemaQuery);
     const schema = schemas[0];
-    if (!schema) throw new Error('Schema not found or access denied');
+    if (!schema) throw new ApolloError('Schema not found or access denied');
 
     return prisma.$subscribe.comment({
       node: {

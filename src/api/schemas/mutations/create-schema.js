@@ -1,3 +1,4 @@
+import { ApolloError } from 'apollo-server-express';
 import crypto from 'crypto';
 import faker from 'faker';
 
@@ -13,9 +14,19 @@ export default async (root, args, { prisma, user }) => {
     .count();
   if (schemasCount > 10) throw new Error('No more than 10 schemas can be created');
 
-  const introspectionQuery = await getIntrospectionResult(args);
+  let introspectionQuery;
 
-  const introspectionSchema = await createIntrospection({ db: prisma, introspectionQuery, user });
+  try {
+    introspectionQuery = await getIntrospectionResult(args);
+  } catch (err) {
+    return new ApolloError('Enter a correct graphql endpoint url or apikey');
+  }
+
+  const introspectionSchema = await createIntrospection({
+    user,
+    db: prisma,
+    introspectionQuery: introspectionQuery.data.data.__schema,
+  });
 
   const schema = await prisma.createGqlSchema({
     name: faker.commerce.productName(),
