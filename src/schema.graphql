@@ -15,6 +15,11 @@ type UserProfile {
   picture: String
 }
 
+type AuthPayload {
+  token: String
+  user: User
+}
+
 type Comment {
   id: ID!
   gqlType: GqlType!
@@ -160,6 +165,8 @@ type Query {
 }
 
 type Mutation {
+  signUp(email: String!, password: String!, username: String!): AuthPayload
+  signIn(email: String!, password: String!): AuthPayload
   createSchema(
     endpoint: String!
     apiKeyName: String

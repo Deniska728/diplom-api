@@ -1,8 +1,8 @@
 type User {
   id: ID! @id
-  sub: String! @unique
-  email: String!
+  email: String! @unique
   username: String!
+  password: String!
   profile: UserProfile @relation(name: "UserProfile" onDelete: CASCADE)
   schemas: [GqlSchema] @relation(name: "SchemasByUser" onDelete: CASCADE)
   createdAt: DateTime! @createdAt

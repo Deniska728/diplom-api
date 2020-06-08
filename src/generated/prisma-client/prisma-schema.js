@@ -2710,9 +2710,9 @@ type Subscription {
 
 type User {
   id: ID!
-  sub: String!
   email: String!
   username: String!
+  password: String!
   profile: UserProfile
   schemas(where: GqlSchemaWhereInput, orderBy: GqlSchemaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlSchema!]
   createdAt: DateTime!
@@ -2727,9 +2727,9 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
-  sub: String!
   email: String!
   username: String!
+  password: String!
   profile: UserProfileCreateOneInput
   schemas: GqlSchemaCreateManyWithoutMembersInput
 }
@@ -2746,9 +2746,9 @@ input UserCreateOneInput {
 
 input UserCreateWithoutSchemasInput {
   id: ID
-  sub: String!
   email: String!
   username: String!
+  password: String!
   profile: UserProfileCreateOneInput
 }
 
@@ -2760,12 +2760,12 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
-  sub_ASC
-  sub_DESC
   email_ASC
   email_DESC
   username_ASC
   username_DESC
+  password_ASC
+  password_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -2774,9 +2774,9 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
-  sub: String!
   email: String!
   username: String!
+  password: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -2982,20 +2982,6 @@ input UserScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  sub: String
-  sub_not: String
-  sub_in: [String!]
-  sub_not_in: [String!]
-  sub_lt: String
-  sub_lte: String
-  sub_gt: String
-  sub_gte: String
-  sub_contains: String
-  sub_not_contains: String
-  sub_starts_with: String
-  sub_not_starts_with: String
-  sub_ends_with: String
-  sub_not_ends_with: String
   email: String
   email_not: String
   email_in: [String!]
@@ -3024,6 +3010,20 @@ input UserScalarWhereInput {
   username_not_starts_with: String
   username_ends_with: String
   username_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -3064,31 +3064,31 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateDataInput {
-  sub: String
   email: String
   username: String
+  password: String
   profile: UserProfileUpdateOneInput
   schemas: GqlSchemaUpdateManyWithoutMembersInput
 }
 
 input UserUpdateInput {
-  sub: String
   email: String
   username: String
+  password: String
   profile: UserProfileUpdateOneInput
   schemas: GqlSchemaUpdateManyWithoutMembersInput
 }
 
 input UserUpdateManyDataInput {
-  sub: String
   email: String
   username: String
+  password: String
 }
 
 input UserUpdateManyMutationInput {
-  sub: String
   email: String
   username: String
+  password: String
 }
 
 input UserUpdateManyWithoutSchemasInput {
@@ -3125,9 +3125,9 @@ input UserUpdateOneRequiredInput {
 }
 
 input UserUpdateWithoutSchemasDataInput {
-  sub: String
   email: String
   username: String
+  password: String
   profile: UserProfileUpdateOneInput
 }
 
@@ -3162,20 +3162,6 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  sub: String
-  sub_not: String
-  sub_in: [String!]
-  sub_not_in: [String!]
-  sub_lt: String
-  sub_lte: String
-  sub_gt: String
-  sub_gte: String
-  sub_contains: String
-  sub_not_contains: String
-  sub_starts_with: String
-  sub_not_starts_with: String
-  sub_ends_with: String
-  sub_not_ends_with: String
   email: String
   email_not: String
   email_in: [String!]
@@ -3204,6 +3190,20 @@ input UserWhereInput {
   username_not_starts_with: String
   username_ends_with: String
   username_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
   profile: UserProfileWhereInput
   schemas_every: GqlSchemaWhereInput
   schemas_some: GqlSchemaWhereInput
@@ -3231,7 +3231,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
-  sub: String
+  email: String
 }
 `
       }
