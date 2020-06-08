@@ -693,6 +693,10 @@ export type UserOrderByInput =
   | "username_DESC"
   | "password_ASC"
   | "password_DESC"
+  | "resetPasswordToken_ASC"
+  | "resetPasswordToken_DESC"
+  | "resetPasswordExpiresAt_ASC"
+  | "resetPasswordExpiresAt_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -1183,6 +1187,28 @@ export interface UserWhereInput {
   schemas_every?: Maybe<GqlSchemaWhereInput>;
   schemas_some?: Maybe<GqlSchemaWhereInput>;
   schemas_none?: Maybe<GqlSchemaWhereInput>;
+  resetPasswordToken?: Maybe<String>;
+  resetPasswordToken_not?: Maybe<String>;
+  resetPasswordToken_in?: Maybe<String[] | String>;
+  resetPasswordToken_not_in?: Maybe<String[] | String>;
+  resetPasswordToken_lt?: Maybe<String>;
+  resetPasswordToken_lte?: Maybe<String>;
+  resetPasswordToken_gt?: Maybe<String>;
+  resetPasswordToken_gte?: Maybe<String>;
+  resetPasswordToken_contains?: Maybe<String>;
+  resetPasswordToken_not_contains?: Maybe<String>;
+  resetPasswordToken_starts_with?: Maybe<String>;
+  resetPasswordToken_not_starts_with?: Maybe<String>;
+  resetPasswordToken_ends_with?: Maybe<String>;
+  resetPasswordToken_not_ends_with?: Maybe<String>;
+  resetPasswordExpiresAt?: Maybe<DateTimeInput>;
+  resetPasswordExpiresAt_not?: Maybe<DateTimeInput>;
+  resetPasswordExpiresAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  resetPasswordExpiresAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  resetPasswordExpiresAt_lt?: Maybe<DateTimeInput>;
+  resetPasswordExpiresAt_lte?: Maybe<DateTimeInput>;
+  resetPasswordExpiresAt_gt?: Maybe<DateTimeInput>;
+  resetPasswordExpiresAt_gte?: Maybe<DateTimeInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -1643,6 +1669,8 @@ export interface UserCreateInput {
   password: String;
   profile?: Maybe<UserProfileCreateOneInput>;
   schemas?: Maybe<GqlSchemaCreateManyWithoutMembersInput>;
+  resetPasswordToken?: Maybe<String>;
+  resetPasswordExpiresAt?: Maybe<DateTimeInput>;
 }
 
 export interface UserProfileCreateOneInput {
@@ -2156,6 +2184,8 @@ export interface UserUpdateDataInput {
   password?: Maybe<String>;
   profile?: Maybe<UserProfileUpdateOneInput>;
   schemas?: Maybe<GqlSchemaUpdateManyWithoutMembersInput>;
+  resetPasswordToken?: Maybe<String>;
+  resetPasswordExpiresAt?: Maybe<DateTimeInput>;
 }
 
 export interface UserProfileUpdateOneInput {
@@ -2974,6 +3004,8 @@ export interface UserCreateWithoutSchemasInput {
   username: String;
   password: String;
   profile?: Maybe<UserProfileCreateOneInput>;
+  resetPasswordToken?: Maybe<String>;
+  resetPasswordExpiresAt?: Maybe<DateTimeInput>;
 }
 
 export interface GqlSchemaUpdateInput {
@@ -3017,6 +3049,8 @@ export interface UserUpdateWithoutSchemasDataInput {
   username?: Maybe<String>;
   password?: Maybe<String>;
   profile?: Maybe<UserProfileUpdateOneInput>;
+  resetPasswordToken?: Maybe<String>;
+  resetPasswordExpiresAt?: Maybe<DateTimeInput>;
 }
 
 export interface UserUpsertWithWhereUniqueWithoutSchemasInput {
@@ -3082,6 +3116,28 @@ export interface UserScalarWhereInput {
   password_not_starts_with?: Maybe<String>;
   password_ends_with?: Maybe<String>;
   password_not_ends_with?: Maybe<String>;
+  resetPasswordToken?: Maybe<String>;
+  resetPasswordToken_not?: Maybe<String>;
+  resetPasswordToken_in?: Maybe<String[] | String>;
+  resetPasswordToken_not_in?: Maybe<String[] | String>;
+  resetPasswordToken_lt?: Maybe<String>;
+  resetPasswordToken_lte?: Maybe<String>;
+  resetPasswordToken_gt?: Maybe<String>;
+  resetPasswordToken_gte?: Maybe<String>;
+  resetPasswordToken_contains?: Maybe<String>;
+  resetPasswordToken_not_contains?: Maybe<String>;
+  resetPasswordToken_starts_with?: Maybe<String>;
+  resetPasswordToken_not_starts_with?: Maybe<String>;
+  resetPasswordToken_ends_with?: Maybe<String>;
+  resetPasswordToken_not_ends_with?: Maybe<String>;
+  resetPasswordExpiresAt?: Maybe<DateTimeInput>;
+  resetPasswordExpiresAt_not?: Maybe<DateTimeInput>;
+  resetPasswordExpiresAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  resetPasswordExpiresAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  resetPasswordExpiresAt_lt?: Maybe<DateTimeInput>;
+  resetPasswordExpiresAt_lte?: Maybe<DateTimeInput>;
+  resetPasswordExpiresAt_gt?: Maybe<DateTimeInput>;
+  resetPasswordExpiresAt_gte?: Maybe<DateTimeInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -3112,6 +3168,8 @@ export interface UserUpdateManyDataInput {
   email?: Maybe<String>;
   username?: Maybe<String>;
   password?: Maybe<String>;
+  resetPasswordToken?: Maybe<String>;
+  resetPasswordExpiresAt?: Maybe<DateTimeInput>;
 }
 
 export interface GqlSchemaUpdateManyMutationInput {
@@ -3159,12 +3217,16 @@ export interface UserUpdateInput {
   password?: Maybe<String>;
   profile?: Maybe<UserProfileUpdateOneInput>;
   schemas?: Maybe<GqlSchemaUpdateManyWithoutMembersInput>;
+  resetPasswordToken?: Maybe<String>;
+  resetPasswordExpiresAt?: Maybe<DateTimeInput>;
 }
 
 export interface UserUpdateManyMutationInput {
   email?: Maybe<String>;
   username?: Maybe<String>;
   password?: Maybe<String>;
+  resetPasswordToken?: Maybe<String>;
+  resetPasswordExpiresAt?: Maybe<DateTimeInput>;
 }
 
 export interface UserProfileUpdateInput {
@@ -3986,6 +4048,8 @@ export interface User {
   email: String;
   username: String;
   password: String;
+  resetPasswordToken?: String;
+  resetPasswordExpiresAt?: DateTimeOutput;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -4005,6 +4069,8 @@ export interface UserPromise extends Promise<User>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  resetPasswordToken: () => Promise<String>;
+  resetPasswordExpiresAt: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -4026,6 +4092,8 @@ export interface UserSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  resetPasswordToken: () => Promise<AsyncIterator<String>>;
+  resetPasswordExpiresAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -4047,6 +4115,8 @@ export interface UserNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
+  resetPasswordToken: () => Promise<String>;
+  resetPasswordExpiresAt: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -5400,6 +5470,8 @@ export interface UserPreviousValues {
   email: String;
   username: String;
   password: String;
+  resetPasswordToken?: String;
+  resetPasswordExpiresAt?: DateTimeOutput;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -5411,6 +5483,8 @@ export interface UserPreviousValuesPromise
   email: () => Promise<String>;
   username: () => Promise<String>;
   password: () => Promise<String>;
+  resetPasswordToken: () => Promise<String>;
+  resetPasswordExpiresAt: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -5422,6 +5496,8 @@ export interface UserPreviousValuesSubscription
   email: () => Promise<AsyncIterator<String>>;
   username: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
+  resetPasswordToken: () => Promise<AsyncIterator<String>>;
+  resetPasswordExpiresAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }

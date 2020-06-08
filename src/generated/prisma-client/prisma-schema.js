@@ -2715,6 +2715,8 @@ type User {
   password: String!
   profile: UserProfile
   schemas(where: GqlSchemaWhereInput, orderBy: GqlSchemaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlSchema!]
+  resetPasswordToken: String
+  resetPasswordExpiresAt: DateTime
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -2732,6 +2734,8 @@ input UserCreateInput {
   password: String!
   profile: UserProfileCreateOneInput
   schemas: GqlSchemaCreateManyWithoutMembersInput
+  resetPasswordToken: String
+  resetPasswordExpiresAt: DateTime
 }
 
 input UserCreateManyWithoutSchemasInput {
@@ -2750,6 +2754,8 @@ input UserCreateWithoutSchemasInput {
   username: String!
   password: String!
   profile: UserProfileCreateOneInput
+  resetPasswordToken: String
+  resetPasswordExpiresAt: DateTime
 }
 
 type UserEdge {
@@ -2766,6 +2772,10 @@ enum UserOrderByInput {
   username_DESC
   password_ASC
   password_DESC
+  resetPasswordToken_ASC
+  resetPasswordToken_DESC
+  resetPasswordExpiresAt_ASC
+  resetPasswordExpiresAt_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -2777,6 +2787,8 @@ type UserPreviousValues {
   email: String!
   username: String!
   password: String!
+  resetPasswordToken: String
+  resetPasswordExpiresAt: DateTime
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -3024,6 +3036,28 @@ input UserScalarWhereInput {
   password_not_starts_with: String
   password_ends_with: String
   password_not_ends_with: String
+  resetPasswordToken: String
+  resetPasswordToken_not: String
+  resetPasswordToken_in: [String!]
+  resetPasswordToken_not_in: [String!]
+  resetPasswordToken_lt: String
+  resetPasswordToken_lte: String
+  resetPasswordToken_gt: String
+  resetPasswordToken_gte: String
+  resetPasswordToken_contains: String
+  resetPasswordToken_not_contains: String
+  resetPasswordToken_starts_with: String
+  resetPasswordToken_not_starts_with: String
+  resetPasswordToken_ends_with: String
+  resetPasswordToken_not_ends_with: String
+  resetPasswordExpiresAt: DateTime
+  resetPasswordExpiresAt_not: DateTime
+  resetPasswordExpiresAt_in: [DateTime!]
+  resetPasswordExpiresAt_not_in: [DateTime!]
+  resetPasswordExpiresAt_lt: DateTime
+  resetPasswordExpiresAt_lte: DateTime
+  resetPasswordExpiresAt_gt: DateTime
+  resetPasswordExpiresAt_gte: DateTime
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -3069,6 +3103,8 @@ input UserUpdateDataInput {
   password: String
   profile: UserProfileUpdateOneInput
   schemas: GqlSchemaUpdateManyWithoutMembersInput
+  resetPasswordToken: String
+  resetPasswordExpiresAt: DateTime
 }
 
 input UserUpdateInput {
@@ -3077,18 +3113,24 @@ input UserUpdateInput {
   password: String
   profile: UserProfileUpdateOneInput
   schemas: GqlSchemaUpdateManyWithoutMembersInput
+  resetPasswordToken: String
+  resetPasswordExpiresAt: DateTime
 }
 
 input UserUpdateManyDataInput {
   email: String
   username: String
   password: String
+  resetPasswordToken: String
+  resetPasswordExpiresAt: DateTime
 }
 
 input UserUpdateManyMutationInput {
   email: String
   username: String
   password: String
+  resetPasswordToken: String
+  resetPasswordExpiresAt: DateTime
 }
 
 input UserUpdateManyWithoutSchemasInput {
@@ -3129,6 +3171,8 @@ input UserUpdateWithoutSchemasDataInput {
   username: String
   password: String
   profile: UserProfileUpdateOneInput
+  resetPasswordToken: String
+  resetPasswordExpiresAt: DateTime
 }
 
 input UserUpdateWithWhereUniqueWithoutSchemasInput {
@@ -3208,6 +3252,28 @@ input UserWhereInput {
   schemas_every: GqlSchemaWhereInput
   schemas_some: GqlSchemaWhereInput
   schemas_none: GqlSchemaWhereInput
+  resetPasswordToken: String
+  resetPasswordToken_not: String
+  resetPasswordToken_in: [String!]
+  resetPasswordToken_not_in: [String!]
+  resetPasswordToken_lt: String
+  resetPasswordToken_lte: String
+  resetPasswordToken_gt: String
+  resetPasswordToken_gte: String
+  resetPasswordToken_contains: String
+  resetPasswordToken_not_contains: String
+  resetPasswordToken_starts_with: String
+  resetPasswordToken_not_starts_with: String
+  resetPasswordToken_ends_with: String
+  resetPasswordToken_not_ends_with: String
+  resetPasswordExpiresAt: DateTime
+  resetPasswordExpiresAt_not: DateTime
+  resetPasswordExpiresAt_in: [DateTime!]
+  resetPasswordExpiresAt_not_in: [DateTime!]
+  resetPasswordExpiresAt_lt: DateTime
+  resetPasswordExpiresAt_lte: DateTime
+  resetPasswordExpiresAt_gt: DateTime
+  resetPasswordExpiresAt_gte: DateTime
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

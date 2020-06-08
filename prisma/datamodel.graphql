@@ -5,6 +5,8 @@ type User {
   password: String!
   profile: UserProfile @relation(name: "UserProfile" onDelete: CASCADE)
   schemas: [GqlSchema] @relation(name: "SchemasByUser" onDelete: CASCADE)
+  resetPasswordToken: String
+  resetPasswordExpiresAt: DateTime
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

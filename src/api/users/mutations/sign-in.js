@@ -5,10 +5,12 @@ import jwt from 'jsonwebtoken';
 const { APP_SECRET } = process.env;
 
 export default async (parent, args, { prisma }) => {
-  const { password, ...user } = await prisma.user({ email: args.email });
-  if (!user) {
+  const foundUser = await prisma.user({ email: args.email });
+  if (!foundUser) {
     throw new ApolloError('No such user found');
   }
+
+  const { password, ...user } = foundUser;
 
   const valid = await bcrypt.compare(args.password, password);
   if (!valid) {

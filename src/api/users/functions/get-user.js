@@ -7,9 +7,7 @@ const getUser = async (authorization, context) => {
   const token = authorization.replace('Bearer ', '');
 
   if (token) {
-    const { userId, ...props } = jwt.verify(token, APP_SECRET);
-
-    console.log(props);
+    const { userId } = jwt.verify(token, APP_SECRET);
 
     const user = await context.prisma.user({ id: userId });
     if (!user.profile) user.profile = await context.prisma.user({ id: user.id }).profile();

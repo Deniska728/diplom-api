@@ -37,7 +37,6 @@ const server = new ApolloServer({
     if (!params.req) return context;
     const { headers } = params.req;
 
-
     context.user = await getUser(headers.authorization, context);
 
     return context;
