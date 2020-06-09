@@ -2,7 +2,6 @@ scalar JSON
 
 type User {
   id: ID!
-  sub: String!
   email: String!
   username: String!
   profile: UserProfile
@@ -13,6 +12,11 @@ type UserProfile {
   lastName: String
   fullName: String
   picture: String
+}
+
+type AuthPayload {
+  token: String
+  user: User
 }
 
 type Comment {
@@ -160,6 +164,16 @@ type Query {
 }
 
 type Mutation {
+  signUp(email: String!, password: String!, username: String!): AuthPayload
+  signIn(email: String!, password: String!): AuthPayload
+  resetPassword(
+    email: String!
+  ): Boolean
+  changePassword(
+    token: String
+    oldPassword: String
+    password: String!
+  ): User
   createSchema(
     endpoint: String!
     apiKeyName: String
