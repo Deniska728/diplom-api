@@ -9,6 +9,8 @@ const fragment = `
     id
     email
     username
+    resetPasswordExpiresAt
+    resetPasswordToken
     profile {
       firstName
     }
