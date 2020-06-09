@@ -4,15 +4,26 @@ import crypto from 'crypto';
 
 import sendEmail from '../../../integrations/emails/sendEmail';
 
+const fragment = `
+  fragment UserWithPosts on User {
+    id
+    email
+    username
+    profile {
+      firstName
+    }
+  }
+`;
+
 export default async (parent, { email }, { prisma }) => {
   const resetPasswordExpiresTime = [2, 'hours'];
-  const user = await prisma.user({ email });
+  const user = await prisma.user({ email }).$fragment(fragment);
   if (!user) return true;
 
-  // const tokenExpired = dayjs().diff(dayjs(user.resetPasswordExpiresAt).subtract(...resetPasswordExpiresTime), 'minutes') < 15;
-  // if (user.resetPasswordExpiresAt && tokenExpired) {
-  //   throw new UserInputError('Try to reset a password later');
-  // }
+  const tokenExpired = dayjs().diff(dayjs(user.resetPasswordExpiresAt).subtract(...resetPasswordExpiresTime), 'minutes') < 15;
+  if (user.resetPasswordExpiresAt && tokenExpired) {
+    throw new UserInputError('Try to reset a password later');
+  }
 
   const firstName = user.profile && user.profile.firstName ? user.profile.firstName : user.username;
   const resetPasswordToken = crypto.randomBytes(30).toString('hex');
