@@ -166,6 +166,14 @@ type Query {
 type Mutation {
   signUp(email: String!, password: String!, username: String!): AuthPayload
   signIn(email: String!, password: String!): AuthPayload
+  resetPassword(
+    email: String!
+  ): Boolean
+  changePassword(
+    token: String
+    oldPassword: String
+    password: String!
+  ): User
   createSchema(
     endpoint: String!
     apiKeyName: String
