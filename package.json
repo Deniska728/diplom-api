@@ -24,6 +24,7 @@
     "apollo-server-express": "^2.13.0",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
+    "core-js": "^2.6.11",
     "dayjs": "^1.8.28",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
