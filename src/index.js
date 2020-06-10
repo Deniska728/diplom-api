@@ -18,7 +18,7 @@ import comments from './api/comments/resolvers';
 const resolvers = _.merge({
   JSON: GraphQLJSON,
   Query: {
-    info: () => 'Welcome to GraphQq',
+    info: () => 'Welcome to GraphQq.',
   },
 }, users, schemas, comments);
 
