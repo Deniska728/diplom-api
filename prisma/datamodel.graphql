@@ -4,7 +4,8 @@ type User {
   username: String!
   password: String!
   profile: UserProfile @relation(name: "UserProfile" onDelete: CASCADE)
-  schemas: [GqlSchema] @relation(name: "SchemasByUser" onDelete: CASCADE)
+  schemas: [GqlSchema] @relation(name: "SchemasByUser")
+  comments: [Comment] @relation(name: "CommentsByUser" onDelete: CASCADE)
   resetPasswordToken: String
   resetPasswordExpiresAt: DateTime
   createdAt: DateTime! @createdAt
@@ -24,7 +25,7 @@ type Comment {
   content: CommentContent!
   gqlType: GqlType @relation(name: "CommentsByGqlType")
   gqlField: GqlField @relation(name: "CommentsByGqlField")
-  createdBy: User!
+  createdBy: User! @relation(name: "CommentsByUser")
   createdAt: DateTime! @createdAt
 }
 

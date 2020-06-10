@@ -166,6 +166,16 @@ type Query {
 type Mutation {
   signUp(email: String!, password: String!, username: String!): AuthPayload
   signIn(email: String!, password: String!): AuthPayload
+  updateUser(
+    username: String
+    email: String
+    firstName: String
+    lastName: String
+    picture: String
+  ): User
+  deleteUser(
+    id: ID!
+  ): User
   resetPassword(
     email: String!
   ): Boolean

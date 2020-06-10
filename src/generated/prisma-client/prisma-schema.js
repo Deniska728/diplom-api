@@ -193,7 +193,12 @@ input CommentCreateInput {
   content: CommentContentCreateOneInput!
   gqlType: GqlTypeCreateOneWithoutCommentsInput
   gqlField: GqlFieldCreateOneWithoutCommentsInput
-  createdBy: UserCreateOneInput!
+  createdBy: UserCreateOneWithoutCommentsInput!
+}
+
+input CommentCreateManyWithoutCreatedByInput {
+  create: [CommentCreateWithoutCreatedByInput!]
+  connect: [CommentWhereUniqueInput!]
 }
 
 input CommentCreateManyWithoutGqlFieldInput {
@@ -206,18 +211,25 @@ input CommentCreateManyWithoutGqlTypeInput {
   connect: [CommentWhereUniqueInput!]
 }
 
+input CommentCreateWithoutCreatedByInput {
+  id: ID
+  content: CommentContentCreateOneInput!
+  gqlType: GqlTypeCreateOneWithoutCommentsInput
+  gqlField: GqlFieldCreateOneWithoutCommentsInput
+}
+
 input CommentCreateWithoutGqlFieldInput {
   id: ID
   content: CommentContentCreateOneInput!
   gqlType: GqlTypeCreateOneWithoutCommentsInput
-  createdBy: UserCreateOneInput!
+  createdBy: UserCreateOneWithoutCommentsInput!
 }
 
 input CommentCreateWithoutGqlTypeInput {
   id: ID
   content: CommentContentCreateOneInput!
   gqlField: GqlFieldCreateOneWithoutCommentsInput
-  createdBy: UserCreateOneInput!
+  createdBy: UserCreateOneWithoutCommentsInput!
 }
 
 type CommentEdge {
@@ -287,7 +299,18 @@ input CommentUpdateInput {
   content: CommentContentUpdateOneRequiredInput
   gqlType: GqlTypeUpdateOneWithoutCommentsInput
   gqlField: GqlFieldUpdateOneWithoutCommentsInput
-  createdBy: UserUpdateOneRequiredInput
+  createdBy: UserUpdateOneRequiredWithoutCommentsInput
+}
+
+input CommentUpdateManyWithoutCreatedByInput {
+  create: [CommentCreateWithoutCreatedByInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutCreatedByInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutCreatedByInput!]
+  deleteMany: [CommentScalarWhereInput!]
 }
 
 input CommentUpdateManyWithoutGqlFieldInput {
@@ -312,16 +335,27 @@ input CommentUpdateManyWithoutGqlTypeInput {
   deleteMany: [CommentScalarWhereInput!]
 }
 
+input CommentUpdateWithoutCreatedByDataInput {
+  content: CommentContentUpdateOneRequiredInput
+  gqlType: GqlTypeUpdateOneWithoutCommentsInput
+  gqlField: GqlFieldUpdateOneWithoutCommentsInput
+}
+
 input CommentUpdateWithoutGqlFieldDataInput {
   content: CommentContentUpdateOneRequiredInput
   gqlType: GqlTypeUpdateOneWithoutCommentsInput
-  createdBy: UserUpdateOneRequiredInput
+  createdBy: UserUpdateOneRequiredWithoutCommentsInput
 }
 
 input CommentUpdateWithoutGqlTypeDataInput {
   content: CommentContentUpdateOneRequiredInput
   gqlField: GqlFieldUpdateOneWithoutCommentsInput
-  createdBy: UserUpdateOneRequiredInput
+  createdBy: UserUpdateOneRequiredWithoutCommentsInput
+}
+
+input CommentUpdateWithWhereUniqueWithoutCreatedByInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutCreatedByDataInput!
 }
 
 input CommentUpdateWithWhereUniqueWithoutGqlFieldInput {
@@ -332,6 +366,12 @@ input CommentUpdateWithWhereUniqueWithoutGqlFieldInput {
 input CommentUpdateWithWhereUniqueWithoutGqlTypeInput {
   where: CommentWhereUniqueInput!
   data: CommentUpdateWithoutGqlTypeDataInput!
+}
+
+input CommentUpsertWithWhereUniqueWithoutCreatedByInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutCreatedByDataInput!
+  create: CommentCreateWithoutCreatedByInput!
 }
 
 input CommentUpsertWithWhereUniqueWithoutGqlFieldInput {
@@ -2715,6 +2755,7 @@ type User {
   password: String!
   profile: UserProfile
   schemas(where: GqlSchemaWhereInput, orderBy: GqlSchemaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GqlSchema!]
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   resetPasswordToken: String
   resetPasswordExpiresAt: DateTime
   createdAt: DateTime!
@@ -2734,6 +2775,7 @@ input UserCreateInput {
   password: String!
   profile: UserProfileCreateOneInput
   schemas: GqlSchemaCreateManyWithoutMembersInput
+  comments: CommentCreateManyWithoutCreatedByInput
   resetPasswordToken: String
   resetPasswordExpiresAt: DateTime
 }
@@ -2748,12 +2790,29 @@ input UserCreateOneInput {
   connect: UserWhereUniqueInput
 }
 
+input UserCreateOneWithoutCommentsInput {
+  create: UserCreateWithoutCommentsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutCommentsInput {
+  id: ID
+  email: String!
+  username: String!
+  password: String!
+  profile: UserProfileCreateOneInput
+  schemas: GqlSchemaCreateManyWithoutMembersInput
+  resetPasswordToken: String
+  resetPasswordExpiresAt: DateTime
+}
+
 input UserCreateWithoutSchemasInput {
   id: ID
   email: String!
   username: String!
   password: String!
   profile: UserProfileCreateOneInput
+  comments: CommentCreateManyWithoutCreatedByInput
   resetPasswordToken: String
   resetPasswordExpiresAt: DateTime
 }
@@ -3103,6 +3162,7 @@ input UserUpdateDataInput {
   password: String
   profile: UserProfileUpdateOneInput
   schemas: GqlSchemaUpdateManyWithoutMembersInput
+  comments: CommentUpdateManyWithoutCreatedByInput
   resetPasswordToken: String
   resetPasswordExpiresAt: DateTime
 }
@@ -3113,6 +3173,7 @@ input UserUpdateInput {
   password: String
   profile: UserProfileUpdateOneInput
   schemas: GqlSchemaUpdateManyWithoutMembersInput
+  comments: CommentUpdateManyWithoutCreatedByInput
   resetPasswordToken: String
   resetPasswordExpiresAt: DateTime
 }
@@ -3159,11 +3220,21 @@ input UserUpdateOneInput {
   connect: UserWhereUniqueInput
 }
 
-input UserUpdateOneRequiredInput {
-  create: UserCreateInput
-  update: UserUpdateDataInput
-  upsert: UserUpsertNestedInput
+input UserUpdateOneRequiredWithoutCommentsInput {
+  create: UserCreateWithoutCommentsInput
+  update: UserUpdateWithoutCommentsDataInput
+  upsert: UserUpsertWithoutCommentsInput
   connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutCommentsDataInput {
+  email: String
+  username: String
+  password: String
+  profile: UserProfileUpdateOneInput
+  schemas: GqlSchemaUpdateManyWithoutMembersInput
+  resetPasswordToken: String
+  resetPasswordExpiresAt: DateTime
 }
 
 input UserUpdateWithoutSchemasDataInput {
@@ -3171,6 +3242,7 @@ input UserUpdateWithoutSchemasDataInput {
   username: String
   password: String
   profile: UserProfileUpdateOneInput
+  comments: CommentUpdateManyWithoutCreatedByInput
   resetPasswordToken: String
   resetPasswordExpiresAt: DateTime
 }
@@ -3183,6 +3255,11 @@ input UserUpdateWithWhereUniqueWithoutSchemasInput {
 input UserUpsertNestedInput {
   update: UserUpdateDataInput!
   create: UserCreateInput!
+}
+
+input UserUpsertWithoutCommentsInput {
+  update: UserUpdateWithoutCommentsDataInput!
+  create: UserCreateWithoutCommentsInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutSchemasInput {
@@ -3252,6 +3329,9 @@ input UserWhereInput {
   schemas_every: GqlSchemaWhereInput
   schemas_some: GqlSchemaWhereInput
   schemas_none: GqlSchemaWhereInput
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
   resetPasswordToken: String
   resetPasswordToken_not: String
   resetPasswordToken_in: [String!]

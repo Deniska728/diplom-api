@@ -1187,6 +1187,9 @@ export interface UserWhereInput {
   schemas_every?: Maybe<GqlSchemaWhereInput>;
   schemas_some?: Maybe<GqlSchemaWhereInput>;
   schemas_none?: Maybe<GqlSchemaWhereInput>;
+  comments_every?: Maybe<CommentWhereInput>;
+  comments_some?: Maybe<CommentWhereInput>;
+  comments_none?: Maybe<CommentWhereInput>;
   resetPasswordToken?: Maybe<String>;
   resetPasswordToken_not?: Maybe<String>;
   resetPasswordToken_in?: Maybe<String[] | String>;
@@ -1541,7 +1544,7 @@ export interface CommentCreateInput {
   content: CommentContentCreateOneInput;
   gqlType?: Maybe<GqlTypeCreateOneWithoutCommentsInput>;
   gqlField?: Maybe<GqlFieldCreateOneWithoutCommentsInput>;
-  createdBy: UserCreateOneInput;
+  createdBy: UserCreateOneWithoutCommentsInput;
 }
 
 export interface CommentContentCreateOneInput {
@@ -1654,15 +1657,15 @@ export interface CommentCreateWithoutGqlFieldInput {
   id?: Maybe<ID_Input>;
   content: CommentContentCreateOneInput;
   gqlType?: Maybe<GqlTypeCreateOneWithoutCommentsInput>;
-  createdBy: UserCreateOneInput;
+  createdBy: UserCreateOneWithoutCommentsInput;
 }
 
-export interface UserCreateOneInput {
-  create?: Maybe<UserCreateInput>;
+export interface UserCreateOneWithoutCommentsInput {
+  create?: Maybe<UserCreateWithoutCommentsInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserCreateInput {
+export interface UserCreateWithoutCommentsInput {
   id?: Maybe<ID_Input>;
   email: String;
   username: String;
@@ -1700,6 +1703,53 @@ export interface GqlSchemaCreateWithoutMembersInput {
   apiKey: String;
   introspectionSchema?: Maybe<GqlIntrospectionSchemaCreateOneInput>;
   endpointUrl?: Maybe<String>;
+}
+
+export interface UserCreateOneInput {
+  create?: Maybe<UserCreateInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  email: String;
+  username: String;
+  password: String;
+  profile?: Maybe<UserProfileCreateOneInput>;
+  schemas?: Maybe<GqlSchemaCreateManyWithoutMembersInput>;
+  comments?: Maybe<CommentCreateManyWithoutCreatedByInput>;
+  resetPasswordToken?: Maybe<String>;
+  resetPasswordExpiresAt?: Maybe<DateTimeInput>;
+}
+
+export interface CommentCreateManyWithoutCreatedByInput {
+  create?: Maybe<
+    CommentCreateWithoutCreatedByInput[] | CommentCreateWithoutCreatedByInput
+  >;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+}
+
+export interface CommentCreateWithoutCreatedByInput {
+  id?: Maybe<ID_Input>;
+  content: CommentContentCreateOneInput;
+  gqlType?: Maybe<GqlTypeCreateOneWithoutCommentsInput>;
+  gqlField?: Maybe<GqlFieldCreateOneWithoutCommentsInput>;
+}
+
+export interface GqlFieldCreateOneWithoutCommentsInput {
+  create?: Maybe<GqlFieldCreateWithoutCommentsInput>;
+  connect?: Maybe<GqlFieldWhereUniqueInput>;
+}
+
+export interface GqlFieldCreateWithoutCommentsInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  description?: Maybe<String>;
+  typeName?: Maybe<String>;
+  kinds?: Maybe<GqlFieldCreatekindsInput>;
+  args?: Maybe<GqlInputValueCreateManyInput>;
+  isDeprecated: Boolean;
+  deprecationReason?: Maybe<String>;
 }
 
 export interface GqlIntrospectionSchemaCreateOneInput {
@@ -1771,30 +1821,14 @@ export interface CommentCreateWithoutGqlTypeInput {
   id?: Maybe<ID_Input>;
   content: CommentContentCreateOneInput;
   gqlField?: Maybe<GqlFieldCreateOneWithoutCommentsInput>;
-  createdBy: UserCreateOneInput;
-}
-
-export interface GqlFieldCreateOneWithoutCommentsInput {
-  create?: Maybe<GqlFieldCreateWithoutCommentsInput>;
-  connect?: Maybe<GqlFieldWhereUniqueInput>;
-}
-
-export interface GqlFieldCreateWithoutCommentsInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  description?: Maybe<String>;
-  typeName?: Maybe<String>;
-  kinds?: Maybe<GqlFieldCreatekindsInput>;
-  args?: Maybe<GqlInputValueCreateManyInput>;
-  isDeprecated: Boolean;
-  deprecationReason?: Maybe<String>;
+  createdBy: UserCreateOneWithoutCommentsInput;
 }
 
 export interface CommentUpdateInput {
   content?: Maybe<CommentContentUpdateOneRequiredInput>;
   gqlType?: Maybe<GqlTypeUpdateOneWithoutCommentsInput>;
   gqlField?: Maybe<GqlFieldUpdateOneWithoutCommentsInput>;
-  createdBy?: Maybe<UserUpdateOneRequiredInput>;
+  createdBy?: Maybe<UserUpdateOneRequiredWithoutCommentsInput>;
 }
 
 export interface CommentContentUpdateOneRequiredInput {
@@ -2168,17 +2202,17 @@ export interface CommentUpdateWithWhereUniqueWithoutGqlFieldInput {
 export interface CommentUpdateWithoutGqlFieldDataInput {
   content?: Maybe<CommentContentUpdateOneRequiredInput>;
   gqlType?: Maybe<GqlTypeUpdateOneWithoutCommentsInput>;
-  createdBy?: Maybe<UserUpdateOneRequiredInput>;
+  createdBy?: Maybe<UserUpdateOneRequiredWithoutCommentsInput>;
 }
 
-export interface UserUpdateOneRequiredInput {
-  create?: Maybe<UserCreateInput>;
-  update?: Maybe<UserUpdateDataInput>;
-  upsert?: Maybe<UserUpsertNestedInput>;
+export interface UserUpdateOneRequiredWithoutCommentsInput {
+  create?: Maybe<UserCreateWithoutCommentsInput>;
+  update?: Maybe<UserUpdateWithoutCommentsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutCommentsInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserUpdateDataInput {
+export interface UserUpdateWithoutCommentsDataInput {
   email?: Maybe<String>;
   username?: Maybe<String>;
   password?: Maybe<String>;
@@ -2252,6 +2286,105 @@ export interface UserUpdateOneInput {
   delete?: Maybe<Boolean>;
   disconnect?: Maybe<Boolean>;
   connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateDataInput {
+  email?: Maybe<String>;
+  username?: Maybe<String>;
+  password?: Maybe<String>;
+  profile?: Maybe<UserProfileUpdateOneInput>;
+  schemas?: Maybe<GqlSchemaUpdateManyWithoutMembersInput>;
+  comments?: Maybe<CommentUpdateManyWithoutCreatedByInput>;
+  resetPasswordToken?: Maybe<String>;
+  resetPasswordExpiresAt?: Maybe<DateTimeInput>;
+}
+
+export interface CommentUpdateManyWithoutCreatedByInput {
+  create?: Maybe<
+    CommentCreateWithoutCreatedByInput[] | CommentCreateWithoutCreatedByInput
+  >;
+  delete?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  set?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  disconnect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  update?: Maybe<
+    | CommentUpdateWithWhereUniqueWithoutCreatedByInput[]
+    | CommentUpdateWithWhereUniqueWithoutCreatedByInput
+  >;
+  upsert?: Maybe<
+    | CommentUpsertWithWhereUniqueWithoutCreatedByInput[]
+    | CommentUpsertWithWhereUniqueWithoutCreatedByInput
+  >;
+  deleteMany?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+}
+
+export interface CommentUpdateWithWhereUniqueWithoutCreatedByInput {
+  where: CommentWhereUniqueInput;
+  data: CommentUpdateWithoutCreatedByDataInput;
+}
+
+export interface CommentUpdateWithoutCreatedByDataInput {
+  content?: Maybe<CommentContentUpdateOneRequiredInput>;
+  gqlType?: Maybe<GqlTypeUpdateOneWithoutCommentsInput>;
+  gqlField?: Maybe<GqlFieldUpdateOneWithoutCommentsInput>;
+}
+
+export interface GqlFieldUpdateOneWithoutCommentsInput {
+  create?: Maybe<GqlFieldCreateWithoutCommentsInput>;
+  update?: Maybe<GqlFieldUpdateWithoutCommentsDataInput>;
+  upsert?: Maybe<GqlFieldUpsertWithoutCommentsInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<GqlFieldWhereUniqueInput>;
+}
+
+export interface GqlFieldUpdateWithoutCommentsDataInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  typeName?: Maybe<String>;
+  kinds?: Maybe<GqlFieldUpdatekindsInput>;
+  args?: Maybe<GqlInputValueUpdateManyInput>;
+  isDeprecated?: Maybe<Boolean>;
+  deprecationReason?: Maybe<String>;
+}
+
+export interface GqlFieldUpsertWithoutCommentsInput {
+  update: GqlFieldUpdateWithoutCommentsDataInput;
+  create: GqlFieldCreateWithoutCommentsInput;
+}
+
+export interface CommentUpsertWithWhereUniqueWithoutCreatedByInput {
+  where: CommentWhereUniqueInput;
+  update: CommentUpdateWithoutCreatedByDataInput;
+  create: CommentCreateWithoutCreatedByInput;
+}
+
+export interface CommentScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  OR?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  NOT?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
 }
 
 export interface UserUpsertNestedInput {
@@ -2551,65 +2684,13 @@ export interface CommentUpdateWithWhereUniqueWithoutGqlTypeInput {
 export interface CommentUpdateWithoutGqlTypeDataInput {
   content?: Maybe<CommentContentUpdateOneRequiredInput>;
   gqlField?: Maybe<GqlFieldUpdateOneWithoutCommentsInput>;
-  createdBy?: Maybe<UserUpdateOneRequiredInput>;
-}
-
-export interface GqlFieldUpdateOneWithoutCommentsInput {
-  create?: Maybe<GqlFieldCreateWithoutCommentsInput>;
-  update?: Maybe<GqlFieldUpdateWithoutCommentsDataInput>;
-  upsert?: Maybe<GqlFieldUpsertWithoutCommentsInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<GqlFieldWhereUniqueInput>;
-}
-
-export interface GqlFieldUpdateWithoutCommentsDataInput {
-  name?: Maybe<String>;
-  description?: Maybe<String>;
-  typeName?: Maybe<String>;
-  kinds?: Maybe<GqlFieldUpdatekindsInput>;
-  args?: Maybe<GqlInputValueUpdateManyInput>;
-  isDeprecated?: Maybe<Boolean>;
-  deprecationReason?: Maybe<String>;
-}
-
-export interface GqlFieldUpsertWithoutCommentsInput {
-  update: GqlFieldUpdateWithoutCommentsDataInput;
-  create: GqlFieldCreateWithoutCommentsInput;
+  createdBy?: Maybe<UserUpdateOneRequiredWithoutCommentsInput>;
 }
 
 export interface CommentUpsertWithWhereUniqueWithoutGqlTypeInput {
   where: CommentWhereUniqueInput;
   update: CommentUpdateWithoutGqlTypeDataInput;
   create: CommentCreateWithoutGqlTypeInput;
-}
-
-export interface CommentScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
-  OR?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
-  NOT?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
 }
 
 export interface GqlTypeUpsertWithWhereUniqueWithoutSchemaInput {
@@ -2779,6 +2860,11 @@ export interface GqlSchemaUpdateManyDataInput {
   name?: Maybe<String>;
   apiKey?: Maybe<String>;
   endpointUrl?: Maybe<String>;
+}
+
+export interface UserUpsertWithoutCommentsInput {
+  update: UserUpdateWithoutCommentsDataInput;
+  create: UserCreateWithoutCommentsInput;
 }
 
 export interface CommentUpsertWithWhereUniqueWithoutGqlFieldInput {
@@ -3004,6 +3090,7 @@ export interface UserCreateWithoutSchemasInput {
   username: String;
   password: String;
   profile?: Maybe<UserProfileCreateOneInput>;
+  comments?: Maybe<CommentCreateManyWithoutCreatedByInput>;
   resetPasswordToken?: Maybe<String>;
   resetPasswordExpiresAt?: Maybe<DateTimeInput>;
 }
@@ -3049,6 +3136,7 @@ export interface UserUpdateWithoutSchemasDataInput {
   username?: Maybe<String>;
   password?: Maybe<String>;
   profile?: Maybe<UserProfileUpdateOneInput>;
+  comments?: Maybe<CommentUpdateManyWithoutCreatedByInput>;
   resetPasswordToken?: Maybe<String>;
   resetPasswordExpiresAt?: Maybe<DateTimeInput>;
 }
@@ -3217,6 +3305,7 @@ export interface UserUpdateInput {
   password?: Maybe<String>;
   profile?: Maybe<UserProfileUpdateOneInput>;
   schemas?: Maybe<GqlSchemaUpdateManyWithoutMembersInput>;
+  comments?: Maybe<CommentUpdateManyWithoutCreatedByInput>;
   resetPasswordToken?: Maybe<String>;
   resetPasswordExpiresAt?: Maybe<DateTimeInput>;
 }
@@ -4069,6 +4158,15 @@ export interface UserPromise extends Promise<User>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   resetPasswordToken: () => Promise<String>;
   resetPasswordExpiresAt: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -4092,6 +4190,15 @@ export interface UserSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  comments: <T = Promise<AsyncIterator<CommentSubscription>>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   resetPasswordToken: () => Promise<AsyncIterator<String>>;
   resetPasswordExpiresAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -4109,6 +4216,15 @@ export interface UserNullablePromise
   schemas: <T = FragmentableArray<GqlSchema>>(args?: {
     where?: GqlSchemaWhereInput;
     orderBy?: GqlSchemaOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
