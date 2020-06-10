@@ -22,7 +22,7 @@ const resolvers = _.merge({
   },
 }, users, schemas, comments);
 
-const port = 3002;
+const port = process.env.PORT || 3002;
 
 const server = new ApolloServer({
   typeDefs,
