@@ -55,6 +55,8 @@ const server = new ApolloServer({
       return context;
     },
   },
+  introspection: true,
+  playground: true,
 });
 
 const app = express();
