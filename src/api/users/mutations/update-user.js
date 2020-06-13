@@ -34,6 +34,13 @@ export default async (parent, {
     if (firstName) profile.update.firstName = firstName;
     if (lastName) profile.update.lastName = lastName;
     if (picture) profile.update.picture = picture;
+    if (firstName && lastName) {
+      profile.update.fullName = `${firstName} ${lastName}`;
+    } else if (firstName && !lastName) {
+      profile.update.fullName = `${firstName}${ctx.user.profile && ctx.user.profile.lastName ? ` ${ctx.user.profile.lastName}` : ''}`;
+    } else if (!firstName && lastName) {
+      profile.update.fullName = `${ctx.user.profile && ctx.user.profile.firstName ? `${ctx.user.profile.firstName} ` : ''}${lastName}`;
+    }
 
     query.data.profile = profile;
   }
