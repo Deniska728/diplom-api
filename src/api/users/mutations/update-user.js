@@ -27,19 +27,20 @@ export default async (parent, {
   if (email) query.data.email = email;
 
   if (firstName || lastName || picture) {
+    const doesHaveProfile = ctx.user.profile ? 'update' : 'create';
     const profile = {
-      update: {},
+      [doesHaveProfile]: {},
     };
 
-    if (firstName) profile.update.firstName = firstName;
-    if (lastName) profile.update.lastName = lastName;
-    if (picture) profile.update.picture = picture;
+    if (firstName) profile[doesHaveProfile].firstName = firstName;
+    if (lastName) profile[doesHaveProfile].lastName = lastName;
+    if (picture) profile[doesHaveProfile].picture = picture;
     if (firstName && lastName) {
-      profile.update.fullName = `${firstName} ${lastName}`;
+      profile[doesHaveProfile].fullName = `${firstName} ${lastName}`;
     } else if (firstName && !lastName) {
-      profile.update.fullName = `${firstName}${ctx.user.profile && ctx.user.profile.lastName ? ` ${ctx.user.profile.lastName}` : ''}`;
+      profile[doesHaveProfile].fullName = `${firstName}${ctx.user.profile && ctx.user.profile.lastName ? ` ${ctx.user.profile.lastName}` : ''}`;
     } else if (!firstName && lastName) {
-      profile.update.fullName = `${ctx.user.profile && ctx.user.profile.firstName ? `${ctx.user.profile.firstName} ` : ''}${lastName}`;
+      profile[doesHaveProfile].fullName = `${ctx.user.profile && ctx.user.profile.firstName ? `${ctx.user.profile.firstName} ` : ''}${lastName}`;
     }
 
     query.data.profile = profile;
