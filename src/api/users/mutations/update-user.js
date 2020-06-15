@@ -32,9 +32,10 @@ export default async (parent, {
       [doesHaveProfile]: {},
     };
 
-    if (firstName) profile[doesHaveProfile].firstName = firstName;
-    if (lastName) profile[doesHaveProfile].lastName = lastName;
-    if (picture) profile[doesHaveProfile].picture = picture;
+    profile[doesHaveProfile].firstName = firstName || '';
+    profile[doesHaveProfile].lastName = lastName || '';
+    profile[doesHaveProfile].picture = picture || '';
+
     if (firstName && lastName) {
       profile[doesHaveProfile].fullName = `${firstName} ${lastName}`;
     } else if (firstName && !lastName) {
