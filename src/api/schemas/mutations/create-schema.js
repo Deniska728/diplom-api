@@ -22,6 +22,8 @@ export default async (root, args, { prisma, user }) => {
     return new ApolloError('Enter a correct graphql endpoint url or apikey');
   }
 
+  if (!introspectionQuery.data.data) return new ApolloError('Enter a correct graphql endpoint url or apikey');
+
   const introspectionSchema = await createIntrospection({
     user,
     db: prisma,
